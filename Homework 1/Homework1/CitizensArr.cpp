@@ -105,6 +105,8 @@ namespace elections {
 
 		for (int i = 0; i < numOfElected; i++)
 			electedReps->add(citizens[i]);
+			
+		cout << "Everything is okay!" << endl;
 
 		return electedReps;
 	}
