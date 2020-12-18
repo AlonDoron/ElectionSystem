@@ -1,0 +1,16 @@
+namespace elections {
+	enum class UserActions
+	{
+		NO_INPUT,
+		ADD_DISTRICT,
+		ADD_CITIZEN,
+		ADD_PARTY,
+		ADD_REP,
+		SHOW_ALL_DISTRICTS,
+		SHOW_ALL_CITIZENS,
+		SHOW_ALL_PARTIES,
+		VOTE,
+		SHOW_ELECTION_POLLS,
+		EXIT
+	};
+}
