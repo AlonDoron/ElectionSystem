@@ -59,9 +59,9 @@ namespace elections {
 		citizensByDist[distId] = citizensArr;
 	}
 
-	void CitizensDB::addRep(Citizen& rep, int districtNum)
+	void CitizensDB::addCitizen(Citizen& citizen, int districtNum)
 	{
-		citizensByDist[districtNum].add(rep);
+		citizensByDist[districtNum].add(citizen);
 	}
 
 	void CitizensDB::printRep(void) const

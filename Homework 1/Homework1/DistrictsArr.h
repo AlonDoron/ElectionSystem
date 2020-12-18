@@ -20,10 +20,11 @@ namespace elections {
 		// Overload "=" operator
 		void operator=(const DistrictsArr&);
 
-		// Setters
+		// Setters-----------------------------------------
 		void add(District& district);
 
-		// Getters
+		// Getters-----------------------------------------
+		// return district in index "districtNum"
 		District* getDistrictByNum(int districtNum);
 		int getLogSize(void);
 

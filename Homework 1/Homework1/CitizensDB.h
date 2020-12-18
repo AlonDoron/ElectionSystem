@@ -31,10 +31,14 @@ namespace elections {
 		// Overload "=" operator
 		void operator=(const CitizensDB&);
 
-		// Setters
+		// Setters---------------------------------------
+		// allocate 1 citizensArr to array 
 		void add();
+
+		// set citizensByDist[disId] = citizensArr
 		void add(CitizensArr& citizensArr, int distId);
-		void addRep(Citizen& rep, int districtNum);
+		// add citizens to citizensArr in index "districtNum"
+		void addCitizen(Citizen& citizen, int districtNum);
 
 		// Getters
 		const int getLogSize() const;

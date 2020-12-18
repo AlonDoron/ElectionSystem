@@ -21,10 +21,10 @@ namespace elections {
 		// Overload "=" operator
 		void operator=(const Citizen&);
 
-		// Setters
+		// Setters-----------------------------
 		const bool setVoted(bool val);
 
-		// Getters
+		// Getters----------------------------
 		const bool getVoted() const;
 		const int getDistrictNum() const;
 		const long int getId(void) const;
