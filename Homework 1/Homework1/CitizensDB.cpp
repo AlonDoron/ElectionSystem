@@ -8,7 +8,11 @@ namespace elections {
 
 	CitizensDB::CitizensDB(int size) : phsSize(size), logSize(size) {
 		citizensByDist = new CitizensArr[size];
-	};
+	}
+	CitizensDB::CitizensDB(const CitizensDB& other)
+	{
+		*this = other;
+	}
 
 	CitizensDB::~CitizensDB() {
 		delete[] citizensByDist;
@@ -17,6 +21,11 @@ namespace elections {
 
 	const int CitizensDB::getLogSize() const {
 		return logSize;
+	}
+
+	const int CitizensDB::getPhsSize() const
+	{
+		return phsSize;
 	}
 
 	void CitizensDB::resize(int newSize)
@@ -43,7 +52,21 @@ namespace elections {
 			citizensByDist[i] = other.citizensByDist[i];
 	}
 
-	void CitizensDB::add()
+	bool CitizensDB::setLogSize(int size)
+	{
+		logSize = size;
+
+		return true;
+	}
+
+	bool CitizensDB::setPhsSize(int size)
+	{
+		phsSize = size;
+
+		return true;
+	}
+
+	void CitizensDB::addEmptyCitizensArr()
 	{
 		CitizensArr newCitizensArr;
 
@@ -54,14 +77,9 @@ namespace elections {
 		++logSize;
 	}
 
-	void CitizensDB::add(CitizensArr& citizensArr, int distId)
+	void CitizensDB::addCitizenToIndex(Citizen& citizen, int index)
 	{
-		citizensByDist[distId] = citizensArr;
-	}
-
-	void CitizensDB::addCitizen(Citizen& citizen, int districtNum)
-	{
-		citizensByDist[districtNum].add(citizen);
+		citizensByDist[index].add(citizen);
 	}
 
 	void CitizensDB::printRep(void) const
@@ -72,8 +90,36 @@ namespace elections {
 		}
 	}
 
+	CitizensArr& CitizensDB::operator[](int index) const
+	{
+		return citizensByDist[index];
+	}
+
+	const bool CitizensDB::isCitizenExistsById(long int id) const {
+		for (int i = 0; i < logSize; i++)
+			if (citizensByDist[i].isCitizenExistsById(id))
+				return true;
+
+		return false;
+	}
+
+	CitizensArr& CitizensDB::operator[](long int id) const
+	{
+		for (int i = 0; i < logSize; i++)
+			if (citizensByDist[i].isCitizenExistsById(id))
+				return citizensByDist[i];
+	}
+
 	CitizensArr& CitizensDB::getCitizensArrByIndex(int ind)
 	{
 		return citizensByDist[ind];
+	}
+
+	ostream& operator<<(ostream& os, const CitizensDB& citizensDB)
+	{
+		for (int i = 0; i < citizensDB.getLogSize(); i++)
+			cout << citizensDB[i];
+
+		return os;
 	}
 }

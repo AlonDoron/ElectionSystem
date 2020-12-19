@@ -1,4 +1,5 @@
 #pragma once
+#pragma once
 #include "Citizen.h"
 
 namespace elections {
@@ -14,6 +15,7 @@ namespace elections {
 		// Ctors
 		CitizensArr();
 		CitizensArr(int size);
+		CitizensArr(const CitizensArr&);
 
 		// Dtor
 		~CitizensArr();
@@ -22,27 +24,33 @@ namespace elections {
 		void operator=(const CitizensArr&);
 
 		// Setters----------------------------------
+		bool setLogSize(int size);
+		bool setPhsSize(int size);
+
 		//add one citizen to array
 		void add(Citizen& citizen);
 
 		// add an entire citizen's array to exisiting array (at the end)
-		void add_citizenArr(CitizensArr& other);
-		bool setLogSize(int size);
-		bool setPhsSize(int size);
+		void appendCitizensArr(CitizensArr& other);
 
 		// Getters--------------------------------------
-		// return citizen using ID
-		Citizen* getCitizen(long int citizenId);
 		const int getLogSize() const;
-
-		// return citizen using index
-		Citizen& getCitizenByIndex(int ind);
+		const int getPhsSize() const;
 
 		// return the first "numOfElected" citizens in array
-		CitizensArr* getElectReps(int numOfElected);
+		CitizensArr getCitizensUntillIndex(int numOfElected);
+
+		const bool isCitizenExistsById(long int id) const;
+		// return citizen using index
+		Citizen& getCitizenByIndex(int ind);
 
 		// Print all citizens in CitizensArr
 		void printCitizens(void);
 
+		Citizen& operator[](int index) const;
+
+		Citizen& operator[](long int id) const;
+
+		friend ostream& operator<<(ostream& os, const CitizensArr& citizensArr);
 	};
 }
