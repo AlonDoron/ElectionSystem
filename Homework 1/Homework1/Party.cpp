@@ -88,7 +88,7 @@ namespace elections {
 
 	void Party::addRepToParty(Citizen& rep, int districtNum)
 	{
-		representatives.addRep(rep, districtNum);
+		representatives.addCitizen(rep, districtNum);
 	}
 
 	void Party::addNewDistrictToRepArr(void)

@@ -17,7 +17,7 @@ namespace elections {
 		// Overload "=" operator
 		void operator=(const District&);
 
-		// Getters
+		// Getters-------------------------------
 		int getDistrictNum(void);
 		char* getDistrictName() const;
 

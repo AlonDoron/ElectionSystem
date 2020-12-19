@@ -105,7 +105,6 @@ namespace elections {
 
 		for (int i = 0; i < numOfElected; i++)
 			electedReps->add(citizens[i]);
-			
 
 		return electedReps;
 	}

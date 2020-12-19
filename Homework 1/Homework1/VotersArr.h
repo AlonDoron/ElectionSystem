@@ -20,11 +20,15 @@ namespace elections {
 		// Overload "=" operator
 		void operator=(const VotersArr&);
 
-		// Setters
+		// Setters----------------------------------------
+		// allocating one more space when district is added
 		void addDistrict();
+
+		// add one vote to in index "districtNum"
 		void addVote(int districtNum);
 
-		// Getters
+		// Getters------------------------------------------
+		// return the number of votes in district "idx"
 		const int getVotesByIndex(int idx) const;
 	};
 }

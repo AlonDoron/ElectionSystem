@@ -9,7 +9,9 @@ namespace elections {
 		char* name;
 		int nameLen;
 		long int id;
+		// Array of representatives organazied by district 
 		CitizensDB representatives;
+		// A voting data of each party
 		VotersArr voters;
 
 	public:
@@ -23,18 +25,33 @@ namespace elections {
 		// Overload "=" operator
 		void operator=(const Party&);
 
-		// Setters
+		// Setters---------------------------------------------------
 		void addRepToParty(Citizen&, int districtNum);
+
+		// allocating one more space for votersArr/repArr (when district is added)
 		void addNewDistrictToRepArr(void);
 		void addDistrictToVotersArr();
+
+		// adding when one vote when voting to party (at the relevant dist index)
 		void addVoteToDistrict(int districtNum);
 
-		// Getters
+
+		// Getters ----------------------------------------------------
 		char* getPartyName() const;
-		void printParty(void) const;
-		const int getVotesInDist(int idx);
+		
+		// print all party detailes
+		void printParty(void) const; 		
+		
+		// return the number of votes for party in district "idx"
+		const int getVotesInDist(int idx); 
+		
+		// return the number of reps using percentage (in distIdx)
 		CitizensArr* getRepListByPercent(int distIdx, int numOfElected);
+
+
 		const long int getLeaderId() const;
+		
+
 
 		// returns true if representative with id repId already exists
 		const bool isRepAlreadyExists(long int repId);
