@@ -34,7 +34,7 @@ namespace elections {
 		CitizensArr allRepsInDist;
 
 		allRepsInDist = representatives.getCitizensArrByIndex(distIdx);
-		electedReps = (allRepsInDist.getElectReps(numOfElected));
+		//electedReps = (allRepsInDist.getCitizensUntillIndex(numOfElected));
 
 		return electedReps;
 	}
@@ -88,12 +88,12 @@ namespace elections {
 
 	void Party::addRepToParty(Citizen& rep, int districtNum)
 	{
-		representatives.addCitizen(rep, districtNum);
+		representatives.addCitizenToIndex(rep, districtNum);
 	}
 
 	void Party::addNewDistrictToRepArr(void)
 	{
-		representatives.add();
+		representatives.addEmptyCitizensArr();
 	}
 
 	void Party::addDistrictToVotersArr()
