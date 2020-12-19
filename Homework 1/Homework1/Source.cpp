@@ -100,6 +100,10 @@ int main() {
 			countVotes(districtsArr, citizensArr, partiesArr);
 			break;
 
+		case UserActions::EXIT:
+			cout << "Goodbye." << endl;
+			break;
+
 		default:
 			cout << "NO INPUT" << endl;
 			break;
