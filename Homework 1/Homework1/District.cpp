@@ -17,22 +17,23 @@ namespace elections {
 		name[nameLen] = '\0';
 	}
 
+	District::District(const District& other)
+	{
+		*this = other;
+	}
+
 	District::~District()
 	{
 		delete[] name;
 	}
 
-	void District::printDistrict(void) const
-	{
-		cout << "District Number: " << districtNum
-			<< " | Name: " << name << " | Number of representative: " << numOfRep << endl;
-	}
 
 	void District::operator=(const District& other)
 	{
 		numOfRep = other.numOfRep;
 		nameLen = other.nameLen;
 		districtNum = other.districtNum;
+		votesCounter = other.votesCounter;
 		name = new char[nameLen + 1];
 
 		for (int i = 0; i < other.nameLen; i++)
@@ -40,14 +41,38 @@ namespace elections {
 
 		name[nameLen] = '\0';
 	}
-	int District::getDistrictNum(void)
+	const int District::getDistrictNum(void) const
 	{
 		return districtNum;
 	}
 
-	char* District::getDistrictName() const
+	const char* District::getDistrictName() const
 	{
 		return name;
+	}
+	const int District::getNumOfRep() const
+	{
+		return numOfRep;
+	}
+	void District::addCounterForNewParty()
+	{
+		votesCounter.addEmptyCounter();
+	}
+	void District::addVoteToCounterInIdx(int partyNum)
+	{
+		votesCounter[partyNum]++;
+	}
+	const int District::getVotesInIndex(int idx) const
+	{
+		return votesCounter[idx];
+	}
+	ostream& operator<<(ostream& os, const District& district)
+	{
+		cout << "District Number: " << district.getDistrictNum()
+			<< " | Name: " << district.getDistrictName() << " | Number of representative: " 
+			<< district.getNumOfRep() << endl;
+
+		return os;
 	}
 }
 

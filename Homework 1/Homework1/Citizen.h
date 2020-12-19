@@ -38,9 +38,7 @@ namespace elections {
 		const int getYear(void) const;
 		const char* getName() const;
 
-		// Print one citizen
-		void printCitizen(void);
-
+		// Printer operator
 		friend ostream& operator<<(ostream& os, const Citizen& citizen);
 	};
 }

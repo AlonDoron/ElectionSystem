@@ -82,13 +82,6 @@ namespace elections {
 		citizensByDist[index].add(citizen);
 	}
 
-	void CitizensDB::printRep(void) const
-	{
-		for (int i = 0; i < logSize; i++)
-		{
-			citizensByDist[i].printCitizens();
-		}
-	}
 
 	CitizensArr& CitizensDB::operator[](int index) const
 	{
@@ -103,11 +96,11 @@ namespace elections {
 		return false;
 	}
 
-	CitizensArr& CitizensDB::operator[](long int id) const
+	Citizen& CitizensDB::operator[](long int id) const
 	{
 		for (int i = 0; i < logSize; i++)
 			if (citizensByDist[i].isCitizenExistsById(id))
-				return citizensByDist[i];
+				return (citizensByDist[i])[id];
 	}
 
 	CitizensArr& CitizensDB::getCitizensArrByIndex(int ind)

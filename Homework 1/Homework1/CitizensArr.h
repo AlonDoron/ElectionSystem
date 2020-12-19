@@ -44,9 +44,6 @@ namespace elections {
 		// return citizen using index
 		Citizen& getCitizenByIndex(int ind);
 
-		// Print all citizens in CitizensArr
-		void printCitizens(void);
-
 		Citizen& operator[](int index) const;
 
 		Citizen& operator[](long int id) const;

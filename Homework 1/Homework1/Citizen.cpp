@@ -99,11 +99,6 @@ namespace elections {
 		return year;
 	}
 
-	void Citizen::printCitizen(void)
-	{
-		cout << "Name: " << name << " | Year of birth: " << year
-			<< " | id: " << id << " | District: " << district->getDistrictNum() << endl;
-	}
 
 	const char* Citizen::getName() const
 	{

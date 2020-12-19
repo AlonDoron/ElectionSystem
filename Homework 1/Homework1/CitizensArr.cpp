@@ -60,15 +60,6 @@ namespace elections {
 			add(other.getCitizenByIndex(i));
 	}
 
-	void CitizensArr::printCitizens(void)
-	{
-		if (logSize == 0)
-			cout << "No citizens found!" << endl;
-
-		else
-			for (int i = 0; i < logSize; i++)
-				citizens[i].printCitizen();
-	}
 
 	Citizen& CitizensArr::operator[](int index) const
 	{

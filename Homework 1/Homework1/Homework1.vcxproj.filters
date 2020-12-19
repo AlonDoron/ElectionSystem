@@ -65,10 +65,10 @@
     <ClInclude Include="UserActions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="VotersArr.h">
+    <ClInclude Include="CitizensDB.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CitizensDB.h">
+    <ClInclude Include="VotesCounter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

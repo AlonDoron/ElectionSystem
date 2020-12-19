@@ -1,22 +1,27 @@
-#include "VotersArr.h"
+#include "VotesCounter.h"
 
 namespace elections {
-	VotersArr::VotersArr() : votersByDistrict(nullptr) {}
+	VotesCounter::VotesCounter() : logSize(0), phsSize(0), votesByParty(nullptr) {}
 
-	VotersArr::VotersArr(int size)
+	VotesCounter::VotesCounter(int size)
 		: phsSize(size), logSize(size) {
-		votersByDistrict = new int[size];
+		votesByParty = new int[size];
 
 		for (int i = 0; i < size; i++)
-			votersByDistrict[i] = 0;
+			votesByParty[i] = 0;
 	}
 
-	VotersArr::~VotersArr()
+	VotesCounter::VotesCounter(const VotesCounter& other)
 	{
-		delete[] votersByDistrict;
+		*this = other;
 	}
 
-	void VotersArr::resize(int newSize)
+	VotesCounter::~VotesCounter()
+	{
+		delete[] votesByParty;
+	}
+
+	void VotesCounter::resize(int newSize)
 	{
 		int* temp = new int[newSize];
 
@@ -24,26 +29,30 @@ namespace elections {
 			temp[i] = 0;
 
 		for (int i = 0; i < logSize; ++i)
-			temp[i] = votersByDistrict[i];
+			temp[i] = votesByParty[i];
 
 		if (logSize >= 1)
-			delete[] votersByDistrict;
+			delete[] votesByParty;
 
-		votersByDistrict = temp;
+		votesByParty = temp;
 		phsSize = newSize;
 	}
 
-	void VotersArr::operator=(const VotersArr& other)
+	void VotesCounter::operator=(const VotesCounter& other)
 	{
 		logSize = other.logSize;
 		phsSize = other.phsSize;
-		votersByDistrict = new int[phsSize];
+
+		if (votesByParty)
+			delete[] votesByParty;
+
+		votesByParty = new int[phsSize];
 
 		for (int i = 0; i < logSize; i++)
-			votersByDistrict[i] = other.votersByDistrict[i];
+			votesByParty[i] = other.votesByParty[i];
 	}
 
-	void VotersArr::addDistrict()
+	void VotesCounter::addEmptyCounter()
 	{
 		if (logSize == phsSize)
 			resize(phsSize * 2 + 1);
@@ -51,12 +60,24 @@ namespace elections {
 		++logSize;
 	}
 
-	void VotersArr::addVote(int districtNum)
+	void VotesCounter::addVote(int partyNum)
 	{
-		votersByDistrict[districtNum]++;
+		votesByParty[partyNum]++;
 	}
-	const int VotersArr::getVotesByIndex(int idx) const
+	const int VotesCounter::getLogSize() const
 	{
-		return votersByDistrict[idx];
+		return logSize;
+	}
+	const int VotesCounter::getPhiSize() const
+	{
+		return phsSize;
+	}
+	int& VotesCounter::operator[](int index) const
+	{
+		return votesByParty[index];
+	}
+	const int VotesCounter::getVotesByIndex(int idx) const
+	{
+		return votesByParty[idx];
 	}
 }

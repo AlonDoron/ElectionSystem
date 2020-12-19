@@ -6,6 +6,11 @@ using namespace std;
 namespace elections {
 	PartiesArr::PartiesArr() : parties(nullptr), logSize(0), phsSize(0) {}
 
+	PartiesArr::PartiesArr(const PartiesArr& other)
+	{
+		*this = other;
+	}
+
 	PartiesArr::~PartiesArr()
 	{
 		delete[] parties;
@@ -44,44 +49,28 @@ namespace elections {
 		++logSize;
 	}
 
-	void PartiesArr::printParties(void) const
+	void PartiesArr::addRep(Citizen& rep, int partyNum, int districtNum)
 	{
-		if (logSize == 0)
-			cout << "No parties found!" << endl;
-
-		else
-			for (int i = 0; i < logSize; i++)
-				parties[i].printParty();
+		parties[partyNum].addRepToParty(rep, districtNum);
 	}
 
-	void PartiesArr::addRep(Citizen* rep, int partyNum, int districtNum)
-	{
-		parties[partyNum].addRepToParty(*rep, districtNum);
-	}
-
-	void PartiesArr::addDistrictToAllParties(void)
+	void PartiesArr::addNewDistToRepArr(void)
 	{
 		for (int i = 0; i < logSize; i++)
-		{
-			parties[i].addNewDistrictToRepArr();
-			parties[i].addDistrictToVotersArr();
-		}
+			parties[i].addEmptyCellToRepArr();
 	}
 
-	void PartiesArr::addVoteToDistrictInParty(int partyID, int districtNum)
-	{
-		parties[partyID].addVoteToDistrict(districtNum);
-	}
 
 	const int PartiesArr::getLogSize() const
 	{
 		return logSize;
 	}
 
-	Party& PartiesArr::getPartyByIndex(int idx)
+	Party& PartiesArr::operator[](int index) const
 	{
-		return parties[idx];
+		return parties[index];
 	}
+
 
 	const bool PartiesArr::isCitizenAlreadyLeader(long int id) const
 	{
@@ -101,5 +90,12 @@ namespace elections {
 		}
 
 		return false;
+	}
+	ostream& operator<<(ostream& os, const PartiesArr& partiesArr)
+	{	
+		for (int i = 0; i < partiesArr.getLogSize(); i++)
+			cout << partiesArr[i];
+
+		return os;
 	}
 }

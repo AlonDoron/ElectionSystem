@@ -38,11 +38,8 @@ namespace elections {
 		const int getPhsSize() const;
 		CitizensArr& getCitizensArrByIndex(int ind);
 
-		// Print one rep
-		void printRep(void) const;
-
 		CitizensArr& operator[](int index) const;
-		CitizensArr& operator[](long int id) const;
+		Citizen& operator[](long int id)const ; 
 
 		friend ostream& operator<<(ostream& os, const CitizensDB& citizensDB);
 	};
