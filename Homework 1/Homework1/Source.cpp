@@ -15,7 +15,7 @@ using namespace elections;
 void addNewDistrict(DistrictsArr& districtsArr, PartiesArr& partiesArr);
 
 // This function creates new citizen and adds it to citizensArr.
-void addNewCitizen(CitizensArr& citizensArr, DistrictsArr& districtsArr);
+void addNewCitizen(CitizensDB& citizensDB, DistrictsArr& districtsArr);
 
 // This function creates new party and adds it to districtsArr.
 void addNewParty(PartiesArr& partiesArr, int districtsArrSize, CitizensArr& citizensArr);
@@ -28,26 +28,8 @@ int getStrLen(char* name);
 
 // This function lets' the user vote by inputting citizen id and party, 
 // and adds the vote to the party inside partiesArr.
-void createNewVote(CitizensArr& citizensArr, PartiesArr& partiesArr);
+void addNewVote(CitizensArr& citizensArr, PartiesArr& partiesArr);
 
-// this function is the managing function of counting votes and displaying results
-void countVotes(DistrictsArr& districtsArr, CitizensArr& citizensArr, PartiesArr& partiesArr);
-
-// this function will actually calculate the result into "results" array and display results data regarding number of
-// votes (and percentage) in each party and voting percentage in each district
-void setElected(int districtsNum, PartiesArr& partiesArr, CitizensDB& electedByDist,
-	CitizensArr& citizensArr, Results* results);
-
-// this function calculate an display the final result - meaning which representatives and how many went to 
-// which party leader (and their details) , after doing so, the function will print
-// final result relating to parties - meanning what party has won and (by order) and how
-// many representatives
-void printRep_Election(DistrictsArr& districtArr, Results* results, PartiesArr& partiesArr,
-	CitizensDB& electedByDist, CitizensArr& citizensArr);
-
-void sortCitizensByDistricts(CitizensDB& citizensDB, CitizensArr& citizensArr);
-Results getResults(int* votesInDists, int partiesNum);
-Results* checkWinner(Results* results, int distNum, int partiesNum);
 void printMenu();
 
 int main() {
@@ -55,7 +37,7 @@ int main() {
 	int action = 0;
 
 	DistrictsArr districtsArr;
-	CitizensArr citizensArr;
+	CitizensDB citizensDB;
 	PartiesArr partiesArr;
 
 	printMenu();
@@ -70,22 +52,23 @@ int main() {
 			break;
 
 		case UserActions::ADD_CITIZEN:
-			addNewCitizen(citizensArr, districtsArr);
+			addNewCitizen(citizensDB, districtsArr);
 			break;
 
 		case UserActions::ADD_PARTY:
-			addNewParty(partiesArr, districtsArr.getLogSize(), citizensArr);
+			//addNewParty(partiesArr, districtsArr.getLogSize(), citizensDB);
 			break;
 
 		case UserActions::ADD_REP:
-			addNewRep(partiesArr, citizensArr, districtsArr);
+			//addNewRep(partiesArr, citizensDB, districtsArr);
 			break;
 
 		case UserActions::SHOW_ALL_DISTRICTS:
 			districtsArr.printDistricts();
 			break;
+
 		case UserActions::SHOW_ALL_CITIZENS:
-			citizensArr.printCitizens();
+			cout << citizensDB;
 			break;
 
 		case UserActions::SHOW_ALL_PARTIES:
@@ -93,11 +76,11 @@ int main() {
 			break;
 
 		case UserActions::VOTE:
-			createNewVote(citizensArr, partiesArr);
+			//addNewVote(citizensDB, partiesArr);
 			break;
 
 		case UserActions::SHOW_ELECTION_POLLS:
-			countVotes(districtsArr, citizensArr, partiesArr);
+			//countVotes(districtsArr, citizensArr, partiesArr);
 			break;
 
 		case UserActions::EXIT:
@@ -139,7 +122,7 @@ void addNewDistrict(DistrictsArr& districtsArr, PartiesArr& partiesArr) {
 
 }
 // ( 2 )
-void addNewCitizen(CitizensArr& citizensArr, DistrictsArr& districtsArr)
+void addNewCitizen(CitizensDB& citizensDB, DistrictsArr& districtsArr)
 {
 	char name[20];
 	int nameLen, districtNum, year;
@@ -154,21 +137,18 @@ void addNewCitizen(CitizensArr& citizensArr, DistrictsArr& districtsArr)
 	cout << "Enter ID: ";
 	cin >> id;
 
-	Citizen* currCitizen = citizensArr.getCitizen(id);
-
-	if (currCitizen == nullptr) {
+	if (!citizensDB.isCitizenExistsById(id)) {
 
 		cout << "Enter year of birth: ";
 		cin >> year;
 
 		cout << "Enter district number: ";
 		cin >> districtNum;
-
 		District* currDistrict = districtsArr.getDistrictByNum(districtNum);
 
 		if (currDistrict != nullptr) {
 			Citizen newCitizen(name, nameLen, id, year, currDistrict);
-			citizensArr.add(newCitizen);
+			citizensDB[districtNum].add(newCitizen);
 		}
 
 		else {
@@ -196,7 +176,7 @@ void addNewParty(PartiesArr& partiesArr, int districtsArrSize, CitizensArr& citi
 	cout << "Enter ID of the party leader: ";
 	cin >> id;
 
-	Citizen* currCitizen = citizensArr.getCitizen(id);
+	/*Citizen* currCitizen = citizensArr.getCitizenById(id);
 
 	if (currCitizen != nullptr) {
 		if (!partiesArr.isCitizenAlreadyLeader(id)) {
@@ -211,7 +191,7 @@ void addNewParty(PartiesArr& partiesArr, int districtsArrSize, CitizensArr& citi
 
 	else {
 		cout << "No citizen with id " << id << " found!!!" << endl;
-	}
+	}*/
 }
 // ( 4 )
 void addNewRep(PartiesArr& partiesArr, CitizensArr& citizensArr, DistrictsArr& districtsArr)
@@ -222,220 +202,48 @@ void addNewRep(PartiesArr& partiesArr, CitizensArr& citizensArr, DistrictsArr& d
 	cout << "Enter ID of rep: ";
 	cin >> repId;
 
-	Citizen* rep;
-	rep = citizensArr.getCitizen(repId);
+	//Citizen* rep;
+	//rep = citizensArr.getCitizenById(repId);
 
-	if (rep != nullptr) {
-		if (!partiesArr.isCitizenAlreadyRep(repId)) {
-			cout << "Enter party number: ";
-			cin >> partyNum;
+	//if (rep != nullptr) {
+	//	if (!partiesArr.isCitizenAlreadyRep(repId)) {
+	//		cout << "Enter party number: ";
+	//		cin >> partyNum;
 
-			if ((partyNum < partiesArr.getLogSize()) && (partyNum >= 0)) {
-				cout << "Enter district number: ";
-				cin >> districtNum;
+	//		if ((partyNum < partiesArr.getLogSize()) && (partyNum >= 0)) {
+	//			cout << "Enter district number: ";
+	//			cin >> districtNum;
 
-				if ((districtNum < districtsArr.getLogSize()) && (districtNum >= 0))
-					partiesArr.addRep(rep, partyNum, districtNum);
+	//			if ((districtNum < districtsArr.getLogSize()) && (districtNum >= 0))
+	//				partiesArr.addRep(rep, partyNum, districtNum);
 
-				else
-					cout << "The district with the number " << districtNum << " does not exists!!" << endl;
-			}
+	//			else
+	//				cout << "The district with the number " << districtNum << " does not exists!!" << endl;
+	//		}
 
-			else
-				cout << "The party with the number " << partyNum << " does not exists!!" << endl;
-		}
+	//		else
+	//			cout << "The party with the number " << partyNum << " does not exists!!" << endl;
+	//	}
 
-		else
-			cout << "The citizen with id " << repId << " is already representative!!" << endl;
-	}
+	//	else
+	//		cout << "The citizen with id " << repId << " is already representative!!" << endl;
+	//}
 
-	else
-		cout << "The citizen with id " << repId << " does not exists!" << endl;
+	//else
+	//	cout << "The citizen with id " << repId << " does not exists!" << endl;
 }
-
-
-void countVotes(DistrictsArr& districtsArr, CitizensArr& citizensArr, PartiesArr& partiesArr)
-{
-	int partiesNum = partiesArr.getLogSize();
-	int districtsNum = districtsArr.getLogSize();
-
-	// this CitizensDB will update with all the elected representatives 
-	CitizensDB electedByDist(districtsNum);
-	// this structre will update with the result of each district
-	Results* results = new Results[districtsNum];
-
-	cout << endl;
-	cout << endl;
-	cout << " ~ ~ ~ ~ ~ ~ ~ ~ Welcome to results screen of election day: 26/08/1993 ~ ~ ~ ~ ~ ~ ~ ~ ~ ~" << endl;
-	cout << endl;
-
-	setElected(districtsNum, partiesArr, electedByDist, citizensArr, results);
-
-	printRep_Election(districtsArr, results, partiesArr, electedByDist, citizensArr);
-
-
-}
-
-
-// Election day functions ------------------------------------------------------------------------------
-void setElected(int districtsNum, PartiesArr& partiesArr,
-	CitizensDB& electedByDist, CitizensArr& citizensArr, Results* results)
-{
-	CitizensDB citizensDB(districtsNum);
-	sortCitizensByDistricts(citizensDB, citizensArr);
-	int partiesNum = partiesArr.getLogSize();
-
-	int* votesInDists = new int[partiesNum];
-	int* generalVotes = new int[partiesNum];
-	int* generalVotesInDist = new int[districtsNum];
-
-	for (int i = 0; i < districtsNum; i++)
-		generalVotesInDist[i] = 0;
-
-	for (int i = 0; i < partiesNum; i++)
-	{
-		votesInDists[i] = 0;
-		generalVotes[i] = 0;
-	}
-
-	for (int i = 0; i < districtsNum; i++)
-	{
-		int currDistSize = citizensDB.getCitizensArrByIndex(i).getLogSize();
-
-		for (int j = 0; j < partiesNum; j++)
-		{
-			votesInDists[j] = ((float)(partiesArr.getPartyByIndex(j)).getVotesInDist(i) / currDistSize) * 100;
-			generalVotesInDist[i] += (partiesArr.getPartyByIndex(j)).getVotesInDist(i);
-			generalVotes[j] += (partiesArr.getPartyByIndex(j)).getVotesInDist(i);
-		}
-		CitizensArr currRepsToAdd;
-		CitizensArr currAddedReps;
-
-		for (int j = 0; j < partiesNum; j++)
-		{
-			Party currParty;
-			currParty = partiesArr.getPartyByIndex(j);
-
-			int numRepToAdd = ((float)votesInDists[j] / (float)100) * currDistSize;
-			currRepsToAdd = *(currParty.getRepListByPercent(i, numRepToAdd));
-			currAddedReps.add_citizenArr(currRepsToAdd);
-		}
-		electedByDist.add(currAddedReps, i);
-
-		results[i] = getResults(votesInDists, partiesNum);
-		results[i].numOfReps = currAddedReps.getLogSize();
-
-		for (int z = 0; z < partiesNum; z++)
-			votesInDists[z] = 0;
-	}
-
-	int generalVotesNum = 0;
-
-	for (int i = 0; i < partiesNum; i++)
-		generalVotesNum += generalVotes[i];
-
-
-	for (int i = 0; i < partiesNum; i++)
-		cout << "Number of votes in party " << partiesArr.getPartyByIndex(i).getPartyName() << " is " <<
-		generalVotes[i] << " which is " << ((float)generalVotes[i] / (float)generalVotesNum) * 100 << "%" << endl;
-	cout << endl;
-
-	for (int i = 0; i < districtsNum; i++)
-		cout << "Percentages of votes in district number " << i << " is " <<
-		((float)generalVotesInDist[i] / (float)citizensDB.getCitizensArrByIndex(i).getLogSize()) * 100
-		<< "%" << endl;
-	cout << endl;
-}
-
-void printRep_Election(DistrictsArr& districtArr, Results* results,
-	PartiesArr& partiesArr, CitizensDB& electedByDist, CitizensArr& citizensArr)
-{
-	for (int i = 0; i < electedByDist.getLogSize(); i++)
-	{
-		int currWinnerPartyId = results[i].winnerPartyId;
-
-		long int partyLeaderId = partiesArr.getPartyByIndex(i).getLeaderId();
-		char* distName = (districtArr.getDistrictByNum(i))->getDistrictName();
-
-
-		cout << "District name: " << distName << "| Number of representatives: "
-			<< electedByDist.getCitizensArrByIndex(i).getLogSize()
-			<< "| all representatives went to: " << (citizensArr.getCitizen(partyLeaderId))->getName() << endl;
-		cout << endl;
-		electedByDist.getCitizensArrByIndex(i).printCitizens();
-		cout << endl;
-	}
-
-	Results* res = checkWinner(results, districtArr.getLogSize(), partiesArr.getLogSize());
-
-	for (int i = 0; i < partiesArr.getLogSize(); i++)
-	{
-		Party currParty;
-		currParty = partiesArr.getPartyByIndex(res[i].winnerPartyId);
-		long int partyLeaderId = currParty.getLeaderId();
-		char* partyLeaderName = (citizensArr.getCitizen(partyLeaderId))->getName();
-		char* currPartyName = currParty.getPartyName();
-		int numOfRepsInParty = res[i].numOfReps;
-
-		cout << endl;
-		cout << "Party: " << currPartyName << " with leader: " << partyLeaderName
-			<< " won " << numOfRepsInParty << " representatives" << endl;
-	}
-
-	delete[] res;
-}
-
-void sortCitizensByDistricts(CitizensDB& citizensDB, CitizensArr& citizensArr)
-{
-	int districtsSize = citizensDB.getLogSize();
-	int citizensSize = citizensArr.getLogSize();
-
-	for (int i = 0; i < districtsSize; i++)
-	{
-		CitizensArr currCitizensArr;
-
-		for (int j = 0; j < citizensSize; j++) {
-			Citizen currCitizen;
-			currCitizen = citizensArr.getCitizenByIndex(j);
-
-			if (currCitizen.getDistrictNum() == i) {
-				// add to temp citizensArr then all the citizensArr add to eligibleVotersInDistrict
-				currCitizensArr.add(currCitizen);
-			}
-		}
-
-		citizensDB.add(currCitizensArr, i);
-	}
-}
-
-Results* checkWinner(Results* results, int distNum, int partiesNum)
-{
-	Results* res = new Results[partiesNum];
-	for (int i = 0; i < partiesNum; i++)
-	{
-		res[i].numOfReps = 0;
-		res[i].winnerPartyId = i;
-	}
-
-	for (int i = 0; i < distNum; i++)
-		res[results[i].winnerPartyId].numOfReps += results[i].numOfReps;
-
-	sort(res, res + partiesNum);
-
-	return res;
-}
-
-void createNewVote(CitizensArr& citizensArr, PartiesArr& partiesArr)
+// ( 8 )
+void addNewVote(CitizensArr& citizensArr, PartiesArr& partiesArr)
 {
 	long int ID;
 	int partyID;
 	int districtNum;
 	Citizen* voter;
 
-	cout << "Enter your ID: ";
+	/*cout << "Enter your ID: ";
 	cin >> ID;
 
-	voter = citizensArr.getCitizen(ID);
+	voter = citizensArr.getCitizenById(ID);
 
 	if (voter != nullptr) {
 		if (!(voter->getVoted())) {
@@ -455,20 +263,7 @@ void createNewVote(CitizensArr& citizensArr, PartiesArr& partiesArr)
 	}
 
 	else
-		cout << "Voter with id " << ID << " not found!!" << endl;
-}
-
-Results getResults(int* votesInDists, int partiesNum)
-{
-	Results res = { 0,0 };
-
-	res.winnerPartyId = 0;
-
-	for (int i = 0; i < partiesNum; i++)
-		if (votesInDists[i] > votesInDists[res.winnerPartyId])
-			res.winnerPartyId = i;
-
-	return res;
+		cout << "Voter with id " << ID << " not found!!" << endl;*/
 }
 
 int getStrLen(char* name) {
