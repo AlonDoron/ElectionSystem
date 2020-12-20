@@ -31,7 +31,7 @@ namespace elections {
 
 	const bool Party::isRepAlreadyExists(long int repId)
 	{
-		if (representatives.isCitizenExistsById(id))
+		if (representatives.isCitizenExistsById(repId))
 			return true;
 		else
 			return false;
