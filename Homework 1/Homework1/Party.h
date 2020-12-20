@@ -1,7 +1,7 @@
 #pragma once
 #include "CitizensDB.h";
 #include "Citizen.h";
-#include "VotersArr.h"
+
 
 namespace elections {
 	class Party {
@@ -11,13 +11,12 @@ namespace elections {
 		long int id;
 		// Array of representatives organazied by district 
 		CitizensDB representatives;
-		// A voting data of each party
-		VotersArr voters;
 
 	public:
 		// Ctors
 		Party();
 		Party(char* _name, int _nameLen, long int _id, int numOfDistricts = 0);
+		Party(const Party&);
 
 		// Dtor
 		~Party();
@@ -29,30 +28,17 @@ namespace elections {
 		void addRepToParty(Citizen&, int districtNum);
 
 		// allocating one more space for votersArr/repArr (when district is added)
-		void addNewDistrictToRepArr(void);
-		void addDistrictToVotersArr();
-
-		// adding when one vote when voting to party (at the relevant dist index)
-		void addVoteToDistrict(int districtNum);
-
+		void addEmptyCellToRepArr(void);
 
 		// Getters ----------------------------------------------------
-		char* getPartyName() const;
+		const char* getPartyName() const;
+		const long int getLeaderId() const;
+		const CitizensDB& getRepresentatives() const;
 		
 		// print all party detailes
-		void printParty(void) const; 		
-		
-		// return the number of votes for party in district "idx"
-		const int getVotesInDist(int idx); 
-		
-		// return the number of reps using percentage (in distIdx)
-		CitizensArr* getRepListByPercent(int distIdx, int numOfElected);
-
-
-		const long int getLeaderId() const;
-		
-
-
+	
+		friend ostream& operator<<(ostream& os, const Party& party);
+	
 		// returns true if representative with id repId already exists
 		const bool isRepAlreadyExists(long int repId);
 	};

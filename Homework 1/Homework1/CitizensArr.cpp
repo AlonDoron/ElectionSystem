@@ -10,6 +10,11 @@ namespace elections {
 		citizens = new Citizen[size];
 	}
 
+	CitizensArr::CitizensArr(const CitizensArr& other)
+	{
+		*this = other;
+	}
+
 	CitizensArr::~CitizensArr() {
 		delete[] citizens;
 	}
@@ -47,7 +52,7 @@ namespace elections {
 		++logSize;
 	}
 
-	void CitizensArr::add_citizenArr(CitizensArr& other)
+	void CitizensArr::appendCitizensArr(CitizensArr& other)
 	{
 		int size = other.getLogSize();
 
@@ -55,38 +60,39 @@ namespace elections {
 			add(other.getCitizenByIndex(i));
 	}
 
-	void CitizensArr::printCitizens(void)
-	{
-		if (logSize == 0)
-			cout << "No citizens found!" << endl;
 
-		else
-			for (int i = 0; i < logSize; i++)
-				citizens[i].printCitizen();
+	Citizen& CitizensArr::operator[](int index) const
+	{
+		return citizens[index];
 	}
 
-	Citizen* CitizensArr::getCitizen(long int citizenId)
+	Citizen& CitizensArr::operator[](long int id) const
 	{
+		for (int i = 0; i < logSize; i++)
+			if (id == citizens[i].getId())
+				return citizens[i];
+	}
 
-		for (int i = 0; i < logSize; i++) {
-			if (citizenId == citizens[i].getId()) {
-				return &(citizens[i]);
-			}
-		}
+	const bool CitizensArr::isCitizenExistsById(long int id) const {
+		for (int i = 0; i < logSize; i++)
+			if (citizens[i].getId() == id)
+				return true;
 
-		return nullptr;
+		return false;
 	}
 
 	bool CitizensArr::setLogSize(int size)
 	{
 		logSize = size;
-		return 1;
+
+		return true;
 	}
 
 	bool CitizensArr::setPhsSize(int size)
 	{
 		phsSize = size;
-		return 1;
+
+		return true;
 	}
 
 	const int CitizensArr::getLogSize() const
@@ -94,19 +100,32 @@ namespace elections {
 		return logSize;
 	}
 
+	const int CitizensArr::getPhsSize() const
+	{
+		return phsSize;
+	}
+
 	Citizen& CitizensArr::getCitizenByIndex(int ind)
 	{
 		return citizens[ind];
 	}
 
-	CitizensArr* CitizensArr::getElectReps(int numOfElected)
+	CitizensArr CitizensArr::getCitizensUntillIndex(int numOfElected)
 	{
-		CitizensArr* electedReps = new CitizensArr();
+		CitizensArr electedReps;
 
 		for (int i = 0; i < numOfElected; i++)
-			electedReps->add(citizens[i]);
+			electedReps.add(citizens[i]);
 
 		return electedReps;
+	}
+
+	ostream& operator<<(ostream& os, const CitizensArr& citizensArr)
+	{
+		for (int i = 0; i < citizensArr.getLogSize(); i++)
+			cout << citizensArr[i];
+
+		return os;
 	}
 }
 

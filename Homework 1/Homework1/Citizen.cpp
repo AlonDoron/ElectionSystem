@@ -17,6 +17,10 @@ namespace elections {
 		name[nameLen] = '\0';
 	}
 
+	Citizen::Citizen(const Citizen& other) {
+		*this = other;
+	}
+
 	Citizen::~Citizen()
 	{
 		delete[] name;
@@ -45,6 +49,41 @@ namespace elections {
 		return 1;
 	}
 
+	const bool Citizen::setId(long int _id)
+	{
+		id = _id;
+
+		return 1;
+	}
+
+	const bool Citizen::setName(char* _name, int _nameLen)
+	{
+		nameLen = _nameLen;
+
+		if (name)
+			delete[] name;
+
+		name = new char[nameLen + 1];
+		memcpy(name, _name, nameLen);
+		name[nameLen] = '\0';
+
+		return 1;
+	}
+
+	const bool Citizen::setDistrict(District* _district)
+	{
+		district = _district;
+
+		return true;
+	}
+
+	const bool Citizen::setYear(int _year)
+	{
+		year = _year;
+
+		return true;
+	}
+
 	const int Citizen::getDistrictNum() const
 	{
 		return district->getDistrictNum();
@@ -55,14 +94,22 @@ namespace elections {
 		return id;
 	}
 
-	void Citizen::printCitizen(void)
+	const int Citizen::getYear(void) const
 	{
-		cout << "Name: " << name << " | Year of birth: " << year
-			<< " | id: " << id << " | District: " << district->getDistrictNum() << endl;
+		return year;
 	}
 
-	char* Citizen::getName()
+
+	const char* Citizen::getName() const
 	{
 		return name;
+	}
+
+	ostream& operator<<(ostream& os, const Citizen& citizen)
+	{
+		cout << "Name: " << citizen.getName() << " | Year of birth: " << citizen.getYear()
+			<< " | id: " << citizen.getId() << " | District: " << citizen.getDistrictNum() << endl;
+
+		return os;
 	}
 }

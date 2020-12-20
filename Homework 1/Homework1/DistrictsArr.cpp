@@ -11,6 +11,11 @@ namespace elections {
 		delete[] districts;
 	}
 
+	DistrictsArr::DistrictsArr(const DistrictsArr& other)
+	{
+		*this = other;
+	}
+
 	void DistrictsArr::resize(int newSize)
 	{
 		District* temp = new District[newSize];
@@ -35,14 +40,16 @@ namespace elections {
 			districts[i] = other.districts[i];
 	}
 
-	District* DistrictsArr::getDistrictByNum(int districtNum)
+	District& DistrictsArr::operator[](int index) const
 	{
-		if (districts != nullptr)
-			if (districts[districtNum].getDistrictName() != nullptr)
-				return &districts[districtNum];
-
-		return nullptr;
+		return districts[index];
 	}
+
+	const bool DistrictsArr::isDistExist(int distNum) const
+	{
+		return ((distNum < logSize) && (distNum >= 0));
+	}
+
 
 	void DistrictsArr::add(District& district)
 	{
@@ -53,22 +60,13 @@ namespace elections {
 		++logSize;
 	}
 
-	void DistrictsArr::printDistricts(void) const
-	{
-		if (logSize == 0)
-			cout << "No districts found!" << endl;
 
-		else
-			for (int i = 0; i < logSize; i++)
-				districts[i].printDistrict();
-	}
-
-	int DistrictsArr::getLogSize(void)
+	const int DistrictsArr::getLogSize(void) const
 	{
 		return logSize;
 	}
 
-	bool DistrictsArr::isDistrictExistsByName(char* name)
+	const bool DistrictsArr::isDistrictExistsByName(char* name) const
 	{
 		for (int i = 0; i < logSize; i++)
 		{
@@ -77,5 +75,19 @@ namespace elections {
 		}
 
 		return false;
+	}
+	void DistrictsArr::addNewPartyToVotesCounters()
+	{
+		for (int i = 0; i < logSize; i++)
+			districts[i].addCounterForNewParty();
+
+
+	}
+	ostream& operator<<(ostream& os, const DistrictsArr& districtArr)
+	{
+		for (int i = 0; i < districtArr.getLogSize(); i++)
+			cout << districtArr[i];
+
+		return os;
 	}
 }
