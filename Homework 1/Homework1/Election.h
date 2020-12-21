@@ -6,40 +6,45 @@
 using namespace std;
 
 namespace elections {
-	class Election : public CitizensDB, public PartiesArr {
-		struct Date
-		{
-			int day, month, year;
-		};
-
-	protected:
+	class SimpleElection {
+		struct Date {int day, month, year;};
+	private:	
+		DistrictsArr districtsArr;
 		CitizensDB citizensArr;
 		PartiesArr partiesArr;
 		Date date;
 
 	public:
+		SimpleElection() {	}
+		SimpleElection(Date _date) {	
+			date.day = _date.day;
+			date.month = _date.month;
+			date.year = _date.year;
+		}
+
+		void addDistrict(District& district);
+	};
+
+	class RegElection : public SimpleElection {
+	public:
 		// TODO: Getters, Setters, Ctors, Dtors, CopyCtors, operator=, operator<<
 
 	};
 
-	class RegularElection : public Election {
-	private:
-		DistrictsArr districtArr;
 
-	public:
-
-	};
-
-	class SimpleElection : public Election {
-	private:
-		District district;
+	
 
 
-	public:
-		SimpleElection(District& _district) {
-			district = _district;
-		}
 
-		District getDistrict(void) { return district; };
-	};
+
+
+
+	void SimpleElection::addDistrict(District& district)
+	{
+		districtsArr.add(district);
+	}
+
+
+
+
 }
