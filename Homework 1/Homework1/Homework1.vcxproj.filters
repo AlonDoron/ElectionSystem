@@ -71,5 +71,8 @@
     <ClInclude Include="VotesCounter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Election.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

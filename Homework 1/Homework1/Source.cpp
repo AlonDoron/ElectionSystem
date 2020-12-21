@@ -6,10 +6,15 @@
 #include "CitizensArr.h"
 #include "PartiesArr.h"
 #include "UserActions.h"
-#include <algorithm>
+#include "Election.h"
 
 using namespace std;
 using namespace elections;
+
+struct Date
+{
+	int day, month, year;
+};
 
 // ( 1 )
 // This function creates new district and adds it to districtsArr.
@@ -33,14 +38,20 @@ void addNewVote(CitizensArr& citizensArr, PartiesArr& partiesArr);
 
 void printMenu();
 
+void printFirstMenu(Date& date, int& electionType, Election& election);
+
 int main() {
 	UserActions userActions;
 	int action = 0;
+	Date date;
+	int electionType;
 
 	DistrictsArr districtsArr;
 	CitizensDB citizensDB;
 	PartiesArr partiesArr;
+	Election election;
 
+	printFirstMenu(date, electionType, election);
 	printMenu();
 
 	while (action != 10) {
@@ -151,7 +162,7 @@ void addNewCitizen(CitizensDB& citizensDB, DistrictsArr& districtsArr)
 			Citizen newCitizen(name, nameLen, id, year, &districtsArr[districtNum]);
 			citizensDB[districtNum].add(newCitizen);
 		}
-		else 
+		else
 			cout << "The district with id " << districtNum << " does not exists!!!" << endl;
 	}
 	else
@@ -276,5 +287,35 @@ void printMenu()
 	cout << "10 - Exit" << endl;
 
 
+}
+
+void printFirstMenu(Date& date, int& electionType, Election& election)
+{
+	cout << "Welcome to elections. " << endl;
+	cout << "Enter the date of the election: (Day, Month, Year)" << endl;
+	cin >> date.day >> date.month >> date.year;
+
+	cout << "Enter type of election: (1 = regular, 2 = simple)" << endl;
+	cin >> electionType;
+
+	if (electionType == 1)
+		election = RegularElection();
+
+	else {
+		int numOfReps, nameLen;
+		char name[20];
+
+		cout << "Enter district name (max 20 chars): ";
+		cin.ignore();
+		cin.getline(name, 20);
+
+		cout << "Enter num of reps: " << endl;
+		cin >> numOfReps;
+
+		nameLen = getStrLen(name);
+
+		District district(name, nameLen, numOfReps, 0);
+		election = SimpleElection(district);
+	}
 }
 
