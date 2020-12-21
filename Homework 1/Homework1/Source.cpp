@@ -7,6 +7,7 @@
 #include "PartiesArr.h"
 #include "UserActions.h"
 #include "Election.h"
+#include "ElectionType.h"
 
 using namespace std;
 using namespace elections;
@@ -36,31 +37,39 @@ int getStrLen(char* name);
 // and adds the vote to the party inside partiesArr.
 void addNewVote(CitizensArr& citizensArr, PartiesArr& partiesArr);
 
-void printMenu();
+void printMainMenu();
 
-void printFirstMenu(Date& date, int& electionType, Election& election);
+void getElectionType(int& electionType, SimpleElection& election);
+
+bool isLoaded();
 
 int main() {
-	UserActions userActions;
-	int action = 0;
-	Date date;
-	int electionType;
+	UserActions userActions; int action = 0, type;
 
-	DistrictsArr districtsArr;
-	CitizensDB citizensDB;
-	PartiesArr partiesArr;
-	Election election;
+	DistrictsArr districtsArr; CitizensDB citizensDB;
+	PartiesArr partiesArr; SimpleElection election;
+	ElectionType electionType;
 
-	printFirstMenu(date, electionType, election);
-	printMenu();
+	if (isLoaded())
+	{
+		// operate function number 12
+	}
+	else {
+		getElectionType(type, election);
+		printMainMenu();
+		electionType  = (ElectionType)type;
+	}
 
 	while (action != 10) {
 		cin >> action;
 		userActions = (UserActions)action;
 
 		switch (userActions) {
-		case UserActions::ADD_DISTRICT:
-			addNewDistrict(districtsArr, partiesArr, citizensDB);
+		case UserActions::ADD_DISTRICT: 
+			if (electionType == ElectionType::REGULAR_ELECTION)
+				addNewDistrict(districtsArr, partiesArr, citizensDB);
+			else
+				cout << "You can't add district in a simple election... " << endl;
 			break;
 
 		case UserActions::ADD_CITIZEN:
@@ -272,7 +281,7 @@ int getStrLen(char* name) {
 	return i;
 }
 
-void printMenu()
+void printMainMenu()
 {
 	cout << "Enter Action: " << endl;
 	cout << "1 - add district" << endl;
@@ -289,8 +298,10 @@ void printMenu()
 
 }
 
-void printFirstMenu(Date& date, int& electionType, Election& election)
+void getElectionType(int& electionType, SimpleElection& election)
 {
+	Date date;
+
 	cout << "Welcome to elections. " << endl;
 	cout << "Enter the date of the election: (Day, Month, Year)" << endl;
 	cin >> date.day >> date.month >> date.year;
@@ -299,13 +310,16 @@ void printFirstMenu(Date& date, int& electionType, Election& election)
 	cin >> electionType;
 
 	if (electionType == 1)
-		election = RegularElection();
+	{
+		RegElection regElection;
+		election = regElection;
+	}
 
 	else {
 		int numOfReps, nameLen;
 		char name[20];
 
-		cout << "Enter district name (max 20 chars): ";
+		cout << "Enter state name (max 20 chars): ";
 		cin.ignore();
 		cin.getline(name, 20);
 
@@ -315,7 +329,19 @@ void printFirstMenu(Date& date, int& electionType, Election& election)
 		nameLen = getStrLen(name);
 
 		District district(name, nameLen, numOfReps, 0);
-		election = SimpleElection(district);
+
+		election.addDistrict(district);
 	}
+	cout << endl;
 }
 
+bool isLoaded()
+{
+	int answer;
+
+	cout << "Would you like load Election or create your own? ( 1 = yes , 0 = no) " << endl;
+	cin >> answer;
+
+	cout << endl;
+	return answer;
+}

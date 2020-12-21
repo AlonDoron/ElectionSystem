@@ -155,6 +155,7 @@
     <ClInclude Include="District.h" />
     <ClInclude Include="DistrictsArr.h" />
     <ClInclude Include="Election.h" />
+    <ClInclude Include="ElectionType.h" />
     <ClInclude Include="PartiesArr.h" />
     <ClInclude Include="Party.h" />
     <ClInclude Include="CitizensDB.h" />
