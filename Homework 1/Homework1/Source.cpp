@@ -35,7 +35,7 @@ int getStrLen(char* name);
 
 // This function lets' the user vote by inputting citizen id and party, 
 // and adds the vote to the party inside partiesArr.
-void addNewVote(CitizensArr& citizensArr, PartiesArr& partiesArr);
+void addNewVote(CitizensDB& citizensDB, DistrictsArr& districtsArr, PartiesArr& partiesArr);
 
 void printMainMenu();
 
@@ -57,7 +57,7 @@ int main() {
 	else {
 		getElectionType(type, election);
 		printMainMenu();
-		electionType  = (ElectionType)type;
+		electionType = (ElectionType)type;
 	}
 
 	while (action != 10) {
@@ -65,7 +65,7 @@ int main() {
 		userActions = (UserActions)action;
 
 		switch (userActions) {
-		case UserActions::ADD_DISTRICT: 
+		case UserActions::ADD_DISTRICT:
 			if (electionType == ElectionType::REGULAR_ELECTION)
 				addNewDistrict(districtsArr, partiesArr, citizensDB);
 			else
@@ -97,7 +97,7 @@ int main() {
 			break;
 
 		case UserActions::VOTE:
-			//addNewVote(citizensDB, partiesArr);
+			addNewVote(citizensDB, districtsArr, partiesArr);
 			break;
 
 		case UserActions::SHOW_ELECTION_POLLS:
@@ -164,7 +164,7 @@ void addNewCitizen(CitizensDB& citizensDB, DistrictsArr& districtsArr)
 		cout << "Enter year of birth: ";
 		cin >> year;
 
-		cout << "Enter district number: ";
+		cout << "Enter district number: (for simple election - press only 0)";
 		cin >> districtNum;
 
 		if (districtsArr.isDistExist(districtNum)) {
@@ -239,37 +239,39 @@ void addNewRep(PartiesArr& partiesArr, CitizensDB& citizensDB, DistrictsArr& dis
 		cout << "The citizen with id " << repId << " does not exists!" << endl;
 }
 // ( 8 )
-void addNewVote(CitizensArr& citizensArr, PartiesArr& partiesArr)
+void addNewVote(CitizensDB& citizensDB, DistrictsArr& districtsArr, PartiesArr& partiesArr)
 {
 	long int ID;
 	int partyID;
 	int districtNum;
-	Citizen* voter;
+	Citizen voter;
 
-	/*cout << "Enter your ID: ";
+	cout << "Enter your ID: ";
 	cin >> ID;
 
-	voter = citizensArr.getCitizenById(ID);
+	if (citizensDB.isCitizenExistsById(ID))
+	{
+		voter = citizensDB[ID];
 
-	if (voter != nullptr) {
-		if (!(voter->getVoted())) {
-			voter->setVoted(true);
+		if (!(voter.getVoted())) {
 
 			cout << "Enter party: ";
 			cin >> partyID;
 
-			districtNum = voter->getDistrictNum();
-
-			partiesArr.addVoteToDistrictInParty(partyID, districtNum);
-
+			if (partyID >= 0 && partyID < partiesArr.getLogSize())
+			{
+				voter.setVoted(true);
+				districtNum = voter.getDistrictNum();
+				districtsArr[districtNum].addVoteToCounterInIdx(partyID);    
+			}
+			else
+				cout << "Party with ID " << partyID << " does not exist" << endl;
 		}
-
 		else
 			cout << "Voter with id " << ID << " has already voted!!" << endl;
 	}
-
 	else
-		cout << "Voter with id " << ID << " not found!!" << endl;*/
+		cout << "Voter with id " << ID << " not found!!" << endl;
 }
 
 int getStrLen(char* name) {
