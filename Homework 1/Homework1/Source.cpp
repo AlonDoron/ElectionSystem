@@ -32,14 +32,16 @@ int getStrLen(char* name);
 // and adds the vote to the party inside partiesArr.
 void addNewVote(CitizensDB& citizensDB, DistrictsArr& districtsArr, PartiesArr& partiesArr);
 
+void addNewSingleState(DistrictsArr& districtsArr);
+
 void printMainMenu();
 
-void handleType(int& electionType, DistrictsArr& districtsArr, Date& date);
+void handleElectionType(ElectionType& electionType, DistrictsArr& districtsArr, Date& date);
 
 bool loadingElectionChoice();
 
 int main() {
-	UserActions userActions; int action = 0, type;
+	UserActions userActions; int action = 0;
 	Date electionDate;
 	DistrictsArr districtsArr; CitizensDB citizensDB;
 	PartiesArr partiesArr; Election* election; ElectionType electionType;
@@ -48,10 +50,10 @@ int main() {
 	{
 		// operate function number 12 
 	}
+
 	else {
-		handleType(type, districtsArr, electionDate);
+		handleElectionType(electionType, districtsArr, electionDate);
 		printMainMenu();
-		electionType = (ElectionType)type;
 	}
 
 	while (action != 10) {
@@ -62,8 +64,10 @@ int main() {
 		case UserActions::ADD_DISTRICT:
 			if (electionType == ElectionType::REGULAR_ELECTION)
 				addNewDistrict(districtsArr, partiesArr, citizensDB);
+
 			else
 				cout << "You can't add district" << endl;
+
 			break;
 
 		case UserActions::ADD_CITIZEN:
@@ -95,15 +99,13 @@ int main() {
 			break;
 
 		case UserActions::SHOW_ELECTION_POLLS:
-
 			if (electionType == ElectionType::REGULAR_ELECTION)
 				election = new RegularElection(electionDate, districtsArr, partiesArr, citizensDB);
 
-			else if ( electionType == ElectionType::SIMPLE_ELECTION)
+			else if (electionType == ElectionType::SIMPLE_ELECTION)
 				election = new SimpleElection(electionDate, districtsArr, partiesArr, citizensDB);
 
 			election->displayResults();
-
 			break;
 
 		case UserActions::EXIT:
@@ -263,7 +265,7 @@ void addNewVote(CitizensDB& citizensDB, DistrictsArr& districtsArr, PartiesArr& 
 			{
 				voter.setVoted(true);
 				districtNum = voter.getDistrictNum();
-				districtsArr[districtNum].addVoteToCounterInIdx(partyID);    
+				districtsArr[districtNum].addVoteToCounterInIdx(partyID);
 			}
 			else
 				cout << "Party with ID " << partyID << " does not exist" << endl;
@@ -275,37 +277,45 @@ void addNewVote(CitizensDB& citizensDB, DistrictsArr& districtsArr, PartiesArr& 
 		cout << "Voter with id " << ID << " not found!!" << endl;
 }
 
-void handleType(int& electionType, DistrictsArr& districtsArr, Date& date)
+void handleElectionType(ElectionType& electionType, DistrictsArr& districtsArr, Date& date)
 {
-
+	int type = 0;
 	cout << "Welcome to elections. " << endl;
 	cout << "Enter the date of the election: (Day, Month, Year)" << endl;
 	cin >> date.day >> date.month >> date.year;
 
-	cout << "Enter type of election: (1 = regular, 2 = simple)" << endl;
-	cin >> electionType;
+	cout << "Enter type of election: (1 = regular, 0 = simple)" << endl;
+	cin >> type;
 
-	if (electionType == 2) {
-		int numOfReps, nameLen;
-		char name[20];
+	electionType = (ElectionType)type;
 
-		cout << "Enter state name (max 20 chars): ";
-		cin.ignore();
-		cin.getline(name, 20);
+	switch (electionType) {
+	case ElectionType::SIMPLE_ELECTION:
+		addNewSingleState(districtsArr);
+		break;
 
-		cout << "Enter num of reps: " << endl;
-		cin >> numOfReps;
-
-		nameLen = getStrLen(name);
-
-		District district(name, nameLen, numOfReps, 0);
-
-		districtsArr.add(district);
-	}
-	else if (electionType != 1)
+	default:
 		cout << "There is no type of choice that matches the number you have selected " << endl;
+		break;
+	}
+}
 
-	cout << endl;
+void addNewSingleState(DistrictsArr& districtsArr)
+{
+	int numOfReps, nameLen;
+	char name[20];
+
+	cout << "Enter state name (max 20 chars): ";
+	cin.ignore();
+	cin.getline(name, 20);
+
+	cout << "Enter num of reps: " << endl;
+	cin >> numOfReps;
+
+	nameLen = getStrLen(name);
+
+	District district(name, nameLen, numOfReps, 0);
+	districtsArr.add(district);
 }
 
 bool loadingElectionChoice()
@@ -327,6 +337,7 @@ int getStrLen(char* name) {
 
 	return i;
 }
+
 void printMainMenu()
 {
 	cout << "Enter Action: " << endl;
