@@ -244,14 +244,13 @@ void addNewVote(CitizensDB& citizensDB, DistrictsArr& districtsArr, PartiesArr& 
 	long int ID;
 	int partyID;
 	int districtNum;
-	Citizen voter;
 
 	cout << "Enter your ID: ";
 	cin >> ID;
 
 	if (citizensDB.isCitizenExistsById(ID))
 	{
-		voter = citizensDB[ID];
+		Citizen& voter = citizensDB[ID];
 
 		if (!(voter.getVoted())) {
 
