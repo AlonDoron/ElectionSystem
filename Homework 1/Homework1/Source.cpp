@@ -12,11 +12,6 @@
 using namespace std;
 using namespace elections;
 
-struct Date
-{
-	int day, month, year;
-};
-
 // ( 1 )
 // This function creates new district and adds it to districtsArr.
 void addNewDistrict(DistrictsArr& districtsArr, PartiesArr& partiesArr, CitizensDB& citizensDB);
@@ -39,23 +34,22 @@ void addNewVote(CitizensDB& citizensDB, DistrictsArr& districtsArr, PartiesArr& 
 
 void printMainMenu();
 
-void getElectionType(int& electionType, SimpleElection& election);
+void handleType(int& electionType, DistrictsArr& districtsArr, Date& date);
 
-bool isLoaded();
+bool loadingElectionChoice();
 
 int main() {
 	UserActions userActions; int action = 0, type;
-
+	Date electionDate;
 	DistrictsArr districtsArr; CitizensDB citizensDB;
-	PartiesArr partiesArr; SimpleElection election;
-	ElectionType electionType;
+	PartiesArr partiesArr; Election* election; ElectionType electionType;
 
-	if (isLoaded())
+	if (loadingElectionChoice())
 	{
-		// operate function number 12
+		// operate function number 12 
 	}
 	else {
-		getElectionType(type, election);
+		handleType(type, districtsArr, electionDate);
 		printMainMenu();
 		electionType = (ElectionType)type;
 	}
@@ -69,7 +63,7 @@ int main() {
 			if (electionType == ElectionType::REGULAR_ELECTION)
 				addNewDistrict(districtsArr, partiesArr, citizensDB);
 			else
-				cout << "You can't add district in a simple election... " << endl;
+				cout << "You can't add district" << endl;
 			break;
 
 		case UserActions::ADD_CITIZEN:
@@ -101,7 +95,15 @@ int main() {
 			break;
 
 		case UserActions::SHOW_ELECTION_POLLS:
-			//countVotes(districtsArr, citizensArr, partiesArr);
+
+			if (electionType == ElectionType::REGULAR_ELECTION)
+				election = new RegularElection(electionDate, districtsArr, partiesArr, citizensDB);
+
+			else if ( electionType == ElectionType::SIMPLE_ELECTION)
+				election = new SimpleElection(electionDate, districtsArr, partiesArr, citizensDB);
+
+			election->displayResults();
+
 			break;
 
 		case UserActions::EXIT:
@@ -273,6 +275,50 @@ void addNewVote(CitizensDB& citizensDB, DistrictsArr& districtsArr, PartiesArr& 
 		cout << "Voter with id " << ID << " not found!!" << endl;
 }
 
+void handleType(int& electionType, DistrictsArr& districtsArr, Date& date)
+{
+
+	cout << "Welcome to elections. " << endl;
+	cout << "Enter the date of the election: (Day, Month, Year)" << endl;
+	cin >> date.day >> date.month >> date.year;
+
+	cout << "Enter type of election: (1 = regular, 2 = simple)" << endl;
+	cin >> electionType;
+
+	if (electionType == 2) {
+		int numOfReps, nameLen;
+		char name[20];
+
+		cout << "Enter state name (max 20 chars): ";
+		cin.ignore();
+		cin.getline(name, 20);
+
+		cout << "Enter num of reps: " << endl;
+		cin >> numOfReps;
+
+		nameLen = getStrLen(name);
+
+		District district(name, nameLen, numOfReps, 0);
+
+		districtsArr.add(district);
+	}
+	else if (electionType != 1)
+		cout << "There is no type of choice that matches the number you have selected " << endl;
+
+	cout << endl;
+}
+
+bool loadingElectionChoice()
+{
+	int answer;
+
+	cout << "Would you like load Election or create your own? ( 1 = load Election , 0 = create my own) " << endl;
+	cin >> answer;
+
+	cout << endl;
+	return answer;
+}
+
 int getStrLen(char* name) {
 	int i = 0;
 
@@ -281,7 +327,6 @@ int getStrLen(char* name) {
 
 	return i;
 }
-
 void printMainMenu()
 {
 	cout << "Enter Action: " << endl;
@@ -297,52 +342,4 @@ void printMainMenu()
 	cout << "10 - Exit" << endl;
 
 
-}
-
-void getElectionType(int& electionType, SimpleElection& election)
-{
-	Date date;
-
-	cout << "Welcome to elections. " << endl;
-	cout << "Enter the date of the election: (Day, Month, Year)" << endl;
-	cin >> date.day >> date.month >> date.year;
-
-	cout << "Enter type of election: (1 = regular, 2 = simple)" << endl;
-	cin >> electionType;
-
-	if (electionType == 1)
-	{
-		RegElection regElection;
-		election = regElection;
-	}
-
-	else {
-		int numOfReps, nameLen;
-		char name[20];
-
-		cout << "Enter state name (max 20 chars): ";
-		cin.ignore();
-		cin.getline(name, 20);
-
-		cout << "Enter num of reps: " << endl;
-		cin >> numOfReps;
-
-		nameLen = getStrLen(name);
-
-		District district(name, nameLen, numOfReps, 0);
-
-		election.addDistrict(district);
-	}
-	cout << endl;
-}
-
-bool isLoaded()
-{
-	int answer;
-
-	cout << "Would you like load Election or create your own? ( 1 = yes , 0 = no) " << endl;
-	cin >> answer;
-
-	cout << endl;
-	return answer;
 }

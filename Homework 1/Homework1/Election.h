@@ -6,44 +6,45 @@
 using namespace std;
 
 namespace elections {
-	class SimpleElection {
-		struct Date {int day, month, year;};
-	private:	
+	
+	struct Date {int day, month, year;};
+
+	class Election {
+	protected:	
+
 		DistrictsArr districtsArr;
-		CitizensDB citizensArr;
+		CitizensDB citizensDB;
 		PartiesArr partiesArr;
 		Date date;
-
 	public:
-		SimpleElection() {	}
-		SimpleElection(Date _date) {	
-			date.day = _date.day;
-			date.month = _date.month;
-			date.year = _date.year;
-		}
+		Election() {	}
+		Election(Date& _date, DistrictsArr& _districtsArr, PartiesArr& _partiesArr, CitizensDB& _citizensDB) :
+			date(_date), districtsArr(_districtsArr), partiesArr(_partiesArr), citizensDB(_citizensDB) {}
 
-		void addDistrict(District& district);
+		virtual void displayResults() = 0;
 	};
 
-	class RegElection : public SimpleElection {
+	class RegularElection : public Election {
 	public:
-		// TODO: Getters, Setters, Ctors, Dtors, CopyCtors, operator=, operator<<
+		RegularElection(Date& _date, DistrictsArr& _districtsArr, PartiesArr& _partiesArr, CitizensDB& _citizensDB)
+			: Election(_date, _districtsArr, _partiesArr, _citizensDB)	{}
+
+		virtual void displayResults() {};
+
+	};
+
+
+	class SimpleElection : public Election {
+	public:
+		SimpleElection(Date& _date, DistrictsArr& _districtsArr, PartiesArr& _partiesArr, CitizensDB& _citizensDB)
+			: Election(_date, _districtsArr, _partiesArr, _citizensDB) {}
+
+		virtual void displayResults() {};
 
 	};
 
 
 	
-
-
-
-
-
-
-	void SimpleElection::addDistrict(District& district)
-	{
-		districtsArr.add(district);
-	}
-
 
 
 
