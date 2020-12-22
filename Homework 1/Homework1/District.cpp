@@ -54,6 +54,10 @@ namespace elections {
 	{
 		return numOfRep;
 	}
+	VotesCounter District::getVotesCounter()
+	{
+		return votesCounter;
+	}
 	void District::addCounterForNewParty()
 	{
 		votesCounter.addEmptyCounter();

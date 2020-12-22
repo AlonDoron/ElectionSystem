@@ -26,6 +26,7 @@ namespace elections {
 		const int getDistrictNum(void) const;
 		const char* getDistrictName() const; 
 		const int getNumOfRep() const;
+		VotesCounter getVotesCounter();
 
 		// voting --------------------------------------
 		void addCounterForNewParty();
