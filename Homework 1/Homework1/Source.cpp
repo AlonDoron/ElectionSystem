@@ -1,4 +1,6 @@
 #include <iostream>
+#include <fstream>
+#include "FilesHandler.h"
 #include <string>
 #include "CitizensDB.h"
 #include "District.h"
@@ -15,12 +17,14 @@ using namespace elections;
 // ( 1 )
 // This function creates new district and adds it to districtsArr.
 void addNewDistrict(DistrictsArr& districtsArr, PartiesArr& partiesArr, CitizensDB& citizensDB);
+
 // ( 2 )
 // This function creates new citizen and adds it to citizensArr.
 void addNewCitizen(CitizensDB& citizensDB, DistrictsArr& districtsArr);
 // ( 3)
 // This function creates new party and adds it to districtsArr.
 void addNewParty(PartiesArr& partiesArr, DistrictsArr& districtsArr, CitizensDB& citizensDB);
+
 // ( 4 )
 // This function creates new rep and adds it to repsArr inside partiesArr.
 void addNewRep(PartiesArr& partiesArr, CitizensDB& citizensDB, DistrictsArr& districtsArr);
@@ -40,7 +44,12 @@ void handleElectionType(ElectionType& electionType, DistrictsArr& districtsArr, 
 
 bool loadingElectionChoice();
 
+void saveElectionRound(DistrictsArr& districtsArr, CitizensDB& citizensDB, PartiesArr& partiesArr);
+
+void loadElectionRound(DistrictsArr& districtsArr, CitizensDB& citizensDB, PartiesArr& partiesArr);
+
 int main() {
+	char fileName[20];
 	UserActions userActions; int action = 0;
 	Date electionDate;
 	DistrictsArr districtsArr; CitizensDB citizensDB;
@@ -110,6 +119,14 @@ int main() {
 
 		case UserActions::EXIT:
 			cout << "Goodbye." << endl;
+			break;
+
+		case UserActions::SAVE_ELECTION_ROUND:
+			saveElectionRound(districtsArr, citizensDB, partiesArr);
+			break;
+
+		case UserActions::LOAD_ELECTION_ROUND:
+			loadElectionRound(districtsArr, citizensDB, partiesArr);
 			break;
 
 		default:
@@ -276,6 +293,52 @@ void addNewVote(CitizensDB& citizensDB, DistrictsArr& districtsArr, PartiesArr& 
 	else
 		cout << "Voter with id " << ID << " not found!!" << endl;
 }
+// ( 11 )
+void saveElectionRound(DistrictsArr& districtsArr, CitizensDB& citizensDB, PartiesArr& partiesArr)
+{
+	char fileName[20];
+
+	cout << "Enter file name: " << endl;
+	cin >> fileName;
+
+	ofstream outfile(fileName, ios::binary);
+
+	if (!outfile) {
+		cout << "Error opening the file " << fileName << endl;
+		exit(-1);
+	}
+
+	outfile.close();
+
+	int fileNameLen = getStrLen(fileName);
+
+	FilesHandler filesHandler(fileName, fileNameLen);
+
+	filesHandler.saveToFile(districtsArr, citizensDB, partiesArr);
+}
+// ( 12 )
+void loadElectionRound(DistrictsArr& districtsArr, CitizensDB& citizensDB, PartiesArr& partiesArr)
+{
+	char fileName[20];
+
+	cout << "Enter file name: " << endl;
+	cin >> fileName;
+
+	ifstream infile(fileName, ios::binary);
+
+	if (!infile) {
+		cout << "Error opening the file " << fileName << endl;
+		exit(-1);
+	}
+
+	infile.close();
+
+	int fileNameLen = getStrLen(fileName);
+
+	FilesHandler filesHandler(fileName, fileNameLen);
+
+	filesHandler.loadFromFile(districtsArr, citizensDB, partiesArr);
+}
 
 void handleElectionType(ElectionType& electionType, DistrictsArr& districtsArr, Date& date)
 {
@@ -351,6 +414,6 @@ void printMainMenu()
 	cout << "8 - vote" << endl;
 	cout << "9 - show election polls" << endl;
 	cout << "10 - Exit" << endl;
-
-
+	cout << "11 - Save lection round to file" << endl;
+	cout << "12 - Load election round from file" << endl;
 }
