@@ -1,4 +1,3 @@
-#include <iostream>
 #include "FilesHandler.h"
 
 #define rcastcc reinterpret_cast<const char*>
@@ -17,24 +16,21 @@ namespace elections {
 
 	void FilesHandler::saveToFile(DistrictsArr& districtsArr, CitizensDB& citizensDB, PartiesArr& partiesArr)
 	{
-		// TODO : SAVE WITH SERIALIZATION
-
-		const int districtsSize = districtsArr.getLogSize();
-		District* inDists = new District[districtsSize];
-
 		// First - save all Districts, Then - save all citizens, Then - save all parties.
 		ofstream outfile(fileName, ios::binary);
-		District* districts = districtsArr.getAllDistricts();
+		districtsArr.save(outfile);
 
-		outfile.write(rcastcc(districts), sizeof(districtsSize));
 		outfile.close();
 
 		ifstream infile(fileName, ios::binary);
+		DistrictsArr newDists;
+		newDists.load(infile);
+		/*ifstream infile(fileName, ios::binary);
 		infile.read(rcastc(inDists), sizeof(districtsSize));
 		infile.close();
 
 		for (int i = 0; i < districtsSize; i++)
-			cout << inDists[i];
+			cout << inDists[i];*/
 	}
 
 	void FilesHandler::loadFromFile(DistrictsArr& districtsArr, CitizensDB& citizensDB, PartiesArr& partiesArr)

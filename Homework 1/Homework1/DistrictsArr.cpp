@@ -83,6 +83,28 @@ namespace elections {
 
 
 	}
+
+	void DistrictsArr::save(ostream& out) const
+	{
+		out.write(rcastcc(&logSize), sizeof(logSize));
+		out.write(rcastcc(&phsSize), sizeof(phsSize));
+
+		for (int i = 0; i < logSize; i++)
+			districts[i].save(out);
+	}
+
+	void DistrictsArr::load(istream& in)
+	{
+		int newLogSize;
+		in.read(rcastc(&newLogSize), sizeof(newLogSize));
+		resize(newLogSize);
+		logSize = newLogSize;
+		in.read(rcastc(&phsSize), sizeof(phsSize));
+
+		for (int i = 0; i < logSize; i++)
+			districts[i].load(in);
+	}
+
 	ostream& operator<<(ostream& os, const DistrictsArr& districtArr)
 	{
 		for (int i = 0; i < districtArr.getLogSize(); i++)
