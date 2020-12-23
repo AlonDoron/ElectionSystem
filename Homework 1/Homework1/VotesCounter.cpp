@@ -1,5 +1,8 @@
 #include "VotesCounter.h"
 
+#define rcastcc reinterpret_cast<const char*>
+#define rcastc reinterpret_cast<char*>
+
 namespace elections {
 	VotesCounter::VotesCounter() : logSize(0), phsSize(0), votesByParty(nullptr) {}
 
@@ -72,12 +75,28 @@ namespace elections {
 	{
 		return phsSize;
 	}
+
 	int& VotesCounter::operator[](int index) const
 	{
 		return votesByParty[index];
 	}
+
 	const int VotesCounter::getVotesByIndex(int idx) const
 	{
 		return votesByParty[idx];
+	}
+
+	void VotesCounter::save(ostream& out) const
+	{
+		out.write(rcastcc(&logSize), sizeof(logSize));
+		out.write(rcastcc(&phsSize), sizeof(phsSize));
+		out.write(rcastcc(votesByParty), sizeof(logSize));
+	}
+
+	void VotesCounter::load(istream& in)
+	{
+		in.read(rcastc(&logSize), sizeof(logSize));
+		in.read(rcastc(&phsSize), sizeof(phsSize));
+		in.read(rcastc(votesByParty), sizeof(votesByParty));
 	}
 }
