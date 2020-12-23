@@ -1,4 +1,7 @@
 #pragma once
+#include <fstream>
+
+using namespace std;
 
 namespace elections {
 	class VotesCounter {
@@ -18,7 +21,7 @@ namespace elections {
 
 		// Dtor
 		~VotesCounter();
-		
+
 		// Overload "=" operator
 		void operator=(const VotesCounter&);
 
@@ -37,5 +40,8 @@ namespace elections {
 		int& operator[](int index) const;
 
 		const int getVotesByIndex(int idx) const;
+
+		void save(ostream& out) const;
+		void load(istream& in);
 	};
 }

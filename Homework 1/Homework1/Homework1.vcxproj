@@ -148,7 +148,7 @@
     <ClCompile Include="Party.cpp" />
     <ClCompile Include="CitizensDB.cpp" />
     <ClCompile Include="Source.cpp" />
-    <ClCompile Include="VotersArr.cpp" />
+    <ClCompile Include="VotesCounter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Citizen.h" />

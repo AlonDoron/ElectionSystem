@@ -1,4 +1,5 @@
 #pragma once
+#include <fstream>
 #include "VotesCounter.h"
 
 using namespace std;
@@ -24,7 +25,7 @@ namespace elections {
 
 		// Getters-------------------------------
 		const int getDistrictNum(void) const;
-		const char* getDistrictName() const; 
+		const char* getDistrictName() const;
 		const int getNumOfRep() const;
 		VotesCounter getVotesCounter();
 
@@ -32,8 +33,11 @@ namespace elections {
 		void addCounterForNewParty();
 		void addVoteToCounterInIdx(int partyNum);
 		const int getVotesInIndex(int idx) const;
- 
+
 		// Printer operator
 		friend ostream& operator<<(ostream& os, const District& district);
+
+		void save(ostream& out) const;
+		void load(istream& in);
 	};
 }
