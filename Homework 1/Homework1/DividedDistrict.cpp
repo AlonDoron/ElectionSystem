@@ -10,12 +10,4 @@ namespace elections {
 		: District(_name, _nameLen, _numOfRep, _districtNum) {};
 
 
-	 void DividedDistrict::TEST() { cout << "I AM DIVIDED DISTRICT " << endl; }
-
-
-
-
-
-
-
 }
