@@ -10,6 +10,7 @@
 #include "UserActions.h"
 #include "Election.h"
 #include "ElectionType.h"
+#include "DividedDistrict.h"
 
 using namespace std;
 using namespace elections;
@@ -139,7 +140,8 @@ int main() {
 // ( 1 )
 void addNewDistrict(DistrictsArr& districtsArr, PartiesArr& partiesArr, CitizensDB& citizensDB) {
 	char name[20];
-	int nameLen, numOfRep;
+	int nameLen, numOfRep, districtType;
+	District* newDist;
 
 	cout << "Enter district name (max 20 chars): ";
 	cin.ignore();
@@ -152,10 +154,15 @@ void addNewDistrict(DistrictsArr& districtsArr, PartiesArr& partiesArr, Citizens
 		cout << "Enter number of representatives: ";
 		cin >> numOfRep;
 
-		District newDist(name, nameLen, numOfRep, districtsArr.getLogSize());
+		cout << "Enter district type: (0 = united, 1 = divided)"<< endl;
+		cin >> districtType;
 
-		districtsArr.add(newDist);
+		if (districtType == 0)
+			newDist = new District(name, nameLen, numOfRep, districtsArr.getLogSize());
+		if (districtType == 1)
+			newDist = new DividedDistrict(name, nameLen, numOfRep, districtsArr.getLogSize());
 
+		//districtsArr.add(newDist);
 		citizensDB.addEmptyCitizensArr(); // adding new citizensArr in DB for new district
 		partiesArr.addNewDistToRepArr(); //// adding new citizensArr to reps list of each party for new district 
 	}
