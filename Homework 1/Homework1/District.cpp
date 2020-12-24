@@ -1,5 +1,6 @@
 #include <iostream>
 #include "District.h"
+#include "PartiesArr.h"
 
 #define rcastcc reinterpret_cast<const char*>
 #define rcastc reinterpret_cast<char*>
@@ -74,6 +75,7 @@ namespace elections {
 	{
 		votesCounter.addVote(partyNum);
 		votesCounter.updatePercentage();
+		votesCounter.updateWinner();
 	}
 	const int District::getVotesInIndex(int idx) const
 	{
@@ -84,6 +86,35 @@ namespace elections {
 	{
 		citizensNum++;
 	}
+
+	CitizensArr District::getElctedReps(PartiesArr* _partiesArr)
+	{
+		int currRepsNum;
+		int partyNum = _partiesArr->getLogSize();
+		CitizensArr res, curr, RepsInPartyi;
+		int* votesPerc = votesCounter.getPercentageVotes();
+		PartiesArr partiesArr = *_partiesArr;
+		Party currParty;
+		CitizensDB currDB;
+
+		for (int i = 0; i < partyNum; i++)
+		{	// calculate how many reps from each party
+			currParty = partiesArr[i];
+
+			currDB = currParty.getRepresentatives();
+
+			RepsInPartyi = currDB[districtNum];
+
+			currRepsNum = (votesPerc[i] * numOfRep) / 100; 
+
+			curr = RepsInPartyi.getCitizensUntillIndex(currRepsNum);
+
+			res.appendCitizensArr(curr);
+		}
+	
+		return res;
+	}
+
 
 	void District::save(ostream& out) const
 	{

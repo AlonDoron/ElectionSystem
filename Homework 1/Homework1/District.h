@@ -7,6 +7,8 @@
 using namespace std;
 
 namespace elections {
+	class PartiesArr;
+
 	class District {
 	protected:
 		char* name;
@@ -38,6 +40,7 @@ namespace elections {
 		void addVoteToVotesCountersInIdx(int partyNum);
 		const int getVotesInIndex(int idx) const;
 		void addOneCitizen();
+		virtual CitizensArr getElctedReps(PartiesArr* partiesArr);
 
 		// Printer operator
 		friend ostream& operator<<(ostream& os, const District& district);
