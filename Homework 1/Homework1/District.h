@@ -1,13 +1,14 @@
 #pragma once
 #include <fstream>
 #include "VotesCounter.h"
+#include <iostream>
 
 
 using namespace std;
 
 namespace elections {
 	class District {
-	private:
+	protected:
 		char* name;
 		int nameLen, numOfRep, districtNum;
 		int citizensNum;
@@ -43,5 +44,9 @@ namespace elections {
 
 		void save(ostream& out) const;
 		void load(istream& in);
+
+		virtual void TEST() { cout << "I AM DISTRICT " << endl; }
 	};
+
+
 }
