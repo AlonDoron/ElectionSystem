@@ -40,12 +40,10 @@ namespace elections {
 		void addOneCitizen();
 
 		// Printer operator
-		friend ostream& operator<<(ostream& os, District& district);
+		friend ostream& operator<<(ostream& os, const District& district);
 
 		void save(ostream& out) const;
 		void load(istream& in);
-
-		virtual void TEST() { cout << "I AM DISTRICT " << endl; }
 	};
 
 

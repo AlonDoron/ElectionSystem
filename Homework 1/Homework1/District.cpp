@@ -103,33 +103,11 @@ namespace elections {
 		votesCounter.load(in);
 	}
 
-	ostream& operator<<(ostream& os, District& district)
+	ostream& operator<<(ostream& os, const District&  district)
 	{
 		cout << "District Number: " << district.getDistrictNum()
 			<< " | Name: " << district.getDistrictName() << " | Number of representative: "
 			<< district.getNumOfRep() <<" | Number of citizens: " << district.getCitizensNum() <<  endl;
-
-
-		// TEST - change district to const
-
-		int votingNumber = district.votesCounter.getVotingNumberInDistrict();
-		
-		VotesCounter  votesCounter = district.getVotesCounter();
-		int* votesByParty = votesCounter.getVotesByParty();
-		int* votesPerc = votesCounter.getPercentageVotes();
-		cout << "votes: ";
-		for (int i = 0; i < votesCounter.getLogSize(); i++)
-		{
-			cout << votesByParty[i] << " ";
-		}
-		cout << endl;
-		cout << "perc: ";
-		for (int i = 0; i < votesCounter.getLogSize(); i++)
-		{
-			cout << votesPerc[i] << " ";
-		}
-		cout << endl;
-
 
 		return os;
 	}
