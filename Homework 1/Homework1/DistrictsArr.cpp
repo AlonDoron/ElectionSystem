@@ -79,7 +79,7 @@ namespace elections {
 	void DistrictsArr::addNewPartyToVotesCounters()
 	{
 		for (int i = 0; i < logSize; i++)
-			districts[i].addCounterForNewParty();
+			districts[i].addVotesCountersForNewParty();
 
 
 	}
