@@ -6,10 +6,10 @@
 
 namespace elections {
 	VotesCounter::VotesCounter() : logSize(0), phsSize(0), votesByParty(nullptr),
-		winningPartyID(0), electedReps(nullptr), votesPerc(nullptr), votingNumber(0) {}
+		winningPartyID(0), votesPerc(nullptr), votingNumber(0) {}
 
 	VotesCounter::VotesCounter(int size)
-		: phsSize(size), logSize(size), winningPartyID(0), electedReps(nullptr), votesByParty(nullptr),
+		: phsSize(size), logSize(size), winningPartyID(0), votesByParty(nullptr),
 		votesPerc(nullptr), votingNumber(0) {
 		votesByParty = new int[size];
 		votesPerc = new int[size];
@@ -30,7 +30,6 @@ namespace elections {
 	{
 		delete[] votesByParty;
 		delete[] votesPerc;
-		delete electedReps;
 	}
 
 	void VotesCounter::resize(int newSize)
@@ -79,12 +78,6 @@ namespace elections {
 			votesPerc[i] = other.votesPerc[i];
 		}
 
-		if (electedReps != nullptr)
-		{
-			electedReps = new CitizensArr[other.electedReps->getLogSize()];
-			*electedReps = *(other.electedReps);
-		}
-
 
 	}
 
@@ -115,16 +108,25 @@ namespace elections {
 		return winningPartyID;
 	}
 
-	const CitizensArr* VotesCounter::getElectedReps() const
-	{
-		return electedReps;
-	}
 
 	void VotesCounter::updatePercentage()
 	{
 		for (int i = 0; i < logSize; i++)
 			votesPerc[i] = ((float)((float)votesByParty[i] / (float)votingNumber)) * 100;
 
+	}
+
+	void VotesCounter::updateWinner()
+	{
+		int winningParty = 0;
+
+		for (int i = 1; i < logSize; i++)
+		{
+			if (votesByParty[i] > votesByParty[winningParty])
+				winningParty = i;
+		}
+
+		winningPartyID = winningParty;
 	}
 
 	const int VotesCounter::getVotingNumberInDistrict() const

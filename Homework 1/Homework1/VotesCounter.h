@@ -13,7 +13,6 @@ class CitizensArr;
 		int logSize = 0, phsSize = 0;
 		int* votesByParty;
 		int* votesPerc;
-		CitizensArr* electedReps = nullptr;
 
 		// Resizing votersByDistrict arr and updating logSize, phsSize
 		void resize(int newSize);
@@ -43,8 +42,8 @@ class CitizensArr;
 		const int getLogSize() const;
 		const int getPhiSize() const;
 		const int getWinningPartID();
-		const CitizensArr* getElectedReps() const;
 		void updatePercentage();
+		void updateWinner();
 		const int getVotingNumberInDistrict() const;
 		int* getVotesByParty();
 		int* getPercentageVotes();
