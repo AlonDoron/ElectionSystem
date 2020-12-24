@@ -283,7 +283,7 @@ void addNewVote(CitizensDB& citizensDB, DistrictsArr& districtsArr, PartiesArr& 
 			{
 				voter.setVoted(true);
 				districtNum = voter.getDistrictNum();
-				districtsArr[districtNum].addVoteToCounterInIdx(partyID);
+				districtsArr[districtNum].addVoteToVotesCountersInIdx(partyID);
 			}
 			else
 				cout << "Party with ID " << partyID << " does not exist" << endl;
@@ -356,6 +356,8 @@ void handleElectionType(ElectionType& electionType, DistrictsArr& districtsArr, 
 	switch (electionType) {
 	case ElectionType::SIMPLE_ELECTION:
 		addNewSingleState(districtsArr);
+		break;
+	case ElectionType::REGULAR_ELECTION:
 		break;
 
 	default:
