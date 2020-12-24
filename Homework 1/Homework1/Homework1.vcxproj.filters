@@ -48,6 +48,9 @@
     <ClCompile Include="DividedDistrict.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Election.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="District.h">
