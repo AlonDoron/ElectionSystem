@@ -191,6 +191,7 @@ void addNewCitizen(CitizensDB& citizensDB, DistrictsArr& districtsArr)
 		if (districtsArr.isDistExist(districtNum)) {
 			Citizen newCitizen(name, nameLen, id, year, &districtsArr[districtNum]);
 			citizensDB[districtNum].add(newCitizen);
+			districtsArr[districtNum].addOneCitizen();
 		}
 		else
 			cout << "The district with id " << districtNum << " does not exists!!!" << endl;

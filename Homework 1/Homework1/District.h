@@ -9,6 +9,7 @@ namespace elections {
 	private:
 		char* name;
 		int nameLen, numOfRep, districtNum;
+		int citizensNum;
 		VotesCounter votesCounter;
 
 	public:
@@ -27,12 +28,14 @@ namespace elections {
 		const int getDistrictNum(void) const;
 		const char* getDistrictName() const;
 		const int getNumOfRep() const;
+		const int getCitizensNum() const;
 		VotesCounter getVotesCounter();
 
 		// voting --------------------------------------
 		void addCounterForNewParty();
 		void addVoteToCounterInIdx(int partyNum);
 		const int getVotesInIndex(int idx) const;
+		void addOneCitizen();
 
 		// Printer operator
 		friend ostream& operator<<(ostream& os, const District& district);

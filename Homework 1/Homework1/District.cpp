@@ -7,14 +7,14 @@
 using namespace std;
 
 namespace elections {
-	District::District() : name(nullptr), nameLen(0), numOfRep(0), districtNum(0) {}
+	District::District() : name(nullptr), nameLen(0), numOfRep(0), districtNum(0), citizensNum(0) {}
 
 	District::District(char* _name, int _nameLen, int _numOfRep, int _districtNum) {
 		nameLen = _nameLen;
 		numOfRep = _numOfRep;
 		districtNum = _districtNum;
 		name = new char[_nameLen + 1];
-
+		citizensNum = 0;
 		memcpy(name, _name, nameLen + 1);
 
 		name[nameLen] = '\0';
@@ -38,6 +38,7 @@ namespace elections {
 		districtNum = other.districtNum;
 		votesCounter = other.votesCounter;
 		name = new char[nameLen + 1];
+		citizensNum = other.citizensNum;
 
 		for (int i = 0; i < other.nameLen; i++)
 			name[i] = other.name[i];
@@ -57,6 +58,10 @@ namespace elections {
 	{
 		return numOfRep;
 	}
+	const int District::getCitizensNum() const
+	{
+		return citizensNum;
+	}
 	VotesCounter District::getVotesCounter()
 	{
 		return votesCounter;
@@ -72,6 +77,11 @@ namespace elections {
 	const int District::getVotesInIndex(int idx) const
 	{
 		return votesCounter[idx];
+	}
+
+	void District::addOneCitizen()
+	{
+		citizensNum++;
 	}
 
 	void District::save(ostream& out) const
@@ -96,7 +106,7 @@ namespace elections {
 	{
 		cout << "District Number: " << district.getDistrictNum()
 			<< " | Name: " << district.getDistrictName() << " | Number of representative: "
-			<< district.getNumOfRep() << endl;
+			<< district.getNumOfRep() <<" | Number of citizens: " << district.getCitizensNum() <<  endl;
 
 		return os;
 	}
