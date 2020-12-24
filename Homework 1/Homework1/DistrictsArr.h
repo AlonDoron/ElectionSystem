@@ -8,7 +8,7 @@ namespace elections {
 	class DistrictsArr {
 	private:
 		int phsSize = 0, logSize = 0;
-		District* districts;
+		District** districts;
 
 		// Resizing districts arr and updating logSize, phsSize
 		void resize(int size);
@@ -27,7 +27,7 @@ namespace elections {
 		void operator=(const DistrictsArr&);
 
 		// Setters-----------------------------------------
-		void add(District& district);
+		void add(District* district);
 
 		// Getters-----------------------------------------
 		District& operator[](int index) const;
