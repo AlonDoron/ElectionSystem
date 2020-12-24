@@ -162,7 +162,7 @@ void addNewDistrict(DistrictsArr& districtsArr, PartiesArr& partiesArr, Citizens
 		if (districtType == 1)
 			newDist = new DividedDistrict(name, nameLen, numOfRep, districtsArr.getLogSize());
 
-		//districtsArr.add(newDist);
+		districtsArr.add(newDist);
 		citizensDB.addEmptyCitizensArr(); // adding new citizensArr in DB for new district
 		partiesArr.addNewDistToRepArr(); //// adding new citizensArr to reps list of each party for new district 
 	}
@@ -377,6 +377,7 @@ void addNewSingleState(DistrictsArr& districtsArr)
 {
 	int numOfReps, nameLen;
 	char name[20];
+	District* newDist;
 
 	cout << "Enter state name (max 20 chars): ";
 	cin.ignore();
@@ -387,8 +388,8 @@ void addNewSingleState(DistrictsArr& districtsArr)
 
 	nameLen = getStrLen(name);
 
-	District district(name, nameLen, numOfReps, 0);
-	districtsArr.add(district);
+	newDist = new DividedDistrict(name, nameLen, numOfReps, 0);
+	districtsArr.add(newDist);
 }
 
 bool loadingElectionChoice()
