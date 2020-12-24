@@ -8,7 +8,10 @@ namespace elections {
 	DistrictsArr::DistrictsArr() : districts(nullptr), logSize(0), phsSize(0) {}
 
 	DistrictsArr::~DistrictsArr() {
-		delete[] districts;
+
+		for (int i = 0; i < logSize; i++)
+			delete districts[i];
+
 	}
 
 	DistrictsArr::DistrictsArr(const DistrictsArr& other)
@@ -18,13 +21,16 @@ namespace elections {
 
 	void DistrictsArr::resize(int newSize)
 	{
-		District* temp = new District[newSize];
+		District** temp = new District*[newSize];
+
+		for (int i = 0; i < newSize; ++i)
+			temp[i] = new District();
 
 		for (int i = 0; i < logSize; ++i)
-			temp[i] = districts[i];
+			*temp[i] = *districts[i];
 
-		if (phsSize >= 1)
-			delete[] districts;
+		for (int i = 0; i < logSize; i++)
+			delete districts[i];
 
 		districts = temp;
 		phsSize = newSize;
@@ -34,7 +40,7 @@ namespace elections {
 	{
 		logSize = other.logSize;
 		phsSize = other.phsSize;
-		districts = new District[phsSize];
+		districts = new District*[phsSize];
 
 		for (int i = 0; i < logSize; i++)
 			districts[i] = other.districts[i];
@@ -42,7 +48,7 @@ namespace elections {
 
 	District& DistrictsArr::operator[](int index) const
 	{
-		return districts[index];
+		return *districts[index];
 	}
 
 	const bool DistrictsArr::isDistExist(int distNum) const
@@ -51,7 +57,7 @@ namespace elections {
 	}
 
 
-	void DistrictsArr::add(District& district)
+	void DistrictsArr::add(District* district)
 	{
 		if (logSize == phsSize)
 			resize(phsSize * 2 + 1);
@@ -70,7 +76,7 @@ namespace elections {
 	{
 		for (int i = 0; i < logSize; i++)
 		{
-			if (strcmp(districts[i].getDistrictName(), name) == 0)
+			if (strcmp(districts[i]->getDistrictName(), name) == 0)
 				return true;
 		}
 
@@ -79,10 +85,32 @@ namespace elections {
 	void DistrictsArr::addNewPartyToVotesCounters()
 	{
 		for (int i = 0; i < logSize; i++)
-			districts[i].addCounterForNewParty();
+			districts[i]->addVotesCountersForNewParty();
 
 
 	}
+
+	void DistrictsArr::save(ostream& out) const
+	{
+		out.write(rcastcc(&logSize), sizeof(logSize));
+		out.write(rcastcc(&phsSize), sizeof(phsSize));
+
+		for (int i = 0; i < logSize; i++)
+			districts[i]->save(out);
+	}
+
+	void DistrictsArr::load(istream& in)
+	{
+		int newLogSize;
+		in.read(rcastc(&newLogSize), sizeof(newLogSize));
+		resize(newLogSize);
+		logSize = newLogSize;
+		in.read(rcastc(&phsSize), sizeof(phsSize));
+
+		for (int i = 0; i < logSize; i++)
+			districts[i]->load(in);
+	}
+
 	ostream& operator<<(ostream& os, const DistrictsArr& districtArr)
 	{
 		for (int i = 0; i < districtArr.getLogSize(); i++)

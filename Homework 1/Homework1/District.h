@@ -1,13 +1,17 @@
 #pragma once
+#include <fstream>
 #include "VotesCounter.h"
+#include <iostream>
+
 
 using namespace std;
 
 namespace elections {
 	class District {
-	private:
+	protected:
 		char* name;
 		int nameLen, numOfRep, districtNum;
+		int citizensNum;
 		VotesCounter votesCounter;
 
 	public:
@@ -24,16 +28,23 @@ namespace elections {
 
 		// Getters-------------------------------
 		const int getDistrictNum(void) const;
-		const char* getDistrictName() const; 
+		const char* getDistrictName() const;
 		const int getNumOfRep() const;
-		VotesCounter getVotesCounter();
+		const int getCitizensNum() const;
+		const VotesCounter& getVotesCounter();
 
 		// voting --------------------------------------
-		void addCounterForNewParty();
-		void addVoteToCounterInIdx(int partyNum);
+		void addVotesCountersForNewParty();
+		void addVoteToVotesCountersInIdx(int partyNum);
 		const int getVotesInIndex(int idx) const;
- 
+		void addOneCitizen();
+
 		// Printer operator
 		friend ostream& operator<<(ostream& os, const District& district);
+
+		void save(ostream& out) const;
+		void load(istream& in);
 	};
+
+
 }

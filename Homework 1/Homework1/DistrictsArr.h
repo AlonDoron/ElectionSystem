@@ -1,11 +1,14 @@
 #pragma once
 #include "District.h"
 
+#define rcastcc reinterpret_cast<const char*>
+#define rcastc reinterpret_cast<char*>
+
 namespace elections {
 	class DistrictsArr {
 	private:
 		int phsSize = 0, logSize = 0;
-		District* districts;
+		District** districts;
 
 		// Resizing districts arr and updating logSize, phsSize
 		void resize(int size);
@@ -24,7 +27,7 @@ namespace elections {
 		void operator=(const DistrictsArr&);
 
 		// Setters-----------------------------------------
-		void add(District& district);
+		void add(District* district);
 
 		// Getters-----------------------------------------
 		District& operator[](int index) const;
@@ -39,5 +42,8 @@ namespace elections {
 
 		// Printer operator
 		friend ostream& operator<<(ostream& os, const DistrictsArr& districtArr);
+
+		void save(ostream& out) const;
+		void load(istream& in);
 	};
 }

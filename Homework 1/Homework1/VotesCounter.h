@@ -1,10 +1,19 @@
 #pragma once
+#include <fstream>
+
+
+using namespace std;
 
 namespace elections {
+class CitizensArr;
 	class VotesCounter {
 	private:
+		int votingNumber = 0;
+		int winningPartyID = 0;
 		int logSize = 0, phsSize = 0;
 		int* votesByParty;
+		int* votesPerc;
+		CitizensArr* electedReps = nullptr;
 
 		// Resizing votersByDistrict arr and updating logSize, phsSize
 		void resize(int newSize);
@@ -18,7 +27,7 @@ namespace elections {
 
 		// Dtor
 		~VotesCounter();
-		
+
 		// Overload "=" operator
 		void operator=(const VotesCounter&);
 
@@ -27,15 +36,23 @@ namespace elections {
 		void addEmptyCounter();
 
 		// add one vote to in index "districtNum"
-		void addVote(int districtNum);
+		void addVote(int partyNum);
 
 		// Getters------------------------------------------
 		// return the number of votes in district "idx"
 		const int getLogSize() const;
 		const int getPhiSize() const;
+		const int getWinningPartID();
+		const CitizensArr* getElectedReps() const;
+		void updatePercentage();
+		const int getVotingNumberInDistrict() const;
+		int* getVotesByParty();
+		int* getPercentageVotes();
+
 
 		int& operator[](int index) const;
 
-		const int getVotesByIndex(int idx) const;
+		void save(ostream& out) const;
+		void load(istream& in);
 	};
 }

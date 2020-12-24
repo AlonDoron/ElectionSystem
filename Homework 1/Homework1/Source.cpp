@@ -1,4 +1,6 @@
 #include <iostream>
+#include <fstream>
+#include "FilesHandler.h"
 #include <string>
 #include "CitizensDB.h"
 #include "District.h"
@@ -8,6 +10,7 @@
 #include "UserActions.h"
 #include "Election.h"
 #include "ElectionType.h"
+#include "DividedDistrict.h"
 
 using namespace std;
 using namespace elections;
@@ -15,12 +18,14 @@ using namespace elections;
 // ( 1 )
 // This function creates new district and adds it to districtsArr.
 void addNewDistrict(DistrictsArr& districtsArr, PartiesArr& partiesArr, CitizensDB& citizensDB);
+
 // ( 2 )
 // This function creates new citizen and adds it to citizensArr.
 void addNewCitizen(CitizensDB& citizensDB, DistrictsArr& districtsArr);
 // ( 3)
 // This function creates new party and adds it to districtsArr.
 void addNewParty(PartiesArr& partiesArr, DistrictsArr& districtsArr, CitizensDB& citizensDB);
+
 // ( 4 )
 // This function creates new rep and adds it to repsArr inside partiesArr.
 void addNewRep(PartiesArr& partiesArr, CitizensDB& citizensDB, DistrictsArr& districtsArr);
@@ -40,7 +45,12 @@ void handleElectionType(ElectionType& electionType, DistrictsArr& districtsArr, 
 
 bool loadingElectionChoice();
 
+void saveElectionRound(DistrictsArr& districtsArr, CitizensDB& citizensDB, PartiesArr& partiesArr);
+
+void loadElectionRound(DistrictsArr& districtsArr, CitizensDB& citizensDB, PartiesArr& partiesArr);
+
 int main() {
+	char fileName[20];
 	UserActions userActions; int action = 0;
 	Date electionDate;
 	DistrictsArr districtsArr; CitizensDB citizensDB;
@@ -112,6 +122,14 @@ int main() {
 			cout << "Goodbye." << endl;
 			break;
 
+		case UserActions::SAVE_ELECTION_ROUND:
+			saveElectionRound(districtsArr, citizensDB, partiesArr);
+			break;
+
+		case UserActions::LOAD_ELECTION_ROUND:
+			loadElectionRound(districtsArr, citizensDB, partiesArr);
+			break;
+
 		default:
 			cout << "NO INPUT" << endl;
 			break;
@@ -122,7 +140,8 @@ int main() {
 // ( 1 )
 void addNewDistrict(DistrictsArr& districtsArr, PartiesArr& partiesArr, CitizensDB& citizensDB) {
 	char name[20];
-	int nameLen, numOfRep;
+	int nameLen, numOfRep, districtType;
+	District* newDist;
 
 	cout << "Enter district name (max 20 chars): ";
 	cin.ignore();
@@ -135,10 +154,15 @@ void addNewDistrict(DistrictsArr& districtsArr, PartiesArr& partiesArr, Citizens
 		cout << "Enter number of representatives: ";
 		cin >> numOfRep;
 
-		District newDist(name, nameLen, numOfRep, districtsArr.getLogSize());
+		cout << "Enter district type: (0 = united, 1 = divided)"<< endl;
+		cin >> districtType;
+
+		if (districtType == 0)
+			newDist = new District(name, nameLen, numOfRep, districtsArr.getLogSize());
+		if (districtType == 1)
+			newDist = new DividedDistrict(name, nameLen, numOfRep, districtsArr.getLogSize());
 
 		districtsArr.add(newDist);
-
 		citizensDB.addEmptyCitizensArr(); // adding new citizensArr in DB for new district
 		partiesArr.addNewDistToRepArr(); //// adding new citizensArr to reps list of each party for new district 
 	}
@@ -174,6 +198,7 @@ void addNewCitizen(CitizensDB& citizensDB, DistrictsArr& districtsArr)
 		if (districtsArr.isDistExist(districtNum)) {
 			Citizen newCitizen(name, nameLen, id, year, &districtsArr[districtNum]);
 			citizensDB[districtNum].add(newCitizen);
+			districtsArr[districtNum].addOneCitizen();
 		}
 		else
 			cout << "The district with id " << districtNum << " does not exists!!!" << endl;
@@ -265,7 +290,7 @@ void addNewVote(CitizensDB& citizensDB, DistrictsArr& districtsArr, PartiesArr& 
 			{
 				voter.setVoted(true);
 				districtNum = voter.getDistrictNum();
-				districtsArr[districtNum].addVoteToCounterInIdx(partyID);
+				districtsArr[districtNum].addVoteToVotesCountersInIdx(partyID);
 			}
 			else
 				cout << "Party with ID " << partyID << " does not exist" << endl;
@@ -275,6 +300,52 @@ void addNewVote(CitizensDB& citizensDB, DistrictsArr& districtsArr, PartiesArr& 
 	}
 	else
 		cout << "Voter with id " << ID << " not found!!" << endl;
+}
+// ( 11 )
+void saveElectionRound(DistrictsArr& districtsArr, CitizensDB& citizensDB, PartiesArr& partiesArr)
+{
+	char fileName[20];
+
+	cout << "Enter file name: " << endl;
+	cin >> fileName;
+
+	ofstream outfile(fileName, ios::binary);
+
+	if (!outfile) {
+		cout << "Error opening the file " << fileName << endl;
+		exit(-1);
+	}
+
+	outfile.close();
+
+	int fileNameLen = getStrLen(fileName);
+
+	FilesHandler filesHandler(fileName, fileNameLen);
+
+	filesHandler.saveToFile(districtsArr, citizensDB, partiesArr);
+}
+// ( 12 )
+void loadElectionRound(DistrictsArr& districtsArr, CitizensDB& citizensDB, PartiesArr& partiesArr)
+{
+	char fileName[20];
+
+	cout << "Enter file name: " << endl;
+	cin >> fileName;
+
+	ifstream infile(fileName, ios::binary);
+
+	if (!infile) {
+		cout << "Error opening the file " << fileName << endl;
+		exit(-1);
+	}
+
+	infile.close();
+
+	int fileNameLen = getStrLen(fileName);
+
+	FilesHandler filesHandler(fileName, fileNameLen);
+
+	filesHandler.loadFromFile(districtsArr, citizensDB, partiesArr);
 }
 
 void handleElectionType(ElectionType& electionType, DistrictsArr& districtsArr, Date& date)
@@ -293,6 +364,8 @@ void handleElectionType(ElectionType& electionType, DistrictsArr& districtsArr, 
 	case ElectionType::SIMPLE_ELECTION:
 		addNewSingleState(districtsArr);
 		break;
+	case ElectionType::REGULAR_ELECTION:
+		break;
 
 	default:
 		cout << "There is no type of choice that matches the number you have selected " << endl;
@@ -304,6 +377,7 @@ void addNewSingleState(DistrictsArr& districtsArr)
 {
 	int numOfReps, nameLen;
 	char name[20];
+	District* newDist;
 
 	cout << "Enter state name (max 20 chars): ";
 	cin.ignore();
@@ -314,8 +388,8 @@ void addNewSingleState(DistrictsArr& districtsArr)
 
 	nameLen = getStrLen(name);
 
-	District district(name, nameLen, numOfReps, 0);
-	districtsArr.add(district);
+	newDist = new DividedDistrict(name, nameLen, numOfReps, 0);
+	districtsArr.add(newDist);
 }
 
 bool loadingElectionChoice()
@@ -351,6 +425,6 @@ void printMainMenu()
 	cout << "8 - vote" << endl;
 	cout << "9 - show election polls" << endl;
 	cout << "10 - Exit" << endl;
-
-
+	cout << "11 - Save lection round to file" << endl;
+	cout << "12 - Load election round from file" << endl;
 }
