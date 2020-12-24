@@ -2,7 +2,6 @@
 #include <fstream>
 #include "VotesCounter.h"
 
-
 using namespace std;
 
 namespace elections {
@@ -30,16 +29,16 @@ namespace elections {
 		const char* getDistrictName() const;
 		const int getNumOfRep() const;
 		const int getCitizensNum() const;
-		const VotesCounter& getVotesCounter();
+		VotesCounter getVotesCounter();
 
 		// voting --------------------------------------
-		void addVotesCountersForNewParty();
-		void addVoteToVotesCountersInIdx(int partyNum);
+		void addCounterForNewParty();
+		void addVoteToCounterInIdx(int partyNum);
 		const int getVotesInIndex(int idx) const;
 		void addOneCitizen();
 
 		// Printer operator
-		friend ostream& operator<<(ostream& os, District& district);
+		friend ostream& operator<<(ostream& os, const District& district);
 
 		void save(ostream& out) const;
 		void load(istream& in);

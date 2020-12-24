@@ -62,18 +62,17 @@ namespace elections {
 	{
 		return citizensNum;
 	}
-	const VotesCounter& District::getVotesCounter()
+	VotesCounter District::getVotesCounter()
 	{
 		return votesCounter;
 	}
-	void District::addVotesCountersForNewParty()
+	void District::addCounterForNewParty()
 	{
 		votesCounter.addEmptyCounter();
 	}
-	void District::addVoteToVotesCountersInIdx(int partyNum)
+	void District::addVoteToCounterInIdx(int partyNum)
 	{
-		votesCounter.addVote(partyNum);
-		votesCounter.updatePercentage();
+		votesCounter[partyNum]++;
 	}
 	const int District::getVotesInIndex(int idx) const
 	{
@@ -103,33 +102,11 @@ namespace elections {
 		votesCounter.load(in);
 	}
 
-	ostream& operator<<(ostream& os, District& district)
+	ostream& operator<<(ostream& os, const District& district)
 	{
 		cout << "District Number: " << district.getDistrictNum()
 			<< " | Name: " << district.getDistrictName() << " | Number of representative: "
 			<< district.getNumOfRep() <<" | Number of citizens: " << district.getCitizensNum() <<  endl;
-
-
-		// TEST - change district to const
-
-		int votingNumber = district.votesCounter.getVotingNumberInDistrict();
-		
-		VotesCounter  votesCounter = district.getVotesCounter();
-		int* votesByParty = votesCounter.getVotesByParty();
-		int* votesPerc = votesCounter.getPercentageVotes();
-		cout << "votes: ";
-		for (int i = 0; i < votesCounter.getLogSize(); i++)
-		{
-			cout << votesByParty[i] << " ";
-		}
-		cout << endl;
-		cout << "perc: ";
-		for (int i = 0; i < votesCounter.getLogSize(); i++)
-		{
-			cout << votesPerc[i] << " ";
-		}
-		cout << endl;
-
 
 		return os;
 	}
