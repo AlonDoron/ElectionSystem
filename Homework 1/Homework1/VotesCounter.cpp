@@ -1,17 +1,24 @@
 #include "VotesCounter.h"
+#include "CitizensArr.h"
 
 #define rcastcc reinterpret_cast<const char*>
 #define rcastc reinterpret_cast<char*>
 
 namespace elections {
-	VotesCounter::VotesCounter() : logSize(0), phsSize(0), votesByParty(nullptr) {}
+	VotesCounter::VotesCounter() : logSize(0), phsSize(0), votesByParty(nullptr),
+		winningPartyID(0), electedReps(nullptr), votesPerc(nullptr), votingNumber(0) {}
 
 	VotesCounter::VotesCounter(int size)
-		: phsSize(size), logSize(size) {
+		: phsSize(size), logSize(size), winningPartyID(0), electedReps(nullptr), votesByParty(nullptr),
+		votesPerc(nullptr), votingNumber(0) {
 		votesByParty = new int[size];
+		votesPerc = new int[size];
 
 		for (int i = 0; i < size; i++)
+		{
 			votesByParty[i] = 0;
+			votesPerc[i] = 0;
+		}
 	}
 
 	VotesCounter::VotesCounter(const VotesCounter& other)
@@ -22,22 +29,37 @@ namespace elections {
 	VotesCounter::~VotesCounter()
 	{
 		delete[] votesByParty;
+		delete[] votesPerc;
+		delete electedReps;
 	}
 
 	void VotesCounter::resize(int newSize)
 	{
-		int* temp = new int[newSize];
+		int* tempVotesByParty = new int[newSize];
+		int* tempVotesPerc = new int[newSize];
 
 		for (int i = 0; i < newSize; ++i)
-			temp[i] = 0;
+		{
+			tempVotesByParty[i] = 0;
+			tempVotesPerc[i] = 0;
+		}
 
 		for (int i = 0; i < logSize; ++i)
-			temp[i] = votesByParty[i];
+		{
+			tempVotesByParty[i] = votesByParty[i];
+			tempVotesPerc[i] = votesPerc[i];
+
+		}
 
 		if (logSize >= 1)
+		{
 			delete[] votesByParty;
+			delete[] votesPerc;
 
-		votesByParty = temp;
+		}
+
+		votesByParty = tempVotesByParty;
+		votesPerc = tempVotesPerc;
 		phsSize = newSize;
 	}
 
@@ -45,14 +67,25 @@ namespace elections {
 	{
 		logSize = other.logSize;
 		phsSize = other.phsSize;
-
-		if (votesByParty)
-			delete[] votesByParty;
+		winningPartyID = winningPartyID;
+		votingNumber = other.votingNumber;
 
 		votesByParty = new int[phsSize];
+		votesPerc = new int[phsSize];
 
 		for (int i = 0; i < logSize; i++)
+		{
 			votesByParty[i] = other.votesByParty[i];
+			votesPerc[i] = other.votesPerc[i];
+		}
+
+		if (electedReps != nullptr)
+		{
+			electedReps = new CitizensArr[other.electedReps->getLogSize()];
+			*electedReps = *(other.electedReps);
+		}
+
+
 	}
 
 	void VotesCounter::addEmptyCounter()
@@ -66,6 +99,7 @@ namespace elections {
 	void VotesCounter::addVote(int partyNum)
 	{
 		votesByParty[partyNum]++;
+		votingNumber++;
 	}
 	const int VotesCounter::getLogSize() const
 	{
@@ -76,14 +110,41 @@ namespace elections {
 		return phsSize;
 	}
 
+	const int VotesCounter::getWinningPartID()
+	{
+		return winningPartyID;
+	}
+
+	const CitizensArr* VotesCounter::getElectedReps() const
+	{
+		return electedReps;
+	}
+
+	void VotesCounter::updatePercentage()
+	{
+		for (int i = 0; i < logSize; i++)
+			votesPerc[i] = ((float)((float)votesByParty[i] / (float)votingNumber)) * 100;
+
+	}
+
+	const int VotesCounter::getVotingNumberInDistrict() const
+	{
+		return votingNumber;
+	}
+
+	int* VotesCounter::getVotesByParty()
+	{
+		return votesByParty;
+	}
+
+	int* VotesCounter::getPercentageVotes()
+	{
+		return votesPerc;
+	}
+
 	int& VotesCounter::operator[](int index) const
 	{
 		return votesByParty[index];
-	}
-
-	const int VotesCounter::getVotesByIndex(int idx) const
-	{
-		return votesByParty[idx];
 	}
 
 	void VotesCounter::save(ostream& out) const
