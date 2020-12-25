@@ -120,6 +120,7 @@ namespace elections {
 		in.read(name, nameLen);
 		name[nameLen] = '\0';
 
+		district = new District();
 		district->load(in);
 	}
 
