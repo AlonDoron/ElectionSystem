@@ -14,10 +14,12 @@ namespace elections {
 		fileName[fileNameLen] = '\0';
 	}
 
-	void FilesHandler::saveToFile(DistrictsArr& districtsArr, CitizensDB& citizensDB, PartiesArr& partiesArr)
+	void FilesHandler::saveToFile(DistrictsArr& districtsArr, CitizensDB& citizensDB,
+		PartiesArr& partiesArr, int electionType)
 	{
 		ofstream outfile(fileName, ios::binary);
 
+		outfile.write(rcastcc(&electionType), sizeof(electionType));
 		districtsArr.save(outfile);
 		citizensDB.save(outfile);
 		partiesArr.save(outfile);
@@ -25,10 +27,12 @@ namespace elections {
 		outfile.close();
 	}
 
-	void FilesHandler::loadFromFile(DistrictsArr& districtsArr, CitizensDB& citizensDB, PartiesArr& partiesArr)
+	void FilesHandler::loadFromFile(DistrictsArr& districtsArr, CitizensDB& citizensDB,
+		PartiesArr& partiesArr, int& electionType)
 	{
 		ifstream infile(fileName, ios::binary);
 
+		infile.read(rcastc(&electionType), sizeof(electionType));
 		districtsArr.load(infile);
 		citizensDB.load(infile); // When loading AT THE START OF THE PROGRAM, districts inside citizens is null!
 		//partiesArr.load(infile);
