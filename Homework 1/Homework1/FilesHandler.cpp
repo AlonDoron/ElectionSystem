@@ -18,6 +18,7 @@ namespace elections {
 	{
 		ofstream outfile(fileName, ios::binary);
 		districtsArr.save(outfile);
+		citizensDB.save(outfile);
 		outfile.close();
 	}
 
@@ -25,6 +26,7 @@ namespace elections {
 	{
 		ifstream infile(fileName, ios::binary);
 		districtsArr.load(infile);
+		citizensDB.load(infile);
 		infile.close();
 	}
 }

@@ -105,6 +105,24 @@ namespace elections {
 		return name;
 	}
 
+	void Citizen::save(ostream& out) const
+	{
+		out.write(rcastcc(this), sizeof(*this));
+		out.write(name, nameLen);
+
+		district->save(out);
+	}
+
+	void Citizen::load(istream& in)
+	{
+		in.read(rcastc(this), sizeof(*this));
+		name = new char[nameLen + 1];
+		in.read(name, nameLen);
+		name[nameLen] = '\0';
+
+		district->load(in);
+	}
+
 	ostream& operator<<(ostream& os, const Citizen& citizen)
 	{
 		cout << "Name: " << citizen.getName() << " | Year of birth: " << citizen.getYear()
