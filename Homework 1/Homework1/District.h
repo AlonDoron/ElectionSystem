@@ -3,8 +3,10 @@
 #include "VotesCounter.h"
 #include <iostream>
 
-
 using namespace std;
+
+#define rcastcc reinterpret_cast<const char*>
+#define rcastc reinterpret_cast<char*>
 
 namespace elections {
 	class District {

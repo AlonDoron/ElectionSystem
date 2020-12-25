@@ -1,9 +1,6 @@
 #include <iostream>
 #include "District.h"
 
-#define rcastcc reinterpret_cast<const char*>
-#define rcastc reinterpret_cast<char*>
-
 using namespace std;
 
 namespace elections {
@@ -88,7 +85,7 @@ namespace elections {
 	void District::save(ostream& out) const
 	{
 		out.write(rcastcc(this), sizeof(*this));
-		out.write(name, sizeof(nameLen));
+		out.write(name, nameLen);
 
 		votesCounter.save(out);
 	}
@@ -97,7 +94,7 @@ namespace elections {
 	{
 		in.read(rcastc(this), sizeof(*this));
 		name = new char[nameLen + 1];
-		in.read(name, sizeof(nameLen));
+		in.read(name, nameLen);
 		name[nameLen] = '\0';
 
 		votesCounter.load(in);
