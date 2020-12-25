@@ -99,6 +99,9 @@ namespace elections {
 	void CitizensDB::load(istream& in)
 	{
 		int newLogSize;
+		// We need to reset logSize and phsSize, because we save a whole object, 
+		// and when we load data to citizensByDist we need resize to work with the new size.
+		logSize = 0, phsSize = 0;
 		in.read(rcastc(&newLogSize), sizeof(newLogSize));
 		resize(newLogSize);
 		logSize = newLogSize;

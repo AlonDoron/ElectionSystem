@@ -34,8 +34,8 @@ namespace elections {
 
 		infile.read(rcastc(&electionType), sizeof(electionType));
 		districtsArr.load(infile);
-		citizensDB.load(infile); // When loading AT THE START OF THE PROGRAM, districts inside citizens is null!
-		//partiesArr.load(infile);
+		citizensDB.load(infile);
+		partiesArr.load(infile);
 
 		infile.close();
 	}
