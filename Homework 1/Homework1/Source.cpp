@@ -348,8 +348,6 @@ void loadElectionRound(DistrictsArr& districtsArr, CitizensDB& citizensDB, Parti
 	filesHandler.loadFromFile(districtsArr, citizensDB, partiesArr);
 
 	cout << "Election round has been successfully loaded from " << fileName << endl;
-
-	cout << districtsArr;
 }
 
 void handleElectionType(ElectionType& electionType, DistrictsArr& districtsArr, Date& date)
