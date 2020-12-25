@@ -88,6 +88,25 @@ namespace elections {
 		return citizensByDist[index];
 	}
 
+	void CitizensDB::save(ostream& out) const
+	{
+		out.write(rcastcc(&logSize), sizeof(logSize));
+
+		for (int i = 0; i < logSize; i++)
+			citizensByDist[i].save(out);
+	}
+
+	void CitizensDB::load(istream& in)
+	{
+		int newLogSize;
+		in.read(rcastc(&newLogSize), sizeof(newLogSize));
+		resize(newLogSize);
+		logSize = newLogSize;
+
+		for (int i = 0; i < logSize; i++)
+			citizensByDist[i].load(in);
+	}
+
 	const bool CitizensDB::isCitizenExistsById(long int id) const {
 		for (int i = 0; i < logSize; i++)
 			if (citizensByDist[i].isCitizenExistsById(id))
