@@ -150,14 +150,18 @@ namespace elections {
 	void VotesCounter::save(ostream& out) const
 	{
 		out.write(rcastcc(&logSize), sizeof(logSize));
-		out.write(rcastcc(&phsSize), sizeof(phsSize));
-		out.write(rcastcc(votesByParty), sizeof(logSize));
+		out.write(rcastcc(votesByParty), sizeof(votesByParty));
+		out.write(rcastcc(votesPerc), sizeof(votesPerc));
 	}
 
 	void VotesCounter::load(istream& in)
 	{
-		in.read(rcastc(&logSize), sizeof(logSize));
-		in.read(rcastc(&phsSize), sizeof(phsSize));
+		int newLogSize = 0;
+		logSize = 0, phsSize = 0;
+		in.read(rcastc(&newLogSize), sizeof(newLogSize));
+		resize(newLogSize);
+		logSize = newLogSize;
 		in.read(rcastc(votesByParty), sizeof(votesByParty));
+		in.read(rcastc(votesPerc), sizeof(votesPerc));
 	}
 }
