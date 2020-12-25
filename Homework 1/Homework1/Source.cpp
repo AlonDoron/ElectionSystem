@@ -327,6 +327,10 @@ void saveElectionRound(DistrictsArr& districtsArr, CitizensDB& citizensDB, Parti
 // ( 12 )
 void loadElectionRound(DistrictsArr& districtsArr, CitizensDB& citizensDB, PartiesArr& partiesArr)
 {
+	// TODO: ADD KILL ALL ARRAYS BEFORE READING FROM FILE!
+	districtsArr = DistrictsArr();
+	citizensDB = CitizensDB();
+	partiesArr = PartiesArr();
 	char fileName[20];
 
 	cout << "Enter file name: " << endl;
@@ -339,13 +343,14 @@ void loadElectionRound(DistrictsArr& districtsArr, CitizensDB& citizensDB, Parti
 		exit(-1);
 	}
 
-	infile.close();
 
 	int fileNameLen = getStrLen(fileName);
 
 	FilesHandler filesHandler(fileName, fileNameLen);
 
 	filesHandler.loadFromFile(districtsArr, citizensDB, partiesArr);
+
+	infile.close();
 
 	cout << "Election round has been successfully loaded from " << fileName << endl;
 }
