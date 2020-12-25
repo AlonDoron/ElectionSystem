@@ -57,14 +57,12 @@ int main() {
 	PartiesArr partiesArr; Election* election; ElectionType electionType;
 
 	if (loadingElectionChoice())
-	{
-		// operate function number 12 
-	}
+		loadElectionRound(districtsArr, citizensDB, partiesArr);
 
-	else {
+	else
 		handleElectionType(electionType, districtsArr, electionDate);
-		printMainMenu();
-	}
+
+	printMainMenu();
 
 	while (action != 10) {
 		cin >> action;
@@ -154,7 +152,7 @@ void addNewDistrict(DistrictsArr& districtsArr, PartiesArr& partiesArr, Citizens
 		cout << "Enter number of representatives: ";
 		cin >> numOfRep;
 
-		cout << "Enter district type: (0 = united, 1 = divided)"<< endl;
+		cout << "Enter district type: (0 = united, 1 = divided)" << endl;
 		cin >> districtType;
 
 		if (districtType == 0)
@@ -323,6 +321,8 @@ void saveElectionRound(DistrictsArr& districtsArr, CitizensDB& citizensDB, Parti
 	FilesHandler filesHandler(fileName, fileNameLen);
 
 	filesHandler.saveToFile(districtsArr, citizensDB, partiesArr);
+
+	cout << "Election round has been successfully saved to " << fileName << endl;
 }
 // ( 12 )
 void loadElectionRound(DistrictsArr& districtsArr, CitizensDB& citizensDB, PartiesArr& partiesArr)
@@ -346,6 +346,10 @@ void loadElectionRound(DistrictsArr& districtsArr, CitizensDB& citizensDB, Parti
 	FilesHandler filesHandler(fileName, fileNameLen);
 
 	filesHandler.loadFromFile(districtsArr, citizensDB, partiesArr);
+
+	cout << "Election round has been successfully loaded from " << fileName << endl;
+
+	cout << districtsArr;
 }
 
 void handleElectionType(ElectionType& electionType, DistrictsArr& districtsArr, Date& date)
@@ -399,7 +403,6 @@ bool loadingElectionChoice()
 	cout << "Would you like load Election or create your own? ( 1 = load Election , 0 = create my own) " << endl;
 	cin >> answer;
 
-	cout << endl;
 	return answer;
 }
 
