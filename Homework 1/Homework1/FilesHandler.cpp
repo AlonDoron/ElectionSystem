@@ -16,25 +16,15 @@ namespace elections {
 
 	void FilesHandler::saveToFile(DistrictsArr& districtsArr, CitizensDB& citizensDB, PartiesArr& partiesArr)
 	{
-		// First - save all Districts, Then - save all citizens, Then - save all parties.
 		ofstream outfile(fileName, ios::binary);
 		districtsArr.save(outfile);
-
 		outfile.close();
-
-		ifstream infile(fileName, ios::binary);
-		DistrictsArr newDists;
-		newDists.load(infile);
-		/*ifstream infile(fileName, ios::binary);
-		infile.read(rcastc(inDists), sizeof(districtsSize));
-		infile.close();
-
-		for (int i = 0; i < districtsSize; i++)
-			cout << inDists[i];*/
 	}
 
 	void FilesHandler::loadFromFile(DistrictsArr& districtsArr, CitizensDB& citizensDB, PartiesArr& partiesArr)
 	{
-		// TODO : LOAD WITH SERIALIZATION
+		ifstream infile(fileName, ios::binary);
+		districtsArr.load(infile);
+		infile.close();
 	}
 }
