@@ -17,16 +17,22 @@ namespace elections {
 	void FilesHandler::saveToFile(DistrictsArr& districtsArr, CitizensDB& citizensDB, PartiesArr& partiesArr)
 	{
 		ofstream outfile(fileName, ios::binary);
+
 		districtsArr.save(outfile);
 		citizensDB.save(outfile);
+		partiesArr.save(outfile);
+
 		outfile.close();
 	}
 
 	void FilesHandler::loadFromFile(DistrictsArr& districtsArr, CitizensDB& citizensDB, PartiesArr& partiesArr)
 	{
 		ifstream infile(fileName, ios::binary);
+
 		districtsArr.load(infile);
 		citizensDB.load(infile); // When loading AT THE START OF THE PROGRAM, districts inside citizens is null!
+		partiesArr.load(infile);
+
 		infile.close();
 	}
 }

@@ -88,4 +88,21 @@ namespace elections {
 		return os;
 	}
 
+	void Party::save(ostream& out) const
+	{
+		out.write(rcastcc(this), sizeof(*this));
+		out.write(name, nameLen);
+
+		representatives.save(out);
+	}
+
+	void Party::load(istream& in)
+	{
+		in.read(rcastc(this), sizeof(*this));
+		name = new char[nameLen + 1];
+		in.read(name, nameLen);
+		name[nameLen] = '\0';
+
+		representatives.load(in);
+	}
 }

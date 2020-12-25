@@ -91,8 +91,29 @@ namespace elections {
 
 		return false;
 	}
+
+	void PartiesArr::save(ostream& out) const
+	{
+		out.write(rcastcc(&logSize), sizeof(logSize));
+
+		for (int i = 0; i < logSize; i++)
+			parties[i].save(out);
+	}
+
+	void PartiesArr::load(istream& in)
+	{
+		int newLogSize = 0;
+
+		in.read(rcastc(&newLogSize), sizeof(newLogSize));
+		resize(newLogSize);
+		logSize = newLogSize;
+
+		for (int i = 0; i < logSize; i++)
+			parties[i].load(in);
+	}
+
 	ostream& operator<<(ostream& os, const PartiesArr& partiesArr)
-	{	
+	{
 		for (int i = 0; i < partiesArr.getLogSize(); i++)
 			cout << partiesArr[i];
 
