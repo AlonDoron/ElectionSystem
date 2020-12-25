@@ -26,7 +26,7 @@ namespace elections {
 	{
 		ifstream infile(fileName, ios::binary);
 		districtsArr.load(infile);
-		citizensDB.load(infile);
+		citizensDB.load(infile); // When loading AT THE START OF THE PROGRAM, districts inside citizens is null!
 		infile.close();
 	}
 }

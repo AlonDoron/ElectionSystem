@@ -190,7 +190,7 @@ void addNewCitizen(CitizensDB& citizensDB, DistrictsArr& districtsArr)
 		cout << "Enter year of birth: ";
 		cin >> year;
 
-		cout << "Enter district number: (for simple election - press only 0)";
+		cout << "Enter district number (for simple election - press only 0): ";
 		cin >> districtNum;
 
 		if (districtsArr.isDistExist(districtNum)) {
