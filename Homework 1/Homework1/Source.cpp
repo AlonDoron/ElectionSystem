@@ -45,9 +45,11 @@ void handleElectionType(ElectionType& electionType, DistrictsArr& districtsArr, 
 
 bool loadingElectionChoice();
 
-void saveElectionRound(DistrictsArr& districtsArr, CitizensDB& citizensDB, PartiesArr& partiesArr);
+void saveElectionRound(DistrictsArr& districtsArr, CitizensDB& citizensDB,
+	PartiesArr& partiesArr, ElectionType& type);
 
-void loadElectionRound(DistrictsArr& districtsArr, CitizensDB& citizensDB, PartiesArr& partiesArr);
+void loadElectionRound(DistrictsArr& districtsArr, CitizensDB& citizensDB,
+	PartiesArr& partiesArr, ElectionType& type);
 
 int main() {
 	char fileName[20];
@@ -57,7 +59,7 @@ int main() {
 	PartiesArr partiesArr; Election* election; ElectionType electionType;
 
 	if (loadingElectionChoice())
-		loadElectionRound(districtsArr, citizensDB, partiesArr);
+		loadElectionRound(districtsArr, citizensDB, partiesArr, electionType);
 
 	else
 		handleElectionType(electionType, districtsArr, electionDate);
@@ -121,11 +123,11 @@ int main() {
 			break;
 
 		case UserActions::SAVE_ELECTION_ROUND:
-			saveElectionRound(districtsArr, citizensDB, partiesArr);
+			saveElectionRound(districtsArr, citizensDB, partiesArr, electionType);
 			break;
 
 		case UserActions::LOAD_ELECTION_ROUND:
-			loadElectionRound(districtsArr, citizensDB, partiesArr);
+			loadElectionRound(districtsArr, citizensDB, partiesArr, electionType);
 			break;
 
 		default:
@@ -300,7 +302,7 @@ void addNewVote(CitizensDB& citizensDB, DistrictsArr& districtsArr, PartiesArr& 
 		cout << "Voter with id " << ID << " not found!!" << endl;
 }
 // ( 11 )
-void saveElectionRound(DistrictsArr& districtsArr, CitizensDB& citizensDB, PartiesArr& partiesArr)
+void saveElectionRound(DistrictsArr& districtsArr, CitizensDB& citizensDB, PartiesArr& partiesArr, ElectionType& type)
 {
 	char fileName[20];
 
@@ -320,14 +322,13 @@ void saveElectionRound(DistrictsArr& districtsArr, CitizensDB& citizensDB, Parti
 
 	FilesHandler filesHandler(fileName, fileNameLen);
 
-	filesHandler.saveToFile(districtsArr, citizensDB, partiesArr);
+	filesHandler.saveToFile(districtsArr, citizensDB, partiesArr, (int)type);
 
 	cout << "Election round has been successfully saved to " << fileName << endl;
 }
 // ( 12 )
-void loadElectionRound(DistrictsArr& districtsArr, CitizensDB& citizensDB, PartiesArr& partiesArr)
+void loadElectionRound(DistrictsArr& districtsArr, CitizensDB& citizensDB, PartiesArr& partiesArr, ElectionType& type)
 {
-	// TODO: ADD KILL ALL ARRAYS BEFORE READING FROM FILE!
 	districtsArr = DistrictsArr();
 	citizensDB = CitizensDB();
 	partiesArr = PartiesArr();
@@ -348,7 +349,9 @@ void loadElectionRound(DistrictsArr& districtsArr, CitizensDB& citizensDB, Parti
 
 	FilesHandler filesHandler(fileName, fileNameLen);
 
-	filesHandler.loadFromFile(districtsArr, citizensDB, partiesArr);
+	int typeNum;
+	filesHandler.loadFromFile(districtsArr, citizensDB, partiesArr, typeNum);
+	type = (ElectionType)typeNum;
 
 	infile.close();
 
