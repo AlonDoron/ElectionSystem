@@ -344,6 +344,7 @@ void loadElectionRound(DistrictsArr& districtsArr, CitizensDB& citizensDB, Parti
 		exit(-1);
 	}
 
+	infile.close();
 
 	int fileNameLen = getStrLen(fileName);
 
@@ -352,8 +353,6 @@ void loadElectionRound(DistrictsArr& districtsArr, CitizensDB& citizensDB, Parti
 	int typeNum;
 	filesHandler.loadFromFile(districtsArr, citizensDB, partiesArr, typeNum);
 	type = (ElectionType)typeNum;
-
-	infile.close();
 
 	cout << "Election round has been successfully loaded from " << fileName << endl;
 }
