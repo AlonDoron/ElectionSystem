@@ -5,6 +5,8 @@ namespace elections {
 
 	void RegularElection::displayResults()
 	{
+		//districtsArr.getElectedRepsFromAllDistricts(electorsByDistrict);
+
 		getElectedRepsFromAllDistricts();
 
 	}
