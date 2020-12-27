@@ -85,11 +85,13 @@ namespace elections {
 	{
 		int newLogSize;
 		in.read(rcastc(&newLogSize), sizeof(newLogSize));
-		resize(newLogSize);
-		logSize = newLogSize;
 
-		for (int i = 0; i < logSize; i++)
-			citizens[i].load(in);
+		for (int i = 0; i < newLogSize; i++)
+		{
+			Citizen temp;
+			temp.load(in);
+			add(temp);
+		}
 	}
 
 	const bool CitizensArr::isCitizenExistsById(long int id) const {

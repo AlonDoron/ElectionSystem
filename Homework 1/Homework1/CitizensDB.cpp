@@ -4,7 +4,10 @@
 using namespace std;
 
 namespace elections {
-	CitizensDB::CitizensDB() : phsSize(0), logSize(0), citizensByDist(nullptr) {}
+	CitizensDB::CitizensDB() : phsSize(0), logSize(0)
+	{
+		citizensByDist = new CitizensArr(0);
+	}
 
 	CitizensDB::CitizensDB(int size) : phsSize(size), logSize(size) {
 		citizensByDist = new CitizensArr[size];
@@ -99,15 +102,16 @@ namespace elections {
 	void CitizensDB::load(istream& in)
 	{
 		int newLogSize;
-		// We need to reset logSize and phsSize, because we save a whole object, 
-		// and when we load data to citizensByDist we need resize to work with the new size.
-		logSize = 0, phsSize = 0;
 		in.read(rcastc(&newLogSize), sizeof(newLogSize));
-		resize(newLogSize);
-		logSize = newLogSize;
 
-		for (int i = 0; i < logSize; i++)
-			citizensByDist[i].load(in);
+		for (int i = 0; i < newLogSize; i++)
+		{
+			CitizensArr temp;
+			temp.load(in);
+
+			addEmptyCitizensArr();
+			citizensByDist[i] = temp;
+		}
 	}
 
 	const bool CitizensDB::isCitizenExistsById(long int id) const {

@@ -98,12 +98,14 @@ namespace elections {
 	void DistrictsArr::load(istream& in)
 	{
 		int newLogSize;
+		District* temp;
 		in.read(rcastc(&newLogSize), sizeof(newLogSize));
-		resize(newLogSize);
-		logSize = newLogSize;
 
-		for (int i = 0; i < logSize; i++)
-			(*(districts[i])).load(in);
+		for (int i = 0; i < newLogSize; i++) {
+			temp = new District();
+			temp->load(in);
+			add(temp);
+		}
 	}
 
 	ostream& operator<<(ostream& os, const DistrictsArr& districtArr)
