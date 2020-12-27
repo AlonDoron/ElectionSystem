@@ -8,6 +8,7 @@ using namespace std;
 
 namespace elections {
 	class PartiesArr;
+	class CitizensDB;
 
 	class District {
 	protected:
@@ -34,13 +35,17 @@ namespace elections {
 		const int getNumOfRep() const;
 		const int getCitizensNum() const;
 		const VotesCounter& getVotesCounter();
+		// get voting percentage
 
 		// voting --------------------------------------
 		void addVotesCountersForNewParty();
 		void addVoteToVotesCountersInIdx(int partyNum);
 		const int getVotesInIndex(int idx) const;
 		void addOneCitizen();
-		virtual CitizensArr getElctedReps(PartiesArr* partiesArr);
+
+
+		virtual void setElected(PartiesArr* _partiesArr, CitizensDB* _electorsByParty,CitizensDB* _citizensDB);
+		void printResultElectionInDist(PartiesArr* _partiesArr, CitizensDB* _citizensDB);
 
 		// Printer operator
 		friend ostream& operator<<(ostream& os, const District& district);

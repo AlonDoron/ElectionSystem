@@ -87,7 +87,7 @@ namespace elections {
 		citizensNum++;
 	}
 
-	CitizensArr District::getElctedReps(PartiesArr* _partiesArr)
+	void District::setElected(PartiesArr* _partiesArr, CitizensDB* _electorsByParty, CitizensDB* _citizensDB)
 	{
 		int currRepsNum;
 		int partyNum = _partiesArr->getLogSize();
@@ -96,6 +96,9 @@ namespace elections {
 		PartiesArr partiesArr = *_partiesArr;
 		Party currParty;
 		CitizensDB currDB;
+		int partyWin = votesCounter.getWinningPartID();
+
+		printResultElectionInDist(_partiesArr, _citizensDB);
 
 		for (int i = 0; i < partyNum; i++)
 		{	// calculate how many reps from each party
@@ -110,9 +113,28 @@ namespace elections {
 			curr = RepsInPartyi.getCitizensUntillIndex(currRepsNum);
 
 			res.appendCitizensArr(curr);
+
 		}
-	
-		return res;
+		cout << res;
+		cout << endl;
+		(*_electorsByParty)[partyWin].appendCitizensArr(res);
+
+		
+	}
+
+	void District::printResultElectionInDist(PartiesArr* _partiesArr, CitizensDB* _citizensDB)
+	{
+		int partyWinID = votesCounter.getWinningPartID();
+		long int leaderID = (*_partiesArr)[partyWinID].getLeaderId();
+		Citizen leader;
+		leader = (*_citizensDB)[leaderID];
+
+		cout << endl;
+		cout << "     ***** District " << name <<" (united system) *****     " <<endl
+			<<"the district is giving all the following representative "
+			<< numOfRep << "to " << leader.getName() << ":" << endl;
+		cout << endl;
+
 	}
 
 

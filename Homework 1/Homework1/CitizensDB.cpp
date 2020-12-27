@@ -111,7 +111,10 @@ namespace elections {
 	ostream& operator<<(ostream& os, const CitizensDB& citizensDB)
 	{
 		for (int i = 0; i < citizensDB.getLogSize(); i++)
+		{
 			cout << citizensDB[i];
+			cout << endl;
+		}
 
 		return os;
 	}

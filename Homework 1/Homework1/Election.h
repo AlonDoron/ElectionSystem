@@ -3,25 +3,30 @@
 #include "PartiesArr.h"
 #include "DistrictsArr.h"
 
+
+
 using namespace std;
 
 namespace elections {
 	
+
 	struct Date {int day, month, year;};
+	struct Result { int partyNum, votes; };
 
 	class Election {
+
 	protected:	
 
 		DistrictsArr districtsArr;
 		CitizensDB citizensDB;
 		PartiesArr partiesArr;
-		CitizensDB electorsByDistrict;
+		CitizensDB electorsByParty;
 		Date date;
 	public:
 		Election() {}
 		Election(Date& _date, DistrictsArr& _districtsArr, PartiesArr& _partiesArr, CitizensDB& _citizensDB) :
 			date(_date), districtsArr(_districtsArr), partiesArr(_partiesArr), citizensDB(_citizensDB)
-			, electorsByDistrict(_districtsArr.getLogSize()) {}
+			, electorsByParty(_partiesArr.getLogSize()) {}
 
 		virtual void displayResults() = 0;
 		~Election() {}
@@ -52,6 +57,8 @@ namespace elections {
 		~SimpleElection();
 
 	};
+
+	
 
 
 

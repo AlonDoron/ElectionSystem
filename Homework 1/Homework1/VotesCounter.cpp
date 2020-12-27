@@ -1,5 +1,6 @@
 #include "VotesCounter.h"
 #include "CitizensArr.h"
+#include "PartiesArr.h"
 
 #define rcastcc reinterpret_cast<const char*>
 #define rcastc reinterpret_cast<char*>
@@ -142,6 +143,22 @@ namespace elections {
 	int* VotesCounter::getPercentageVotes()
 	{
 		return votesPerc;
+	}
+
+	void VotesCounter::printVotingStatictic(PartiesArr* partiesArr, int citizensNum)
+	{
+		cout << "Voting statictics: " << endl;
+		for (int i = 0; i < logSize; i++)
+		{
+			cout << (*partiesArr)[i].getPartyName() << " got " << votesByParty[i] << " votes "
+				<< "which are " << votesPerc[i] << "%" << " of all votes" << endl;
+		}
+		cout << "General turnout in the district is: " <<
+			((float)((float)votingNumber / (float)citizensNum)) * 100
+			<< "%" << endl
+			<< "______________________________________________________________"
+			<< endl << endl;
+
 	}
 
 	int& VotesCounter::operator[](int index) const

@@ -5,6 +5,9 @@
 #define rcastc reinterpret_cast<char*>
 
 namespace elections {
+	class CitizensDB;
+	class PartiesArr;
+
 	class DistrictsArr {
 	private:
 		int phsSize = 0, logSize = 0;
@@ -45,5 +48,8 @@ namespace elections {
 
 		void save(ostream& out) const;
 		void load(istream& in);
+
+		void getElectedRepsFromAllDistricts(CitizensDB* _electorsByDistrict, PartiesArr* _partiesArr, CitizensDB* _citizensDB);
+		int* getTotalVotingCounters(int partyNum);
 	};
 }

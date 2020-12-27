@@ -12,6 +12,7 @@
 #include "ElectionType.h"
 #include "DividedDistrict.h"
 
+
 using namespace std;
 using namespace elections;
 
@@ -48,6 +49,7 @@ bool loadingElectionChoice();
 void saveElectionRound(DistrictsArr& districtsArr, CitizensDB& citizensDB, PartiesArr& partiesArr);
 
 void loadElectionRound(DistrictsArr& districtsArr, CitizensDB& citizensDB, PartiesArr& partiesArr);
+
 
 int main() {
 	char fileName[20];

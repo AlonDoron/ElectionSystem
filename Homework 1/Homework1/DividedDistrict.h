@@ -5,6 +5,7 @@
 
 namespace elections {
 	class CitizensArr;
+
 class DividedDistrict : public District {
 
 public:
@@ -12,7 +13,8 @@ public:
 	DividedDistrict(char* _name, int _nameLen, int _numOfRep, int _districtNum);
 
 
-	virtual CitizensArr getElctedReps(PartiesArr* partiesArr);
+	virtual void setElected(PartiesArr* _partiesArr, CitizensDB* _electorsByParty, CitizensDB* _citizensDB);
+
 };
 
 }

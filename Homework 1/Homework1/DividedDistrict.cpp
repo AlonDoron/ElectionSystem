@@ -1,4 +1,5 @@
 #include "DividedDistrict.h"
+#include "PartiesArr.h"
 
 
 
@@ -8,31 +9,50 @@ namespace elections {
 
 	DividedDistrict::DividedDistrict(char* _name, int _nameLen, int _numOfRep, int _districtNum)
 		: District(_name, _nameLen, _numOfRep, _districtNum) {}
-	CitizensArr DividedDistrict::getElctedReps(PartiesArr* partiesAr)
+
+
+	void DividedDistrict::setElected(PartiesArr* _partiesArr, CitizensDB* _electorsByParty, CitizensDB* _citizensDB)
 	{
-		//int currRepsNum;
-		//int partyNum = _partiesArr->getLogSize();
-		CitizensArr res, curr, RepsInPartyi;
-		//int* votesPerc = votesCounter.getPercentageVotes();
-		//PartiesArr partiesArr = *_partiesArr;
-		//Party currParty;
-		//CitizensDB currDB;
+		int currRepsNum;
+		int partyNum = _partiesArr->getLogSize();
+		CitizensArr curr, RepsInPartyi;
+		int* votesPerc = votesCounter.getPercentageVotes();
+		PartiesArr partiesArr = *_partiesArr;
+		Party currParty;
+		CitizensDB currDB;
+		int partyWin = votesCounter.getWinningPartID();
 
-		//int winningParty = votesCounter.getWinningPartID();
+		cout << "     ***** District " << name << " (divided system) *****     " << endl;;
 
-		//for (int i = 0; i < partyNum; i++)
-		//{	// calculate how many reps from each party
-		//	currParty = partiesArr[i];
-		//	currDB = currParty.getRepresentatives();
-		//	RepsInPartyi = currDB[districtNum];
-		//	currRepsNum = (votesPerc[i] * numOfRep) / 100;
-		//	curr = RepsInPartyi.getCitizensUntillIndex(currRepsNum);
-		//	res.appendCitizensArr(curr);
-		//}
+		for (int i = 0; i < partyNum; i++)
+		{	// calculate how many reps from each party
+			long int leaderID = (*_partiesArr)[i].getLeaderId();
+			Citizen leader;
+			leader = (*_citizensDB)[leaderID];
 
-		return res;
+			CitizensArr currRes;
+
+			currParty = partiesArr[i];
+
+			currDB = currParty.getRepresentatives();
+
+			RepsInPartyi = currDB[districtNum];
+
+			currRepsNum = (votesPerc[i] * numOfRep) / 100;
+
+			curr = RepsInPartyi.getCitizensUntillIndex(currRepsNum);
+
+			currRes.appendCitizensArr(curr);
+
+			cout << "The district is giving the following " << currRepsNum << " representatives "
+				<< "to " << leader.getName() << ":" <<endl<< currRes << endl;
+
+			(*_electorsByParty)[i].appendCitizensArr(currRes);
+
+		}
+
 	}
-	;
+
 
 
 }

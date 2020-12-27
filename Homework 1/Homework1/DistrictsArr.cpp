@@ -1,6 +1,8 @@
 #include <iostream>
 #include "DistrictsArr.h"
 #include "CitizensArr.h";
+#include "CitizensDB.h"
+#include "PartiesArr.h"
 
 using namespace std;
 
@@ -23,14 +25,14 @@ namespace elections {
 	{
 		District** temp = new District*[newSize];
 
-		for (int i = 0; i < newSize; ++i)
-			temp[i] = new District();
+		/*for (int i = 0; i < newSize; ++i)
+			temp[i] = new District();*/
 
 		for (int i = 0; i < logSize; ++i)
-			*temp[i] = *districts[i];
+			temp[i] = districts[i];
 
-		for (int i = 0; i < logSize; i++)
-			delete districts[i];
+		//for (int i = 0; i < logSize; i++)
+		//	delete districts[i];
 
 		districts = temp;
 		phsSize = newSize;
@@ -110,6 +112,42 @@ namespace elections {
 		for (int i = 0; i < logSize; i++)
 			districts[i]->load(in);
 	}
+
+	void DistrictsArr::getElectedRepsFromAllDistricts(CitizensDB* _electorsByDistrict, PartiesArr* partiesArr, CitizensDB*  _citizensDB)
+	{
+		int size = _electorsByDistrict->getLogSize();
+		District* currDist;
+		CitizensArr curr;
+		int citizensNum;
+
+		for (int i = 0; i < partiesArr->getLogSize(); i++)
+		{
+			currDist = districts[i];
+
+			citizensNum = currDist->getCitizensNum();
+
+			currDist->setElected(partiesArr, _electorsByDistrict, _citizensDB);
+
+			VotesCounter votes = currDist->getVotesCounter();
+			votes.printVotingStatictic(partiesArr, citizensNum);
+		}
+
+	}
+
+	int* DistrictsArr::getTotalVotingCounters(int partyNum)
+	{
+		int* res = new int[partyNum];
+
+		for (int i = 0; i < partyNum; i++)
+			res[i] = 0;
+
+		for (int i = 0; i < partyNum; i++)
+			for (int j = 0; j < logSize; j++)
+				res[i] += districts[j]->getVotesInIndex(i);
+
+		return res;
+	}
+
 
 	ostream& operator<<(ostream& os, const DistrictsArr& districtArr)
 	{
