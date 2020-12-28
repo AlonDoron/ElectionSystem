@@ -37,11 +37,11 @@ int getStrLen(char* name);
 // and adds the vote to the party inside partiesArr.
 void addNewVote(CitizensDB& citizensDB, DistrictsArr& districtsArr, PartiesArr& partiesArr);
 
-void addNewSingleState(DistrictsArr& districtsArr);
+void addNewSingleState(DistrictsArr& districtsArr, CitizensDB& citizensDB);
 
 void printMainMenu();
 
-void handleElectionType(ElectionType& electionType, DistrictsArr& districtsArr, Date& date);
+void handleElectionType(ElectionType& electionType, DistrictsArr& districtsArr, CitizensDB& citizensDB, Date& date);
 
 bool loadingElectionChoice();
 
@@ -62,7 +62,7 @@ int main() {
 		loadElectionRound(districtsArr, citizensDB, partiesArr, electionType);
 
 	else
-		handleElectionType(electionType, districtsArr, electionDate);
+		handleElectionType(electionType, districtsArr, citizensDB, electionDate);
 
 	printMainMenu();
 
@@ -329,10 +329,20 @@ void saveElectionRound(DistrictsArr& districtsArr, CitizensDB& citizensDB, Parti
 // ( 12 )
 void loadElectionRound(DistrictsArr& districtsArr, CitizensDB& citizensDB, PartiesArr& partiesArr, ElectionType& type)
 {
-	districtsArr = DistrictsArr();
-	citizensDB = CitizensDB();
-	partiesArr = PartiesArr();
 	char fileName[20];
+
+	// If districts are not empty, we need to clear all arrays first before loading into them.
+	if (districtsArr.getLogSize() != 0)
+	{
+		districtsArr.~DistrictsArr();
+
+		if (citizensDB.getLogSize() != 0)
+		{
+			citizensDB.~CitizensDB();
+			if (partiesArr.getLogSize() != 0)
+				partiesArr.~PartiesArr();
+		}
+	}
 
 	cout << "Enter file name: " << endl;
 	cin >> fileName;
@@ -357,7 +367,7 @@ void loadElectionRound(DistrictsArr& districtsArr, CitizensDB& citizensDB, Parti
 	cout << "Election round has been successfully loaded from " << fileName << endl;
 }
 
-void handleElectionType(ElectionType& electionType, DistrictsArr& districtsArr, Date& date)
+void handleElectionType(ElectionType& electionType, DistrictsArr& districtsArr, CitizensDB& citizensDB, Date& date)
 {
 	int type = 0;
 	cout << "Welcome to elections. " << endl;
@@ -371,8 +381,9 @@ void handleElectionType(ElectionType& electionType, DistrictsArr& districtsArr, 
 
 	switch (electionType) {
 	case ElectionType::SIMPLE_ELECTION:
-		addNewSingleState(districtsArr);
+		addNewSingleState(districtsArr, citizensDB);
 		break;
+
 	case ElectionType::REGULAR_ELECTION:
 		break;
 
@@ -382,7 +393,7 @@ void handleElectionType(ElectionType& electionType, DistrictsArr& districtsArr, 
 	}
 }
 
-void addNewSingleState(DistrictsArr& districtsArr)
+void addNewSingleState(DistrictsArr& districtsArr, CitizensDB& citizensDB)
 {
 	int numOfReps, nameLen;
 	char name[20];
@@ -399,6 +410,7 @@ void addNewSingleState(DistrictsArr& districtsArr)
 
 	newDist = new DividedDistrict(name, nameLen, numOfReps, 0);
 	districtsArr.add(newDist);
+	citizensDB.addEmptyCitizensArr();
 }
 
 bool loadingElectionChoice()
