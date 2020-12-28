@@ -19,6 +19,7 @@ namespace elections {
 	PartiesArr::~PartiesArr()
 	{
 		delete[] parties;
+		logSize = phsSize = 0;
 	};
 
 	void PartiesArr::resize(int newSize)

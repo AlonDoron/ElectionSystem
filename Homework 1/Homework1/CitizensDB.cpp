@@ -18,8 +18,12 @@ namespace elections {
 	}
 
 	CitizensDB::~CitizensDB() {
-		delete[] citizensByDist;
+		for (int i = 0; i < citizensByDist->getLogSize(); i++)
+		{
+			citizensByDist[i].~CitizensArr();
+		}
 
+		logSize = phsSize = 0;
 	}
 
 	const int CitizensDB::getLogSize() const {

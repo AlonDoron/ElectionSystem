@@ -17,6 +17,7 @@ namespace elections {
 
 	CitizensArr::~CitizensArr() {
 		delete[] citizens;
+		logSize = phsSize = 0;
 	}
 
 	void CitizensArr::resize(int newSize)

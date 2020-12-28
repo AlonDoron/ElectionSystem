@@ -12,6 +12,7 @@ namespace elections {
 		for (int i = 0; i < logSize; i++)
 			delete districts[i];
 
+		logSize = phsSize = 0;
 	}
 
 	DistrictsArr::DistrictsArr(const DistrictsArr& other)
