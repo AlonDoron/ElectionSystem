@@ -40,7 +40,6 @@ namespace elections {
 			: Election(_date, _districtsArr, _partiesArr, _citizensDB)	{}
 
 		virtual void displayResults();
-		void getElectedRepsFromAllDistricts();
 		~RegularElection();
 
 	};
