@@ -168,15 +168,25 @@ namespace elections {
 
 	void VotesCounter::save(ostream& out) const
 	{
-		out.write(rcastcc(&logSize), sizeof(logSize));
-		out.write(rcastcc(&phsSize), sizeof(phsSize));
-		out.write(rcastcc(votesByParty), sizeof(logSize));
+		if (logSize > 0) {
+			out.write(rcastcc(&logSize), sizeof(logSize));
+			out.write(rcastcc(votesByParty), sizeof(votesByParty));
+			out.write(rcastcc(votesPerc), sizeof(votesPerc));
+		}
 	}
 
 	void VotesCounter::load(istream& in)
 	{
-		in.read(rcastc(&logSize), sizeof(logSize));
-		in.read(rcastc(&phsSize), sizeof(phsSize));
-		in.read(rcastc(votesByParty), sizeof(votesByParty));
+		int newLogSize = 0;
+		// We need to reset logSize and phsSize, because we save a whole object, 
+		// and when we load data to votesByParty and votesPerc we need resize to work with the new size.
+		logSize = 0, phsSize = 0;
+		in.read(rcastc(&newLogSize), sizeof(newLogSize));
+		if (newLogSize > 0) {
+			resize(newLogSize);
+			logSize = newLogSize;
+			in.read(rcastc(votesByParty), sizeof(votesByParty));
+			in.read(rcastc(votesPerc), sizeof(votesPerc));
+		}
 	}
 }

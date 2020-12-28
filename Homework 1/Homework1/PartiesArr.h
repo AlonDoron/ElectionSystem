@@ -1,6 +1,10 @@
 #pragma once
+#include <fstream>
 #include "Party.h"
 #include "CitizensArr.h"
+
+#define rcastcc reinterpret_cast<const char*>
+#define rcastc reinterpret_cast<char*>
 
 namespace elections {
 	class PartiesArr {
@@ -14,6 +18,7 @@ namespace elections {
 	public:
 		// Ctor
 		PartiesArr();
+		PartiesArr(int size);
 		// copy ctor
 		PartiesArr(const PartiesArr&);
 		// Dtor
@@ -44,6 +49,9 @@ namespace elections {
 		const bool isCitizenAlreadyRep(long int id) const;
 
 		friend ostream& operator<<(ostream& os, const PartiesArr& partiesArr);
+
+		void save(ostream& out) const;
+		void load(istream& in);
 
 	};
 }

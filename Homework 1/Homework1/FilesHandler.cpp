@@ -14,27 +14,35 @@ namespace elections {
 		fileName[fileNameLen] = '\0';
 	}
 
-	void FilesHandler::saveToFile(DistrictsArr& districtsArr, CitizensDB& citizensDB, PartiesArr& partiesArr)
+	void FilesHandler::saveToFile(DistrictsArr& districtsArr, CitizensDB& citizensDB,
+		PartiesArr& partiesArr, int electionType)
 	{
-		// First - save all Districts, Then - save all citizens, Then - save all parties.
 		ofstream outfile(fileName, ios::binary);
+
+		outfile.write(rcastcc(&electionType), sizeof(electionType));
 		districtsArr.save(outfile);
+		citizensDB.save(outfile);
+		partiesArr.save(outfile);
 
 		outfile.close();
-
-		ifstream infile(fileName, ios::binary);
-		DistrictsArr newDists;
-		newDists.load(infile);
-		/*ifstream infile(fileName, ios::binary);
-		infile.read(rcastc(inDists), sizeof(districtsSize));
-		infile.close();
-
-		for (int i = 0; i < districtsSize; i++)
-			cout << inDists[i];*/
 	}
 
-	void FilesHandler::loadFromFile(DistrictsArr& districtsArr, CitizensDB& citizensDB, PartiesArr& partiesArr)
+	void FilesHandler::loadFromFile(DistrictsArr& districtsArr, CitizensDB& citizensDB,
+		PartiesArr& partiesArr, int& electionType)
 	{
-		// TODO : LOAD WITH SERIALIZATION
+		ifstream infile(fileName, ios::binary);
+
+		infile.read(rcastc(&electionType), sizeof(electionType));
+
+		districtsArr.load(infile);
+
+		for (int i = 0; i < districtsArr.getLogSize(); i++) {
+			citizensDB.addEmptyCitizensArr();
+		}
+
+		citizensDB.load(infile);
+		partiesArr.load(infile);
+
+		infile.close();
 	}
 }

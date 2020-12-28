@@ -4,7 +4,10 @@
 using namespace std;
 
 namespace elections {
-	CitizensDB::CitizensDB() : phsSize(0), logSize(0), citizensByDist(nullptr) {}
+	CitizensDB::CitizensDB() : phsSize(0), logSize(0)
+	{
+		citizensByDist = new CitizensArr(0);
+	}
 
 	CitizensDB::CitizensDB(int size) : phsSize(size), logSize(size) {
 		citizensByDist = new CitizensArr[size];
@@ -15,8 +18,12 @@ namespace elections {
 	}
 
 	CitizensDB::~CitizensDB() {
-		delete[] citizensByDist;
+		for (int i = 0; i < citizensByDist->getLogSize(); i++)
+		{
+			citizensByDist[i].~CitizensArr();
+		}
 
+		logSize = phsSize = 0;
 	}
 
 	const int CitizensDB::getLogSize() const {
@@ -86,6 +93,29 @@ namespace elections {
 	CitizensArr& CitizensDB::operator[](int index) const
 	{
 		return citizensByDist[index];
+	}
+
+	void CitizensDB::save(ostream& out) const
+	{
+		out.write(rcastcc(&logSize), sizeof(logSize));
+
+		for (int i = 0; i < logSize; i++)
+			citizensByDist[i].save(out);
+	}
+
+	void CitizensDB::load(istream& in)
+	{
+		int newLogSize;
+		in.read(rcastc(&newLogSize), sizeof(newLogSize));
+
+		for (int i = 0; i < newLogSize; i++)
+		{
+			CitizensArr temp;
+			temp.load(in);
+
+			addEmptyCitizensArr();
+			citizensByDist[i] = temp;
+		}
 	}
 
 	const bool CitizensDB::isCitizenExistsById(long int id) const {

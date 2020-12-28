@@ -1,6 +1,8 @@
 #pragma once
-#pragma once
 #include "Citizen.h"
+
+#define rcastcc reinterpret_cast<const char*>
+#define rcastc reinterpret_cast<char*>
 
 namespace elections {
 	class CitizensArr {
@@ -49,5 +51,8 @@ namespace elections {
 		Citizen& operator[](long int id) const;
 
 		friend ostream& operator<<(ostream& os, const CitizensArr& citizensArr);
+
+		void save(ostream& out) const;
+		void load(istream& in);
 	};
 }

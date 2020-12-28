@@ -3,6 +3,9 @@
 
 using namespace std;
 
+#define rcastcc reinterpret_cast<const char*>
+#define rcastc reinterpret_cast<char*>
+
 namespace elections {
 	class Citizen {
 	private:
@@ -40,5 +43,8 @@ namespace elections {
 
 		// Printer operator
 		friend ostream& operator<<(ostream& os, const Citizen& citizen);
+
+		void save(ostream& out) const;
+		void load(istream& in);
 	};
 }

@@ -2,7 +2,6 @@
 #include "CitizensDB.h";
 #include "Citizen.h";
 
-
 namespace elections {
 	class Party {
 	private:
@@ -34,12 +33,14 @@ namespace elections {
 		const char* getPartyName() const;
 		const long int getLeaderId() const;
 		const CitizensDB& getRepresentatives() const;
-		
+
 		// print all party detailes
-	
 		friend ostream& operator<<(ostream& os, const Party& party);
-	
+
 		// returns true if representative with id repId already exists
 		const bool isRepAlreadyExists(long int repId);
+
+		void save(ostream& out) const;
+		void load(istream& in);
 	};
 }

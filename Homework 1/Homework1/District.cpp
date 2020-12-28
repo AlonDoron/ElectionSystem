@@ -2,9 +2,6 @@
 #include "District.h"
 #include "PartiesArr.h"
 
-#define rcastcc reinterpret_cast<const char*>
-#define rcastc reinterpret_cast<char*>
-
 using namespace std;
 
 namespace elections {
@@ -140,27 +137,27 @@ namespace elections {
 
 	void District::save(ostream& out) const
 	{
+		out.write(rcastcc(this), sizeof(*this));
 		out.write(name, nameLen);
-		out.write(rcastcc(&nameLen), sizeof(nameLen));
-		out.write(rcastcc(&numOfRep), sizeof(numOfRep));
-		out.write(rcastcc(&districtNum), sizeof(districtNum));
+
 		votesCounter.save(out);
 	}
 
 	void District::load(istream& in)
 	{
+		in.read(rcastc(this), sizeof(*this));
+		name = new char[nameLen + 1];
 		in.read(name, nameLen);
-		in.read(rcastc(&nameLen), sizeof(nameLen));
-		in.read(rcastc(&numOfRep), sizeof(numOfRep));
-		in.read(rcastc(&districtNum), sizeof(districtNum));
+		name[nameLen] = '\0';
+
 		votesCounter.load(in);
 	}
 
-	ostream& operator<<(ostream& os, const District&  district)
+	ostream& operator<<(ostream& os, const District& district)
 	{
 		cout << "District Number: " << district.getDistrictNum()
 			<< " | Name: " << district.getDistrictName() << " | Number of representative: "
-			<< district.getNumOfRep() <<" | Number of citizens: " << district.getCitizensNum() <<  endl;
+			<< district.getNumOfRep() << " | Number of citizens: " << district.getCitizensNum() << endl;
 
 		return os;
 	}
