@@ -18,6 +18,7 @@ namespace elections {
 	public:
 		// Ctor
 		PartiesArr();
+		PartiesArr(int size);
 		// copy ctor
 		PartiesArr(const PartiesArr&);
 		// Dtor

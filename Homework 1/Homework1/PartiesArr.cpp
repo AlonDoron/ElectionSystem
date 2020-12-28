@@ -6,6 +6,11 @@ using namespace std;
 namespace elections {
 	PartiesArr::PartiesArr() : parties(nullptr), logSize(0), phsSize(0) {}
 
+	PartiesArr::PartiesArr(int size) : logSize(0), phsSize(size)
+	{
+		parties = new Party[size];
+	}
+
 	PartiesArr::PartiesArr(const PartiesArr& other)
 	{
 		*this = other;
@@ -105,11 +110,13 @@ namespace elections {
 		int newLogSize = 0;
 
 		in.read(rcastc(&newLogSize), sizeof(newLogSize));
-		resize(newLogSize);
-		logSize = newLogSize;
 
-		for (int i = 0; i < logSize; i++)
-			parties[i].load(in);
+		for (int i = 0; i < newLogSize; i++) {
+			Party temp;
+			temp.load(in);
+
+			add(temp);
+		}
 	}
 
 	ostream& operator<<(ostream& os, const PartiesArr& partiesArr)
