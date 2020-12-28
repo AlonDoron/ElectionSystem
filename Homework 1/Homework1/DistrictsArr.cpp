@@ -1,8 +1,10 @@
 #include <iostream>
+#include <typeinfo>
 #include "DistrictsArr.h"
 #include "CitizensArr.h";
 #include "CitizensDB.h"
 #include "PartiesArr.h"
+#include "DividedDistrict.h"
 
 using namespace std;
 
@@ -94,20 +96,31 @@ namespace elections {
 
 	void DistrictsArr::save(ostream& out) const
 	{
+		int type;
 		out.write(rcastcc(&logSize), sizeof(logSize));
 
-		for (int i = 0; i < logSize; i++)
-			(*(districts[i])).save(out);
+		for (int i = 0; i < logSize; i++) {
+			(typeid(*districts[i]) == typeid(District)) ? type = 0 : type = 1;
+
+			out.write(rcastcc(&type), sizeof(type));
+			districts[i]->save(out);
+		}
+
 	}
 
 	void DistrictsArr::load(istream& in)
 	{
-		int newLogSize;
+		int newLogSize, type;
 		District* temp;
 		in.read(rcastc(&newLogSize), sizeof(newLogSize));
 
 		for (int i = 0; i < newLogSize; i++) {
-			temp = new District();
+			in.read(rcastc(&type), sizeof(type));
+			if (type == 0)
+				temp = new District();
+			else
+				temp = new DividedDistrict();
+
 			temp->load(in);
 			add(temp);
 		}
