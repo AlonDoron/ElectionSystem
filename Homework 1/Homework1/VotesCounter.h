@@ -29,7 +29,7 @@ class CitizensArr;
 		~VotesCounter();
 
 		// Overload "=" operator
-		void operator=(const VotesCounter&);
+		VotesCounter& operator=(const VotesCounter&);
 
 		// Setters----------------------------------------
 		// allocating one more space when district is added

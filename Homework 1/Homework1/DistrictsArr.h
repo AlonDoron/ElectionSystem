@@ -27,7 +27,7 @@ namespace elections {
 		DistrictsArr(const DistrictsArr&);
 
 		// Overload "=" operator
-		void operator=(const DistrictsArr&);
+		DistrictsArr& operator=(const DistrictsArr&);
 
 		// Setters-----------------------------------------
 		void add(District* district);

@@ -23,7 +23,7 @@ namespace elections {
 		~CitizensDB();
 
 		// Overload "=" operator
-		void operator=(const CitizensDB&);
+		CitizensDB& operator=(const CitizensDB&);
 
 		// Setters---------------------------------------
 		bool setLogSize(int size);

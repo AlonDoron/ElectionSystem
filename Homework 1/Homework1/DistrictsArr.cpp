@@ -39,7 +39,7 @@ namespace elections {
 		phsSize = newSize;
 	}
 
-	void DistrictsArr::operator=(const DistrictsArr& other)
+	DistrictsArr& DistrictsArr::operator=(const DistrictsArr& other)
 	{
 		logSize = other.logSize;
 		phsSize = other.phsSize;
@@ -47,6 +47,8 @@ namespace elections {
 
 		for (int i = 0; i < logSize; i++)
 			districts[i] = other.districts[i];
+
+		return *this;
 	}
 
 	District& DistrictsArr::operator[](int index) const
@@ -111,7 +113,7 @@ namespace elections {
 		}
 	}
 
-	void DistrictsArr::getElectedRepsFromAllDistricts(CitizensDB* _electorsByDistrict, PartiesArr* partiesArr, CitizensDB*  _citizensDB)
+	void DistrictsArr::getElectedRepsFromAllDistricts(CitizensDB* _electorsByDistrict, PartiesArr* partiesArr, CitizensDB* _citizensDB)
 	{
 		int size = _electorsByDistrict->getLogSize();
 		District* currDist;

@@ -49,7 +49,7 @@ namespace elections {
 		phsSize = newSize;
 	}
 
-	void CitizensDB::operator=(const CitizensDB& other)
+	CitizensDB& CitizensDB::operator=(const CitizensDB& other)
 	{
 		logSize = other.logSize;
 		phsSize = other.phsSize;
@@ -57,6 +57,8 @@ namespace elections {
 
 		for (int i = 0; i < logSize; i++)
 			citizensByDist[i] = other.citizensByDist[i];
+
+		return *this;
 	}
 
 	bool CitizensDB::setLogSize(int size)

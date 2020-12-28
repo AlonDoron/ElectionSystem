@@ -63,7 +63,7 @@ namespace elections {
 		phsSize = newSize;
 	}
 
-	void VotesCounter::operator=(const VotesCounter& other)
+	VotesCounter& VotesCounter::operator=(const VotesCounter& other)
 	{
 		logSize = other.logSize;
 		phsSize = other.phsSize;
@@ -79,7 +79,7 @@ namespace elections {
 			votesPerc[i] = other.votesPerc[i];
 		}
 
-
+		return *this;
 	}
 
 	void VotesCounter::addEmptyCounter()

@@ -25,7 +25,7 @@ namespace elections {
 		~PartiesArr();
 
 		// Overload "=" operator
-		void operator=(const PartiesArr&);
+		PartiesArr& operator=(const PartiesArr&);
 
 		// Setters---------------------------------------------------------
 		// add one party to partiesArr

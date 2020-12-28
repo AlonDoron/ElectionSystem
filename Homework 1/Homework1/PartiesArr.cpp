@@ -36,7 +36,7 @@ namespace elections {
 		phsSize = newSize;
 	}
 
-	void PartiesArr::operator=(const PartiesArr& other)
+	PartiesArr& PartiesArr::operator=(const PartiesArr& other)
 	{
 		logSize = other.logSize;
 		phsSize = other.phsSize;
@@ -44,6 +44,8 @@ namespace elections {
 
 		for (int i = 0; i < logSize; i++)
 			parties[i] = other.parties[i];
+
+		return *this;
 	}
 
 	void PartiesArr::add(Party& party)

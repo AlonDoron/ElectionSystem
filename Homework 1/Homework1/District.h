@@ -29,7 +29,7 @@ namespace elections {
 		~District();
 
 		// Overload "=" operator
-		void operator=(const District&);
+		District& operator=(const District&);
 
 		// Getters-------------------------------
 		const int getDistrictNum(void) const;
@@ -46,7 +46,7 @@ namespace elections {
 		void addOneCitizen();
 
 
-		virtual void setElected(PartiesArr* _partiesArr, CitizensDB* _electorsByParty,CitizensDB* _citizensDB);
+		virtual void setElected(PartiesArr* _partiesArr, CitizensDB* _electorsByParty, CitizensDB* _citizensDB);
 		void printResultElectionInDist(PartiesArr* _partiesArr, CitizensDB* _citizensDB);
 
 		// Printer operator

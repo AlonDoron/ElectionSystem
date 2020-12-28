@@ -21,7 +21,7 @@ namespace elections {
 		~Party();
 
 		// Overload "=" operator
-		void operator=(const Party&);
+		Party& operator=(const Party&);
 
 		// Setters---------------------------------------------------
 		void addRepToParty(Citizen&, int districtNum);

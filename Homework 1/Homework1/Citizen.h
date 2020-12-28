@@ -25,7 +25,7 @@ namespace elections {
 		~Citizen();
 
 		// Overload "=" operator
-		void operator=(const Citizen&);
+		Citizen& operator=(const Citizen&);
 
 		// Setters-----------------------------
 		const bool setVoted(bool val);

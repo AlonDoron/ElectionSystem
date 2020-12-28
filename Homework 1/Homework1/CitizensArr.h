@@ -23,7 +23,7 @@ namespace elections {
 		~CitizensArr();
 
 		// Overload "=" operator
-		void operator=(const CitizensArr&);
+		CitizensArr& operator=(const CitizensArr&);
 
 		// Setters----------------------------------
 		bool setLogSize(int size);

@@ -29,8 +29,9 @@ namespace elections {
 	}
 
 
-	void District::operator=(const District& other)
+	District& District::operator=(const District& other)
 	{
+		delete[] name;
 		numOfRep = other.numOfRep;
 		nameLen = other.nameLen;
 		districtNum = other.districtNum;
@@ -42,6 +43,8 @@ namespace elections {
 			name[i] = other.name[i];
 
 		name[nameLen] = '\0';
+
+		return *this;
 	}
 	const int District::getDistrictNum(void) const
 	{
@@ -105,7 +108,7 @@ namespace elections {
 
 			RepsInPartyi = currDB[districtNum];
 
-			currRepsNum = (votesPerc[i] * numOfRep) / 100; 
+			currRepsNum = (votesPerc[i] * numOfRep) / 100;
 
 			curr = RepsInPartyi.getCitizensUntillIndex(currRepsNum);
 
@@ -116,7 +119,7 @@ namespace elections {
 		cout << endl;
 		(*_electorsByParty)[partyWin].appendCitizensArr(res);
 
-		
+
 	}
 
 	void District::printResultElectionInDist(PartiesArr* _partiesArr, CitizensDB* _citizensDB)
@@ -127,8 +130,8 @@ namespace elections {
 		leader = (*_citizensDB)[leaderID];
 
 		cout << endl;
-		cout << "     ***** District " << name <<" (united system) *****     " <<endl
-			<<"the district is giving all the following representative "
+		cout << "     ***** District " << name << " (united system) *****     " << endl
+			<< "the district is giving all the following representative "
 			<< numOfRep << "to " << leader.getName() << ":" << endl;
 		cout << endl;
 

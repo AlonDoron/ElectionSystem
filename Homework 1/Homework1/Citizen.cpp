@@ -26,7 +26,7 @@ namespace elections {
 		delete[] name;
 	}
 
-	void Citizen::operator=(const Citizen& other)
+	Citizen& Citizen::operator=(const Citizen& other)
 	{
 		nameLen = other.nameLen;
 		year = other.year;
@@ -37,6 +37,8 @@ namespace elections {
 		memcpy(name, other.name, other.nameLen);
 
 		name[nameLen] = '\0';
+
+		return *this;
 	}
 
 	const bool Citizen::getVoted() const

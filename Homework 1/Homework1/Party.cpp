@@ -47,7 +47,7 @@ namespace elections {
 		return representatives;
 	}
 
-	void Party::operator=(const Party& other)
+	Party& Party::operator=(const Party& other)
 	{
 		nameLen = other.nameLen;
 		id = other.id;
@@ -59,6 +59,8 @@ namespace elections {
 		name[nameLen] = '\0';
 
 		representatives = other.representatives;
+
+		return *this;
 	}
 
 	const char* Party::getPartyName() const
