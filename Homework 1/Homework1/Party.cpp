@@ -90,18 +90,20 @@ namespace elections {
 
 	void Party::save(ostream& out) const
 	{
-		out.write(rcastcc(this), sizeof(*this));
+		out.write(rcastcc(&nameLen), sizeof(nameLen));
 		out.write(name, nameLen);
+		out.write(rcastcc(&id), sizeof(id));
 
 		representatives.save(out);
 	}
 
 	void Party::load(istream& in)
 	{
-		in.read(rcastc(this), sizeof(*this));
+		in.read(rcastc(&nameLen), sizeof(nameLen));
 		name = new char[nameLen + 1];
 		in.read(name, nameLen);
 		name[nameLen] = '\0';
+		in.read(rcastc(&id), sizeof(id));
 
 		representatives.load(in);
 	}
