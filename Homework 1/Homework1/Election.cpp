@@ -7,7 +7,7 @@ using namespace std;
 namespace elections {
 
 
-	void RegularElection::displayResults()
+	void Election::displayResults()
 	{
 
 

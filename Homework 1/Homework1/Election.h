@@ -28,38 +28,9 @@ namespace elections {
 			date(_date), districtsArr(_districtsArr), partiesArr(_partiesArr), citizensDB(_citizensDB)
 			, electorsByParty(_partiesArr.getLogSize()) {}
 
-		virtual void displayResults() = 0;
+		void displayResults();
 		~Election() {}
 	};
-
-	class RegularElection : public Election {
-	private:
-
-	public:
-		RegularElection(Date& _date, DistrictsArr& _districtsArr, PartiesArr& _partiesArr, CitizensDB& _citizensDB)
-			: Election(_date, _districtsArr, _partiesArr, _citizensDB) {}
-
-		virtual void displayResults();
-		~RegularElection();
-
-	};
-
-
-	class SimpleElection : public Election {
-	private:
-
-	public:
-		SimpleElection(Date& _date, DistrictsArr& _districtsArr, PartiesArr& _partiesArr, CitizensDB& _citizensDB)
-			: Election(_date, _districtsArr, _partiesArr, _citizensDB) {}
-
-		virtual void displayResults() {};
-		~SimpleElection();
-
-	};
-
-
-
-
 
 
 }
