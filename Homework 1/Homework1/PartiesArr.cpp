@@ -125,7 +125,11 @@ namespace elections {
 	ostream& operator<<(ostream& os, const PartiesArr& partiesArr)
 	{
 		for (int i = 0; i < partiesArr.getLogSize(); i++)
+		{
+			cout << "Party number: " << i << " ";
 			cout << partiesArr[i];
+
+		}
 
 		return os;
 	}

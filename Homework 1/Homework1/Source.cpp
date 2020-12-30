@@ -20,6 +20,8 @@ using namespace elections;
 // This function creates new district and adds it to districtsArr.
 void addNewDistrict(DistrictsArr& districtsArr, PartiesArr& partiesArr, CitizensDB& citizensDB);
 
+void showElectionPolls( Date& electionDate, DistrictsArr& districtsArr, PartiesArr& partiesArr, CitizensDB& citizensDB);
+
 // ( 2 )
 // This function creates new citizen and adds it to citizensArr.
 void addNewCitizen(CitizensDB& citizensDB, DistrictsArr& districtsArr);
@@ -58,7 +60,7 @@ int main() {
 	UserActions userActions; int action = 0;
 	Date electionDate;
 	DistrictsArr districtsArr; CitizensDB citizensDB;
-	PartiesArr partiesArr; Election* election; ElectionType electionType;
+	PartiesArr partiesArr; ElectionType electionType;
 
 	if (loadingElectionChoice())
 		loadElectionRound(districtsArr, citizensDB, partiesArr, electionType);
@@ -111,13 +113,7 @@ int main() {
 			break;
 
 		case UserActions::SHOW_ELECTION_POLLS:
-			if (electionType == ElectionType::REGULAR_ELECTION)
-				election = new RegularElection(electionDate, districtsArr, partiesArr, citizensDB);
-
-			else if (electionType == ElectionType::SIMPLE_ELECTION)
-				election = new SimpleElection(electionDate, districtsArr, partiesArr, citizensDB);
-
-			election->displayResults();
+			showElectionPolls(electionDate, districtsArr, partiesArr, citizensDB);
 			break;
 
 		case UserActions::EXIT:
@@ -139,6 +135,12 @@ int main() {
 	}
 }
 
+void showElectionPolls( Date& electionDate, DistrictsArr& districtsArr, PartiesArr& partiesArr, CitizensDB& citizensDB)
+{
+	Election election(electionDate, districtsArr, partiesArr, citizensDB);
+	election.displayResults();
+}
+
 // ( 1 )
 void addNewDistrict(DistrictsArr& districtsArr, PartiesArr& partiesArr, CitizensDB& citizensDB) {
 	char name[20];
@@ -152,21 +154,25 @@ void addNewDistrict(DistrictsArr& districtsArr, PartiesArr& partiesArr, Citizens
 	if (!districtsArr.isDistrictExistsByName((name))) {
 
 		nameLen = getStrLen(name);
-
+	
 		cout << "Enter number of representatives: ";
 		cin >> numOfRep;
+		if (numOfRep > 0)
+		{
+			cout << "Enter district type: (0 = united, 1 = divided)" << endl;
+			cin >> districtType;
 
-		cout << "Enter district type: (0 = united, 1 = divided)" << endl;
-		cin >> districtType;
+			if (districtType == 0)
+				newDist = new District(name, nameLen, numOfRep, districtsArr.getLogSize());
+			if (districtType == 1)
+				newDist = new DividedDistrict(name, nameLen, numOfRep, districtsArr.getLogSize());
 
-		if (districtType == 0)
-			newDist = new District(name, nameLen, numOfRep, districtsArr.getLogSize());
-		if (districtType == 1)
-			newDist = new DividedDistrict(name, nameLen, numOfRep, districtsArr.getLogSize());
-
-		districtsArr.add(newDist);
-		citizensDB.addEmptyCitizensArr(); // adding new citizensArr in DB for new district
-		partiesArr.addNewDistToRepArr(); //// adding new citizensArr to reps list of each party for new district 
+			districtsArr.add(newDist);
+			citizensDB.addEmptyCitizensArr(); // adding new citizensArr in DB for new district
+			partiesArr.addNewDistToRepArr(); //// adding new citizensArr to reps list of each party for new district 
+		}
+		else
+			cout << "number of representatives can not be a negative number " << endl;
 	}
 	else
 		cout << "The district with name " << name << " already exists!!!" << endl;

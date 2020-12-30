@@ -36,9 +36,9 @@ namespace elections {
 
 		districtsArr.load(infile);
 
-		for (int i = 0; i < districtsArr.getLogSize(); i++) {
+	/*	for (int i = 0; i < districtsArr.getLogSize(); i++) {
 			citizensDB.addEmptyCitizensArr();
-		}
+		}*/
 
 		citizensDB.load(infile);
 		partiesArr.load(infile);
