@@ -1,6 +1,7 @@
 #include <iostream>
 #include "Citizen.h"
 #include "District.h"
+#include "DividedDistrict.h"
 
 using namespace std;
 
@@ -109,20 +110,33 @@ namespace elections {
 
 	void Citizen::save(ostream& out) const
 	{
+		int distType;
+
 		out.write(rcastcc(this), sizeof(*this));
 		out.write(name, nameLen);
 
+		(typeid(district) == typeid(District)) ? distType = 0 : distType = 1;
+
+		out.write(rcastcc(&distType), sizeof(distType));
 		district->save(out);
 	}
 
 	void Citizen::load(istream& in)
 	{
+		int distType;
+
 		in.read(rcastc(this), sizeof(*this));
 		name = new char[nameLen + 1];
 		in.read(name, nameLen);
 		name[nameLen] = '\0';
 
-		district = new District();
+		in.read(rcastc(&distType), sizeof(distType));
+		if (distType == 0)
+			district = new District();
+
+		else
+			district = new DividedDistrict();
+
 		district->load(in);
 	}
 
