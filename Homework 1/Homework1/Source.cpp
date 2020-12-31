@@ -45,7 +45,7 @@ void addNewVote(CitizensDB& citizensDB, DistrictsArr& districtsArr, PartiesArr& 
 
 // ( 9 )
 // a function that creates "Election" object where all the results will be claculated
-void showElectionPolls( Date& electionDate, DistrictsArr& districtsArr, PartiesArr& partiesArr, CitizensDB& citizensDB);
+void showElectionPolls(Date& electionDate, DistrictsArr& districtsArr, PartiesArr& partiesArr, CitizensDB& citizensDB);
 
 
 // This function gets name and returns it's length.
@@ -59,9 +59,13 @@ void handleElectionType(ElectionType& electionType, DistrictsArr& districtsArr, 
 
 bool loadingElectionChoice();
 
+// This function gets districtsArr, citizensDB and partiesArr and electionType,
+// and saves it's data to bin file.
 void saveElectionRound(DistrictsArr& districtsArr, CitizensDB& citizensDB,
 	PartiesArr& partiesArr, ElectionType& type);
 
+// This function gets districtsArr, citizensDB and partiesArr and electionType,
+// and loading data into them from bin file.
 void loadElectionRound(DistrictsArr& districtsArr, CitizensDB& citizensDB,
 	PartiesArr& partiesArr, ElectionType& type);
 
@@ -159,7 +163,7 @@ void addNewDistrict(DistrictsArr& districtsArr, PartiesArr& partiesArr, Citizens
 	if (!districtsArr.isDistrictExistsByName((name))) {
 
 		nameLen = getStrLen(name);
-	
+
 		cout << "Enter number of representatives: ";
 		cin >> numOfRep;
 		if (numOfRep > 0)
@@ -315,7 +319,7 @@ void addNewVote(CitizensDB& citizensDB, DistrictsArr& districtsArr, PartiesArr& 
 		cout << "Voter with id " << ID << " not found!!" << endl;
 }
 // ( 9 )
-void showElectionPolls( Date& electionDate, DistrictsArr& districtsArr, PartiesArr& partiesArr, CitizensDB& citizensDB)
+void showElectionPolls(Date& electionDate, DistrictsArr& districtsArr, PartiesArr& partiesArr, CitizensDB& citizensDB)
 {	// a new election object is created
 	Election election(electionDate, districtsArr, partiesArr, citizensDB);
 	election.displayResults();
