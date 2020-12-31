@@ -6,10 +6,10 @@
 using namespace std;
 
 namespace elections {
-	Party::Party() : name(nullptr), nameLen(0), id(0), representatives(), voters(0) {}
+	Party::Party() : name(nullptr), nameLen(0), id(0), representatives() {}
 
 	Party::Party(char* _name, int _nameLen, long int _id, int numOfDistricts) :
-		nameLen(_nameLen), id(_id), representatives(numOfDistricts), voters(numOfDistricts)
+		nameLen(_nameLen), id(_id), representatives(numOfDistricts)
 	{
 		name = new char[_nameLen + 1];
 
@@ -18,40 +18,23 @@ namespace elections {
 		name[_nameLen] = '\0';
 	}
 
+	Party::Party(const Party& other)
+	{
+		*this = other;
+	}
+
 	Party::~Party()
 	{
 		delete[] name;
 	}
 
-	const int Party::getVotesInDist(int idx)
-	{
-		return voters.getVotesByIndex(idx);
-	}
-
-	CitizensArr* Party::getRepListByPercent(int distIdx, int numOfElected)
-	{
-		CitizensArr* electedReps = new CitizensArr();
-		CitizensArr allRepsInDist;
-
-		allRepsInDist = representatives.getCitizensArrByIndex(distIdx);
-		electedReps = (allRepsInDist.getElectReps(numOfElected));
-
-		return electedReps;
-	}
 
 	const bool Party::isRepAlreadyExists(long int repId)
 	{
-		for (int i = 0; i < representatives.getLogSize(); i++)
-		{
-			CitizensArr currCitizensArr;
-			currCitizensArr = representatives.getCitizensArrByIndex(i);
-
-			for (int j = 0; j < currCitizensArr.getLogSize(); j++)
-				if (currCitizensArr.getCitizenByIndex(j).getId() == repId)
-					return true;
-		}
-
-		return false;
+		if (representatives.isCitizenExistsById(repId))
+			return true;
+		else
+			return false;
 	}
 
 	const long int Party::getLeaderId() const
@@ -59,7 +42,12 @@ namespace elections {
 		return id;
 	}
 
-	void Party::operator=(const Party& other)
+	const CitizensDB& Party::getRepresentatives() const
+	{
+		return representatives;
+	}
+
+	Party& Party::operator=(const Party& other)
 	{
 		nameLen = other.nameLen;
 		id = other.id;
@@ -71,38 +59,54 @@ namespace elections {
 		name[nameLen] = '\0';
 
 		representatives = other.representatives;
-		voters = other.voters;
+
+		return *this;
 	}
 
-	char* Party::getPartyName() const
+	const char* Party::getPartyName() const
 	{
 		return name;
 	}
 
-	void Party::printParty(void) const
-	{
-		cout << "Party's Name: " << name << " | ID of party leader: " << id << endl;
-		cout << "Representatives by district: " << endl;
-		representatives.printRep();
-	}
 
 	void Party::addRepToParty(Citizen& rep, int districtNum)
 	{
-		representatives.addCitizen(rep, districtNum);
+		representatives.addCitizenToIndex(rep, districtNum);
 	}
 
-	void Party::addNewDistrictToRepArr(void)
+	void Party::addEmptyCellToRepArr(void)
 	{
-		representatives.add();
+		representatives.addEmptyCitizensArr();
 	}
 
-	void Party::addDistrictToVotersArr()
+
+	ostream& operator<<(ostream& os, const Party& party)
 	{
-		voters.addDistrict();
+
+		cout << "Party's Name: " << party.getPartyName() << " | ID of party leader: " << party.getLeaderId() << endl;
+		cout << "Representatives by district: " << endl;
+		cout << party.getRepresentatives();
+
+		return os;
 	}
 
-	void Party::addVoteToDistrict(int districtNum)
+	void Party::save(ostream& out) const
 	{
-		voters.addVote(districtNum);
+		out.write(rcastcc(&nameLen), sizeof(nameLen));
+		out.write(name, nameLen);
+		out.write(rcastcc(&id), sizeof(id));
+
+		representatives.save(out);
+	}
+
+	void Party::load(istream& in)
+	{
+		in.read(rcastc(&nameLen), sizeof(nameLen));
+		name = new char[nameLen + 1];
+		in.read(name, nameLen);
+		name[nameLen] = '\0';
+		in.read(rcastc(&id), sizeof(id));
+
+		representatives.load(in);
 	}
 }

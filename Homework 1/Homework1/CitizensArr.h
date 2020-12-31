@@ -1,6 +1,9 @@
 #pragma once
 #include "Citizen.h"
 
+#define rcastcc reinterpret_cast<const char*>
+#define rcastc reinterpret_cast<char*>
+
 namespace elections {
 	class CitizensArr {
 	private:
@@ -14,35 +17,43 @@ namespace elections {
 		// Ctors
 		CitizensArr();
 		CitizensArr(int size);
+		CitizensArr(const CitizensArr&);
 
 		// Dtor
 		~CitizensArr();
 
 		// Overload "=" operator
-		void operator=(const CitizensArr&);
+		CitizensArr& operator=(const CitizensArr&);
 
 		// Setters----------------------------------
+		bool setLogSize(int size);
+		bool setPhsSize(int size);
+
 		//add one citizen to array
 		void add(Citizen& citizen);
 
 		// add an entire citizen's array to exisiting array (at the end)
-		void add_citizenArr(CitizensArr& other);
-		bool setLogSize(int size);
-		bool setPhsSize(int size);
+		void appendCitizensArr(CitizensArr& other);
 
 		// Getters--------------------------------------
-		// return citizen using ID
-		Citizen* getCitizen(long int citizenId);
 		const int getLogSize() const;
+		const int getPhsSize() const;
 
+		// return the first "numOfElected" citizens in array
+		CitizensArr getCitizensUntillIndex(int numOfElected);
+
+		const bool isCitizenExistsById(long int id) const;
 		// return citizen using index
 		Citizen& getCitizenByIndex(int ind);
 
-		// return the first "numOfElected" citizens in array
-		CitizensArr* getElectReps(int numOfElected);
+		Citizen& operator[](int index) const;
 
-		// Print all citizens in CitizensArr
-		void printCitizens(void);
+		Citizen& operator[](long int id) const;
 
+		friend ostream& operator<<(ostream& os, const CitizensArr& citizensArr);
+
+		//Save and load from BIN file methods.
+		void save(ostream& out) const;
+		void load(istream& in);
 	};
 }

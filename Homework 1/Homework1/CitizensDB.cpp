@@ -4,19 +4,35 @@
 using namespace std;
 
 namespace elections {
-	CitizensDB::CitizensDB() : phsSize(0), logSize(0), citizensByDist(nullptr) {}
+	CitizensDB::CitizensDB() : phsSize(0), logSize(0)
+	{
+		citizensByDist = new CitizensArr(0);
+	}
 
 	CitizensDB::CitizensDB(int size) : phsSize(size), logSize(size) {
 		citizensByDist = new CitizensArr[size];
-	};
+	}
+	CitizensDB::CitizensDB(const CitizensDB& other)
+	{
+		*this = other;
+	}
 
 	CitizensDB::~CitizensDB() {
-		delete[] citizensByDist;
+		for (int i = 0; i < citizensByDist->getLogSize(); i++)
+		{
+			citizensByDist[i].~CitizensArr();
+		}
 
+		logSize = phsSize = 0;
 	}
 
 	const int CitizensDB::getLogSize() const {
 		return logSize;
+	}
+
+	const int CitizensDB::getPhsSize() const
+	{
+		return phsSize;
 	}
 
 	void CitizensDB::resize(int newSize)
@@ -33,7 +49,7 @@ namespace elections {
 		phsSize = newSize;
 	}
 
-	void CitizensDB::operator=(const CitizensDB& other)
+	CitizensDB& CitizensDB::operator=(const CitizensDB& other)
 	{
 		logSize = other.logSize;
 		phsSize = other.phsSize;
@@ -41,9 +57,25 @@ namespace elections {
 
 		for (int i = 0; i < logSize; i++)
 			citizensByDist[i] = other.citizensByDist[i];
+
+		return *this;
 	}
 
-	void CitizensDB::add()
+	bool CitizensDB::setLogSize(int size)
+	{
+		logSize = size;
+
+		return true;
+	}
+
+	bool CitizensDB::setPhsSize(int size)
+	{
+		phsSize = size;
+
+		return true;
+	}
+
+	void CitizensDB::addEmptyCitizensArr()
 	{
 		CitizensArr newCitizensArr;
 
@@ -54,26 +86,68 @@ namespace elections {
 		++logSize;
 	}
 
-	void CitizensDB::add(CitizensArr& citizensArr, int distId)
+	void CitizensDB::addCitizenToIndex(Citizen& citizen, int index)
 	{
-		citizensByDist[distId] = citizensArr;
+		citizensByDist[index].add(citizen);
 	}
 
-	void CitizensDB::addCitizen(Citizen& citizen, int districtNum)
+
+	CitizensArr& CitizensDB::operator[](int index) const
 	{
-		citizensByDist[districtNum].add(citizen);
+		return citizensByDist[index];
 	}
 
-	void CitizensDB::printRep(void) const
+	void CitizensDB::save(ostream& out) const
+	{
+		out.write(rcastcc(&logSize), sizeof(logSize));
+
+		for (int i = 0; i < logSize; i++)
+			citizensByDist[i].save(out);
+	}
+
+	void CitizensDB::load(istream& in)
+	{
+		int newLogSize;
+		in.read(rcastc(&newLogSize), sizeof(newLogSize));
+
+		for (int i = 0; i < newLogSize; i++)
+		{
+			CitizensArr temp;
+			temp.load(in);
+
+			addEmptyCitizensArr();
+			citizensByDist[i] = temp;
+		}
+	}
+
+	const bool CitizensDB::isCitizenExistsById(long int id) const {
+		for (int i = 0; i < logSize; i++)
+			if (citizensByDist[i].isCitizenExistsById(id))
+				return true;
+
+		return false;
+	}
+
+	Citizen& CitizensDB::operator[](long int id) const
 	{
 		for (int i = 0; i < logSize; i++)
-		{
-			citizensByDist[i].printCitizens();
-		}
+			if (citizensByDist[i].isCitizenExistsById(id))
+				return (citizensByDist[i])[id];
 	}
 
 	CitizensArr& CitizensDB::getCitizensArrByIndex(int ind)
 	{
 		return citizensByDist[ind];
+	}
+
+	ostream& operator<<(ostream& os, const CitizensDB& citizensDB)
+	{
+		for (int i = 0; i < citizensDB.getLogSize(); i++)
+		{
+			cout << citizensDB[i];
+			cout << endl;
+		}
+
+		return os;
 	}
 }

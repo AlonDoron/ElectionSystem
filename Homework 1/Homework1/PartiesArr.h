@@ -1,6 +1,10 @@
 #pragma once
+#include <fstream>
 #include "Party.h"
 #include "CitizensArr.h"
+
+#define rcastcc reinterpret_cast<const char*>
+#define rcastc reinterpret_cast<char*>
 
 namespace elections {
 	class PartiesArr {
@@ -14,29 +18,29 @@ namespace elections {
 	public:
 		// Ctor
 		PartiesArr();
-
+		PartiesArr(int size);
+		// copy ctor
+		PartiesArr(const PartiesArr&);
 		// Dtor
 		~PartiesArr();
 
 		// Overload "=" operator
-		void operator=(const PartiesArr&);
+		PartiesArr& operator=(const PartiesArr&);
 
 		// Setters---------------------------------------------------------
 		// add one party to partiesArr
 		void add(Party& party);
 
 		// add rep to party in index partyNum to it's array in index districtNum
-		void addRep(Citizen* rep, int partyNum, int districtNum);
+		void addRep(Citizen& rep, int partyNum, int districtNum);
 
 		// allocating one more space to each party when district is added
-		void addDistrictToAllParties(void);
-
-		// add one vote to party in index "partyId" in votersArr in index "districtNum"
-		void addVoteToDistrictInParty(int partyID, int districtNum);
+		void addNewDistToRepArr(void);
 
 		// Getters----------------------------------------------------------------
 		const int getLogSize() const;
-		Party& getPartyByIndex(int idx);
+
+		Party& operator[](int index) const;
 
 		// returns true if citizen with the id is already leader
 		const bool isCitizenAlreadyLeader(long int id) const;
@@ -44,7 +48,11 @@ namespace elections {
 		// returns true if citizen with the id is already rep
 		const bool isCitizenAlreadyRep(long int id) const;
 
-		// Print all parties in PartiesArr
-		void printParties(void) const;
+		friend ostream& operator<<(ostream& os, const PartiesArr& partiesArr);
+		
+		//Save and load from BIN file methods.
+		void save(ostream& out) const;
+		void load(istream& in);
+
 	};
 }

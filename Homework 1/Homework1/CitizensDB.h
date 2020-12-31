@@ -1,17 +1,10 @@
 #pragma once
 #include "CitizensArr.h"
 
+#define rcastcc reinterpret_cast<const char*>
+#define rcastc reinterpret_cast<char*>
+
 namespace elections {
-
-	struct Results {
-		int winnerPartyId;
-		int numOfReps;
-
-		bool operator < (Results& other) {
-			return (numOfReps > other.numOfReps);
-		}
-	};
-
 	class CitizensDB {
 	private:
 		int logSize, phsSize;
@@ -24,27 +17,37 @@ namespace elections {
 		// Ctors
 		CitizensDB();
 		CitizensDB(int size);
+		CitizensDB(const CitizensDB&);
 
 		// Dtor
 		~CitizensDB();
 
 		// Overload "=" operator
-		void operator=(const CitizensDB&);
+		CitizensDB& operator=(const CitizensDB&);
 
 		// Setters---------------------------------------
-		// allocate 1 citizensArr to array 
-		void add();
+		bool setLogSize(int size);
+		bool setPhsSize(int size);
 
-		// set citizensByDist[disId] = citizensArr
-		void add(CitizensArr& citizensArr, int distId);
+		// allocate 1 citizensArr to array 
+		void addEmptyCitizensArr();
+
+		const bool isCitizenExistsById(long int id) const;
 		// add citizens to citizensArr in index "districtNum"
-		void addCitizen(Citizen& citizen, int districtNum);
+		void addCitizenToIndex(Citizen& citizen, int index);
 
 		// Getters
 		const int getLogSize() const;
+		const int getPhsSize() const;
 		CitizensArr& getCitizensArrByIndex(int ind);
 
-		// Print one rep
-		void printRep(void) const;
+		CitizensArr& operator[](int index) const;
+		Citizen& operator[](long int id)const;
+		
+		//Save and load from BIN file methods.
+		void save(ostream& out) const;
+		void load(istream& in);
+
+		friend ostream& operator<<(ostream& os, const CitizensDB& citizensDB);
 	};
 }

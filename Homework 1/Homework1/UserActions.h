@@ -11,6 +11,8 @@ namespace elections {
 		SHOW_ALL_PARTIES,
 		VOTE,
 		SHOW_ELECTION_POLLS,
-		EXIT
+		EXIT,
+		SAVE_ELECTION_ROUND,
+		LOAD_ELECTION_ROUND
 	};
 }
