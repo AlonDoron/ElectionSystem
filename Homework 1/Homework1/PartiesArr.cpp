@@ -6,6 +6,11 @@ using namespace std;
 namespace elections {
 	PartiesArr::PartiesArr() : parties(nullptr), logSize(0), phsSize(0) {}
 
+	PartiesArr::PartiesArr(int size) : logSize(0), phsSize(size)
+	{
+		parties = new Party[size];
+	}
+
 	PartiesArr::PartiesArr(const PartiesArr& other)
 	{
 		*this = other;
@@ -14,6 +19,7 @@ namespace elections {
 	PartiesArr::~PartiesArr()
 	{
 		delete[] parties;
+		logSize = phsSize = 0;
 	};
 
 	void PartiesArr::resize(int newSize)
@@ -30,7 +36,7 @@ namespace elections {
 		phsSize = newSize;
 	}
 
-	void PartiesArr::operator=(const PartiesArr& other)
+	PartiesArr& PartiesArr::operator=(const PartiesArr& other)
 	{
 		logSize = other.logSize;
 		phsSize = other.phsSize;
@@ -38,6 +44,8 @@ namespace elections {
 
 		for (int i = 0; i < logSize; i++)
 			parties[i] = other.parties[i];
+
+		return *this;
 	}
 
 	void PartiesArr::add(Party& party)
@@ -91,10 +99,37 @@ namespace elections {
 
 		return false;
 	}
+
+	void PartiesArr::save(ostream& out) const
+	{
+		out.write(rcastcc(&logSize), sizeof(logSize));
+
+		for (int i = 0; i < logSize; i++)
+			parties[i].save(out);
+	}
+
+	void PartiesArr::load(istream& in)
+	{
+		int newLogSize = 0;
+
+		in.read(rcastc(&newLogSize), sizeof(newLogSize));
+
+		for (int i = 0; i < newLogSize; i++) {
+			Party temp;
+			temp.load(in);
+
+			add(temp);
+		}
+	}
+
 	ostream& operator<<(ostream& os, const PartiesArr& partiesArr)
-	{	
+	{
 		for (int i = 0; i < partiesArr.getLogSize(); i++)
+		{
+			cout << "Party number: " << i << " ";
 			cout << partiesArr[i];
+
+		}
 
 		return os;
 	}

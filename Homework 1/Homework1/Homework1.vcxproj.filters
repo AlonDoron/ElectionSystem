@@ -36,10 +36,19 @@
     <ClCompile Include="PartiesArr.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="VotersArr.cpp">
+    <ClCompile Include="CitizensDB.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CitizensDB.cpp">
+    <ClCompile Include="FilesHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VotesCounter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DividedDistrict.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Election.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -69,6 +78,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="VotesCounter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Election.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ElectionType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FilesHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DividedDistrict.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

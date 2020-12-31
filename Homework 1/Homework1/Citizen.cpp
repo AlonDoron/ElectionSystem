@@ -1,6 +1,7 @@
 #include <iostream>
 #include "Citizen.h"
 #include "District.h"
+#include "DividedDistrict.h"
 
 using namespace std;
 
@@ -26,7 +27,7 @@ namespace elections {
 		delete[] name;
 	}
 
-	void Citizen::operator=(const Citizen& other)
+	Citizen& Citizen::operator=(const Citizen& other)
 	{
 		nameLen = other.nameLen;
 		year = other.year;
@@ -37,6 +38,8 @@ namespace elections {
 		memcpy(name, other.name, other.nameLen);
 
 		name[nameLen] = '\0';
+
+		return *this;
 	}
 
 	const bool Citizen::getVoted() const
@@ -103,6 +106,38 @@ namespace elections {
 	const char* Citizen::getName() const
 	{
 		return name;
+	}
+
+	void Citizen::save(ostream& out) const
+	{
+		int distType;
+
+		out.write(rcastcc(this), sizeof(*this));
+		out.write(name, nameLen);
+
+		(typeid(district) == typeid(District)) ? distType = 0 : distType = 1;
+
+		out.write(rcastcc(&distType), sizeof(distType));
+		district->save(out);
+	}
+
+	void Citizen::load(istream& in)
+	{
+		int distType;
+
+		in.read(rcastc(this), sizeof(*this));
+		name = new char[nameLen + 1];
+		in.read(name, nameLen);
+		name[nameLen] = '\0';
+
+		in.read(rcastc(&distType), sizeof(distType));
+		if (distType == 0)
+			district = new District();
+
+		else
+			district = new DividedDistrict();
+
+		district->load(in);
 	}
 
 	ostream& operator<<(ostream& os, const Citizen& citizen)

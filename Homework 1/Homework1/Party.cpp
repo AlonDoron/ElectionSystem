@@ -47,7 +47,7 @@ namespace elections {
 		return representatives;
 	}
 
-	void Party::operator=(const Party& other)
+	Party& Party::operator=(const Party& other)
 	{
 		nameLen = other.nameLen;
 		id = other.id;
@@ -59,6 +59,8 @@ namespace elections {
 		name[nameLen] = '\0';
 
 		representatives = other.representatives;
+
+		return *this;
 	}
 
 	const char* Party::getPartyName() const
@@ -88,4 +90,23 @@ namespace elections {
 		return os;
 	}
 
+	void Party::save(ostream& out) const
+	{
+		out.write(rcastcc(&nameLen), sizeof(nameLen));
+		out.write(name, nameLen);
+		out.write(rcastcc(&id), sizeof(id));
+
+		representatives.save(out);
+	}
+
+	void Party::load(istream& in)
+	{
+		in.read(rcastc(&nameLen), sizeof(nameLen));
+		name = new char[nameLen + 1];
+		in.read(name, nameLen);
+		name[nameLen] = '\0';
+		in.read(rcastc(&id), sizeof(id));
+
+		representatives.load(in);
+	}
 }

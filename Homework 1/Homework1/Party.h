@@ -2,7 +2,6 @@
 #include "CitizensDB.h";
 #include "Citizen.h";
 
-
 namespace elections {
 	class Party {
 	private:
@@ -22,7 +21,7 @@ namespace elections {
 		~Party();
 
 		// Overload "=" operator
-		void operator=(const Party&);
+		Party& operator=(const Party&);
 
 		// Setters---------------------------------------------------
 		void addRepToParty(Citizen&, int districtNum);
@@ -34,12 +33,15 @@ namespace elections {
 		const char* getPartyName() const;
 		const long int getLeaderId() const;
 		const CitizensDB& getRepresentatives() const;
-		
+
 		// print all party detailes
-	
 		friend ostream& operator<<(ostream& os, const Party& party);
-	
+
 		// returns true if representative with id repId already exists
 		const bool isRepAlreadyExists(long int repId);
+
+		//Save and load from BIN file methods.
+		void save(ostream& out) const;
+		void load(istream& in);
 	};
 }

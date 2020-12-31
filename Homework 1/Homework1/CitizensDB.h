@@ -1,6 +1,9 @@
 #pragma once
 #include "CitizensArr.h"
 
+#define rcastcc reinterpret_cast<const char*>
+#define rcastc reinterpret_cast<char*>
+
 namespace elections {
 	class CitizensDB {
 	private:
@@ -20,7 +23,7 @@ namespace elections {
 		~CitizensDB();
 
 		// Overload "=" operator
-		void operator=(const CitizensDB&);
+		CitizensDB& operator=(const CitizensDB&);
 
 		// Setters---------------------------------------
 		bool setLogSize(int size);
@@ -39,7 +42,11 @@ namespace elections {
 		CitizensArr& getCitizensArrByIndex(int ind);
 
 		CitizensArr& operator[](int index) const;
-		Citizen& operator[](long int id)const ; 
+		Citizen& operator[](long int id)const;
+		
+		//Save and load from BIN file methods.
+		void save(ostream& out) const;
+		void load(istream& in);
 
 		friend ostream& operator<<(ostream& os, const CitizensDB& citizensDB);
 	};

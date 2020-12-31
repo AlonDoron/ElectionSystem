@@ -17,6 +17,7 @@ namespace elections {
 
 	CitizensArr::~CitizensArr() {
 		delete[] citizens;
+		logSize = phsSize = 0;
 	}
 
 	void CitizensArr::resize(int newSize)
@@ -33,7 +34,7 @@ namespace elections {
 		phsSize = newSize;
 	}
 
-	void CitizensArr::operator=(const CitizensArr& other)
+	CitizensArr& CitizensArr::operator=(const CitizensArr& other)
 	{
 		logSize = other.logSize;
 		phsSize = other.phsSize;
@@ -41,6 +42,8 @@ namespace elections {
 
 		for (int i = 0; i < logSize; i++)
 			citizens[i] = other.citizens[i];
+
+		return *this;
 	}
 
 	void CitizensArr::add(Citizen& citizen)
@@ -71,6 +74,27 @@ namespace elections {
 		for (int i = 0; i < logSize; i++)
 			if (id == citizens[i].getId())
 				return citizens[i];
+	}
+
+	void CitizensArr::save(ostream& out) const
+	{
+		out.write(rcastcc(&logSize), sizeof(logSize));
+
+		for (int i = 0; i < logSize; i++)
+			citizens[i].save(out);
+	}
+
+	void CitizensArr::load(istream& in)
+	{
+		int newLogSize;
+		in.read(rcastc(&newLogSize), sizeof(newLogSize));
+
+		for (int i = 0; i < newLogSize; i++)
+		{
+			Citizen temp;
+			temp.load(in);
+			add(temp);
+		}
 	}
 
 	const bool CitizensArr::isCitizenExistsById(long int id) const {

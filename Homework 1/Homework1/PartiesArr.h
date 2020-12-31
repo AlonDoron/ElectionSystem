@@ -1,6 +1,10 @@
 #pragma once
+#include <fstream>
 #include "Party.h"
 #include "CitizensArr.h"
+
+#define rcastcc reinterpret_cast<const char*>
+#define rcastc reinterpret_cast<char*>
 
 namespace elections {
 	class PartiesArr {
@@ -14,13 +18,14 @@ namespace elections {
 	public:
 		// Ctor
 		PartiesArr();
+		PartiesArr(int size);
 		// copy ctor
 		PartiesArr(const PartiesArr&);
 		// Dtor
 		~PartiesArr();
 
 		// Overload "=" operator
-		void operator=(const PartiesArr&);
+		PartiesArr& operator=(const PartiesArr&);
 
 		// Setters---------------------------------------------------------
 		// add one party to partiesArr
@@ -44,6 +49,10 @@ namespace elections {
 		const bool isCitizenAlreadyRep(long int id) const;
 
 		friend ostream& operator<<(ostream& os, const PartiesArr& partiesArr);
+		
+		//Save and load from BIN file methods.
+		void save(ostream& out) const;
+		void load(istream& in);
 
 	};
 }
