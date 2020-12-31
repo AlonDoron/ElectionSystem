@@ -20,7 +20,7 @@ using namespace elections;
 // This function creates new district and adds it to districtsArr.
 void addNewDistrict(DistrictsArr& districtsArr, PartiesArr& partiesArr, CitizensDB& citizensDB);
 
-void showElectionPolls( Date& electionDate, DistrictsArr& districtsArr, PartiesArr& partiesArr, CitizensDB& citizensDB);
+void showElectionPolls(Date& electionDate, DistrictsArr& districtsArr, PartiesArr& partiesArr, CitizensDB& citizensDB);
 
 // ( 2 )
 // This function creates new citizen and adds it to citizensArr.
@@ -48,9 +48,13 @@ void handleElectionType(ElectionType& electionType, DistrictsArr& districtsArr, 
 
 bool loadingElectionChoice();
 
+// This function gets districtsArr, citizensDB and partiesArr and electionType,
+// and saves it's data to bin file.
 void saveElectionRound(DistrictsArr& districtsArr, CitizensDB& citizensDB,
 	PartiesArr& partiesArr, ElectionType& type);
 
+// This function gets districtsArr, citizensDB and partiesArr and electionType,
+// and loading data into them from bin file.
 void loadElectionRound(DistrictsArr& districtsArr, CitizensDB& citizensDB,
 	PartiesArr& partiesArr, ElectionType& type);
 
@@ -135,7 +139,7 @@ int main() {
 	}
 }
 
-void showElectionPolls( Date& electionDate, DistrictsArr& districtsArr, PartiesArr& partiesArr, CitizensDB& citizensDB)
+void showElectionPolls(Date& electionDate, DistrictsArr& districtsArr, PartiesArr& partiesArr, CitizensDB& citizensDB)
 {
 	Election election(electionDate, districtsArr, partiesArr, citizensDB);
 	election.displayResults();
@@ -154,7 +158,7 @@ void addNewDistrict(DistrictsArr& districtsArr, PartiesArr& partiesArr, Citizens
 	if (!districtsArr.isDistrictExistsByName((name))) {
 
 		nameLen = getStrLen(name);
-	
+
 		cout << "Enter number of representatives: ";
 		cin >> numOfRep;
 		if (numOfRep > 0)

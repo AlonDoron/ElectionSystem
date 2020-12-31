@@ -45,7 +45,8 @@ namespace elections {
 
 		// Printer operator
 		friend ostream& operator<<(ostream& os, const DistrictsArr& districtArr);
-
+		
+		//Save and load from BIN file methods.
 		void save(ostream& out) const;
 		void load(istream& in);
 

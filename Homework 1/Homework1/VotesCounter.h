@@ -5,8 +5,8 @@
 using namespace std;
 
 namespace elections {
-class PartiesArr;
-class CitizensArr;
+	class PartiesArr;
+	class CitizensArr;
 	class VotesCounter {
 	private:
 		int votingNumber = 0;
@@ -50,9 +50,9 @@ class CitizensArr;
 		int* getPercentageVotes();
 		void printVotingStatictic(PartiesArr* partiesArr, int citizensNum);
 
-
 		int& operator[](int index) const;
 
+		//Save and load from BIN file methods.
 		void save(ostream& out) const;
 		void load(istream& in);
 	};

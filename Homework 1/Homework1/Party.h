@@ -40,6 +40,7 @@ namespace elections {
 		// returns true if representative with id repId already exists
 		const bool isRepAlreadyExists(long int repId);
 
+		//Save and load from BIN file methods.
 		void save(ostream& out) const;
 		void load(istream& in);
 	};

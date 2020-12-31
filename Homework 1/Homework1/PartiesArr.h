@@ -49,7 +49,8 @@ namespace elections {
 		const bool isCitizenAlreadyRep(long int id) const;
 
 		friend ostream& operator<<(ostream& os, const PartiesArr& partiesArr);
-
+		
+		//Save and load from BIN file methods.
 		void save(ostream& out) const;
 		void load(istream& in);
 

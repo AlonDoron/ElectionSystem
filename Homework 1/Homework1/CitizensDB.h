@@ -43,7 +43,8 @@ namespace elections {
 
 		CitizensArr& operator[](int index) const;
 		Citizen& operator[](long int id)const;
-
+		
+		//Save and load from BIN file methods.
 		void save(ostream& out) const;
 		void load(istream& in);
 
