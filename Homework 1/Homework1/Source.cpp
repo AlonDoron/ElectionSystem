@@ -12,6 +12,13 @@
 #include "ElectionType.h"
 #include "DividedDistrict.h"
 
+// preview:
+// we have made some changes from the previous version - 
+// 1 - option to load and save election data to/from file
+// 2 - all representatives are now saved in district (instead of parties)
+// 3 - option to add divided or united district - using polimorphisem 
+// 4 - an option to choose simple election and than the user adds "district" functioning as country
+//     adding more district is not allowed
 
 using namespace std;
 using namespace elections;
@@ -20,11 +27,10 @@ using namespace elections;
 // This function creates new district and adds it to districtsArr.
 void addNewDistrict(DistrictsArr& districtsArr, PartiesArr& partiesArr, CitizensDB& citizensDB);
 
-void showElectionPolls(Date& electionDate, DistrictsArr& districtsArr, PartiesArr& partiesArr, CitizensDB& citizensDB);
-
 // ( 2 )
 // This function creates new citizen and adds it to citizensArr.
 void addNewCitizen(CitizensDB& citizensDB, DistrictsArr& districtsArr);
+
 // ( 3)
 // This function creates new party and adds it to districtsArr.
 void addNewParty(PartiesArr& partiesArr, DistrictsArr& districtsArr, CitizensDB& citizensDB);
@@ -33,12 +39,17 @@ void addNewParty(PartiesArr& partiesArr, DistrictsArr& districtsArr, CitizensDB&
 // This function creates new rep and adds it to repsArr inside partiesArr.
 void addNewRep(PartiesArr& partiesArr, CitizensDB& citizensDB, DistrictsArr& districtsArr);
 
+// ( 8 )
+// This function lets' the user vote by inputting citizen id and party, 
+void addNewVote(CitizensDB& citizensDB, DistrictsArr& districtsArr, PartiesArr& partiesArr);
+
+// ( 9 )
+// a function that creates "Election" object where all the results will be claculated
+void showElectionPolls( Date& electionDate, DistrictsArr& districtsArr, PartiesArr& partiesArr, CitizensDB& citizensDB);
+
+
 // This function gets name and returns it's length.
 int getStrLen(char* name);
-
-// This function lets' the user vote by inputting citizen id and party, 
-// and adds the vote to the party inside partiesArr.
-void addNewVote(CitizensDB& citizensDB, DistrictsArr& districtsArr, PartiesArr& partiesArr);
 
 void addNewSingleState(DistrictsArr& districtsArr, CitizensDB& citizensDB);
 
@@ -48,13 +59,9 @@ void handleElectionType(ElectionType& electionType, DistrictsArr& districtsArr, 
 
 bool loadingElectionChoice();
 
-// This function gets districtsArr, citizensDB and partiesArr and electionType,
-// and saves it's data to bin file.
 void saveElectionRound(DistrictsArr& districtsArr, CitizensDB& citizensDB,
 	PartiesArr& partiesArr, ElectionType& type);
 
-// This function gets districtsArr, citizensDB and partiesArr and electionType,
-// and loading data into them from bin file.
 void loadElectionRound(DistrictsArr& districtsArr, CitizensDB& citizensDB,
 	PartiesArr& partiesArr, ElectionType& type);
 
@@ -139,12 +146,6 @@ int main() {
 	}
 }
 
-void showElectionPolls(Date& electionDate, DistrictsArr& districtsArr, PartiesArr& partiesArr, CitizensDB& citizensDB)
-{
-	Election election(electionDate, districtsArr, partiesArr, citizensDB);
-	election.displayResults();
-}
-
 // ( 1 )
 void addNewDistrict(DistrictsArr& districtsArr, PartiesArr& partiesArr, CitizensDB& citizensDB) {
 	char name[20];
@@ -158,7 +159,7 @@ void addNewDistrict(DistrictsArr& districtsArr, PartiesArr& partiesArr, Citizens
 	if (!districtsArr.isDistrictExistsByName((name))) {
 
 		nameLen = getStrLen(name);
-
+	
 		cout << "Enter number of representatives: ";
 		cin >> numOfRep;
 		if (numOfRep > 0)
@@ -312,6 +313,12 @@ void addNewVote(CitizensDB& citizensDB, DistrictsArr& districtsArr, PartiesArr& 
 	}
 	else
 		cout << "Voter with id " << ID << " not found!!" << endl;
+}
+// ( 9 )
+void showElectionPolls( Date& electionDate, DistrictsArr& districtsArr, PartiesArr& partiesArr, CitizensDB& citizensDB)
+{	// a new election object is created
+	Election election(electionDate, districtsArr, partiesArr, citizensDB);
+	election.displayResults();
 }
 // ( 11 )
 void saveElectionRound(DistrictsArr& districtsArr, CitizensDB& citizensDB, PartiesArr& partiesArr, ElectionType& type)

@@ -14,7 +14,6 @@ namespace elections {
 	struct Result { int partyNum, votes; };
 
 	class Election {
-
 	protected:
 
 		DistrictsArr districtsArr;
@@ -22,6 +21,7 @@ namespace elections {
 		PartiesArr partiesArr;
 		CitizensDB electorsByParty;
 		Date date;
+
 	public:
 		Election() {}
 		Election(Date& _date, DistrictsArr& _districtsArr, PartiesArr& _partiesArr, CitizensDB& _citizensDB) :
