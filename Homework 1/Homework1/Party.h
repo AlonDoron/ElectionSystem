@@ -5,8 +5,7 @@
 namespace elections {
 	class Party {
 	private:
-		char* name;
-		int nameLen;
+		string name;
 		long int id;
 		// Array of representatives organazied by district 
 		CitizensDB representatives;
@@ -14,7 +13,7 @@ namespace elections {
 	public:
 		// Ctors
 		Party();
-		Party(char* _name, int _nameLen, long int _id, int numOfDistricts = 0);
+		Party(string& _name, long int _id, int numOfDistricts = 0);
 		Party(const Party&);
 
 		// Dtor
@@ -30,7 +29,7 @@ namespace elections {
 		void addEmptyCellToRepArr(void);
 
 		// Getters ----------------------------------------------------
-		const char* getPartyName() const;
+		const string& getPartyName() const;
 		const long int getLeaderId() const;
 		const CitizensDB& getRepresentatives() const;
 

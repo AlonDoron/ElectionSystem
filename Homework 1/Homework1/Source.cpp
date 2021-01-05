@@ -226,20 +226,18 @@ void addNewCitizen(CitizensDB& citizensDB, DistrictsArr& districtsArr)
 // ( 3 )
 void addNewParty(PartiesArr& partiesArr, DistrictsArr& districtsArr, CitizensDB& citizensDB)
 {
-	char name[20]; int nameLen; long int id;
+	string name; long int id;
 
 	cout << "Enter party's name (max 20 chars): ";
 	cin.ignore();
-	cin.getline(name, 20);
-
-	nameLen = getStrLen(name);
+	getline(cin, name);
 
 	cout << "Enter ID of the party leader: ";
 	cin >> id;
 
 	if (citizensDB.isCitizenExistsById(id)) {
 		if (!partiesArr.isCitizenAlreadyLeader(id)) {
-			Party newParty(name, nameLen, id, districtsArr.getLogSize());
+			Party newParty(name, id, districtsArr.getLogSize());
 
 			districtsArr.addNewPartyToVotesCounters(); // adding counter to new party in each district
 			partiesArr.add(newParty);

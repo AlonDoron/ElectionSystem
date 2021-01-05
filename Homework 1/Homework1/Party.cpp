@@ -6,17 +6,11 @@
 using namespace std;
 
 namespace elections {
-	Party::Party() : name(nullptr), nameLen(0), id(0), representatives() {}
+	Party::Party() : name(), id(0), representatives() {}
 
-	Party::Party(char* _name, int _nameLen, long int _id, int numOfDistricts) :
-		nameLen(_nameLen), id(_id), representatives(numOfDistricts)
-	{
-		name = new char[_nameLen + 1];
-
-		memcpy(name, _name, nameLen + 1);
-
-		name[_nameLen] = '\0';
-	}
+	Party::Party(string& _name, long int _id, int numOfDistricts) :
+		name(_name), id(_id), representatives(numOfDistricts)
+	{}
 
 	Party::Party(const Party& other)
 	{
@@ -25,7 +19,6 @@ namespace elections {
 
 	Party::~Party()
 	{
-		delete[] name;
 	}
 
 
@@ -49,21 +42,14 @@ namespace elections {
 
 	Party& Party::operator=(const Party& other)
 	{
-		nameLen = other.nameLen;
 		id = other.id;
-		name = new char[nameLen + 1];
-
-		for (int i = 0; i < other.nameLen; i++)
-			name[i] = other.name[i];
-
-		name[nameLen] = '\0';
-
+		name = other.name;
 		representatives = other.representatives;
 
 		return *this;
 	}
 
-	const char* Party::getPartyName() const
+	const string& Party::getPartyName() const
 	{
 		return name;
 	}
@@ -92,8 +78,7 @@ namespace elections {
 
 	void Party::save(ostream& out) const
 	{
-		out.write(rcastcc(&nameLen), sizeof(nameLen));
-		out.write(name, nameLen);
+		out.write(name.c_str(), name.size());
 		out.write(rcastcc(&id), sizeof(id));
 
 		representatives.save(out);
@@ -101,10 +86,7 @@ namespace elections {
 
 	void Party::load(istream& in)
 	{
-		in.read(rcastc(&nameLen), sizeof(nameLen));
-		name = new char[nameLen + 1];
-		in.read(name, nameLen);
-		name[nameLen] = '\0';
+		in.read(rcastc(&name), sizeof(name));
 		in.read(rcastc(&id), sizeof(id));
 
 		representatives.load(in);
