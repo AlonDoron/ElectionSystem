@@ -191,15 +191,12 @@ void addNewDistrict(DistrictsArr& districtsArr, PartiesArr& partiesArr, Citizens
 // ( 2 )
 void addNewCitizen(CitizensDB& citizensDB, DistrictsArr& districtsArr)
 {
-	char name[20];
-	int nameLen, districtNum, year;
+	string name;
+	int districtNum, year;
 	long int id;
 
 	cout << "Enter citizen's name (max 20 chars): ";
-	cin.ignore();
-	cin.getline(name, 20);
-
-	nameLen = getStrLen(name);
+	cin >> name;
 
 	cout << "Enter ID: ";
 	cin >> id;
@@ -213,7 +210,7 @@ void addNewCitizen(CitizensDB& citizensDB, DistrictsArr& districtsArr)
 		cin >> districtNum;
 
 		if (districtsArr.isDistExist(districtNum)) {
-			Citizen newCitizen(name, nameLen, id, year, &districtsArr[districtNum]);
+			Citizen newCitizen(name, id, year, &districtsArr[districtNum]);
 			citizensDB[districtNum].add(newCitizen);
 			districtsArr[districtNum].addOneCitizen();
 		}

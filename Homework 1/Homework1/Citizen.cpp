@@ -6,38 +6,23 @@
 using namespace std;
 
 namespace elections {
-	Citizen::Citizen() : name(nullptr), nameLen(0), id(0), year(0), district(nullptr), voted(false) {}
+	Citizen::Citizen() : name(),  id(0), year(0), district(nullptr), voted(false) {}
 
-	Citizen::Citizen(char* _name, int _nameLen, long int _id, int _year, District* _district) :
-		nameLen(_nameLen), id(_id), year(_year), district(_district)
-	{
-		name = new char[_nameLen + 1];
-
-		memcpy(name, _name, nameLen);
-
-		name[nameLen] = '\0';
-	}
+	Citizen::Citizen(string _name, long int _id, int _year, District* _district) :
+		name(_name), id(_id), year(_year), district(_district) {}
 
 	Citizen::Citizen(const Citizen& other) {
 		*this = other;
 	}
 
-	Citizen::~Citizen()
-	{
-		delete[] name;
-	}
+	Citizen::~Citizen() {}
 
 	Citizen& Citizen::operator=(const Citizen& other)
 	{
-		nameLen = other.nameLen;
 		year = other.year;
 		id = other.id;
-		name = new char[nameLen + 1];
+		name = other.name;
 		district = other.district;
-
-		memcpy(name, other.name, other.nameLen);
-
-		name[nameLen] = '\0';
 
 		return *this;
 	}
@@ -59,16 +44,9 @@ namespace elections {
 		return 1;
 	}
 
-	const bool Citizen::setName(char* _name, int _nameLen)
+	const bool Citizen::setName(string _name)
 	{
-		nameLen = _nameLen;
-
-		if (name)
-			delete[] name;
-
-		name = new char[nameLen + 1];
-		memcpy(name, _name, nameLen);
-		name[nameLen] = '\0';
+		name = _name;
 
 		return 1;
 	}
@@ -103,7 +81,7 @@ namespace elections {
 	}
 
 
-	const char* Citizen::getName() const
+	const string Citizen::getName() const
 	{
 		return name;
 	}
@@ -113,7 +91,7 @@ namespace elections {
 		int distType;
 
 		out.write(rcastcc(this), sizeof(*this));
-		out.write(name, nameLen);
+		out.write(name.c_str(),name.size());
 
 		(typeid(district) == typeid(District)) ? distType = 0 : distType = 1;
 
@@ -126,14 +104,11 @@ namespace elections {
 		int distType;
 
 		in.read(rcastc(this), sizeof(*this));
-		name = new char[nameLen + 1];
-		in.read(name, nameLen);
-		name[nameLen] = '\0';
+		in.read(rcastc(&name), sizeof(name));
 
 		in.read(rcastc(&distType), sizeof(distType));
 		if (distType == 0)
 			district = new District();
-
 		else
 			district = new DividedDistrict();
 
