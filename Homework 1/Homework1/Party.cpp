@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 #include "Party.h"
 #include "Citizen.h"
 #include "CitizensArr.h"
@@ -78,16 +79,16 @@ namespace elections {
 
 	void Party::save(ostream& out) const
 	{
-		out.write(name.c_str(), name.size());
 		out.write(rcastcc(&id), sizeof(id));
+		out.write(name.c_str(), name.size() + 1);
 
 		representatives.save(out);
 	}
 
 	void Party::load(istream& in)
 	{
-		in.read(rcastc(&name), sizeof(name));
 		in.read(rcastc(&id), sizeof(id));
+		getline(in, name, '\0');
 
 		representatives.load(in);
 	}

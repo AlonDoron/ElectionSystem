@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 #include "District.h"
 #include "PartiesArr.h"
 
@@ -129,16 +130,22 @@ namespace elections {
 
 	void District::save(ostream& out) const
 	{
-		out.write(rcastcc(this), sizeof(*this));
-		out.write(name.c_str(), name.size());
+		//out.write(rcastcc(this), sizeof(*this));
+		out.write(rcastcc(&numOfRep), sizeof(numOfRep));
+		out.write(rcastcc(&districtNum), sizeof(districtNum));
+		out.write(rcastcc(&citizensNum), sizeof(citizensNum));
+		out.write(name.c_str(), name.size() + 1);
 
 		votesCounter.save(out);
 	}
 
 	void District::load(istream& in)
 	{
-		in.read(rcastc(this), sizeof(*this));
-		in.read(rcastc(&name), sizeof(name));
+		/*in.read(rcastc(this), sizeof(*this));*/
+		in.read(rcastc(&numOfRep), sizeof(numOfRep));
+		in.read(rcastc(&districtNum), sizeof(districtNum));
+		in.read(rcastc(&citizensNum), sizeof(citizensNum));
+		getline(in, name, '\0');
 
 		votesCounter.load(in);
 	}

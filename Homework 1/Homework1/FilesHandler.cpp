@@ -35,11 +35,6 @@ namespace elections {
 		infile.read(rcastc(&electionType), sizeof(electionType));
 
 		districtsArr.load(infile);
-
-	/*	for (int i = 0; i < districtsArr.getLogSize(); i++) {
-			citizensDB.addEmptyCitizensArr();
-		}*/
-
 		citizensDB.load(infile);
 		partiesArr.load(infile);
 

@@ -2,11 +2,12 @@
 #include "Citizen.h"
 #include "District.h"
 #include "DividedDistrict.h"
+#include <string>
 
 using namespace std;
 
 namespace elections {
-	Citizen::Citizen() : name(),  id(0), year(0), district(nullptr), voted(false) {}
+	Citizen::Citizen() : name(), id(0), year(0), district(nullptr), voted(false) {}
 
 	Citizen::Citizen(string& _name, long int _id, int _year, District* _district) :
 		name(_name), id(_id), year(_year), district(_district) {}
@@ -15,7 +16,7 @@ namespace elections {
 		*this = other;
 	}
 
-	Citizen::~Citizen() {}
+	//Citizen::~Citizen() {}
 
 	Citizen& Citizen::operator=(const Citizen& other)
 	{
@@ -90,12 +91,15 @@ namespace elections {
 	{
 		int distType;
 
-		out.write(rcastcc(this), sizeof(*this));
-		out.write(name.c_str(),name.size());
+		//out.write(rcastcc(this), sizeof(*this));
+		out.write(rcastcc(&year), sizeof(year));
+		out.write(rcastcc(&id), sizeof(id));
+		out.write(rcastcc(&voted), sizeof(voted));
+		out.write(name.c_str(), name.size() + 1);
 
 		(typeid(district) == typeid(District)) ? distType = 0 : distType = 1;
-
 		out.write(rcastcc(&distType), sizeof(distType));
+
 		district->save(out);
 	}
 
@@ -103,10 +107,13 @@ namespace elections {
 	{
 		int distType;
 
-		in.read(rcastc(this), sizeof(*this));
-		in.read(rcastc(&name), sizeof(name));
+		in.read(rcastc(&year), sizeof(year));
+		in.read(rcastc(&id), sizeof(id));
+		in.read(rcastc(&voted), sizeof(voted));
+		getline(in, name, '\0');
 
 		in.read(rcastc(&distType), sizeof(distType));
+
 		if (distType == 0)
 			district = new District();
 		else
