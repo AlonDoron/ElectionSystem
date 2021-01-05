@@ -7,8 +7,8 @@ namespace elections {
 
 	DividedDistrict::DividedDistrict() : District() {};
 
-	DividedDistrict::DividedDistrict(char* _name, int _nameLen, int _numOfRep, int _districtNum)
-		: District(_name, _nameLen, _numOfRep, _districtNum) {}
+	DividedDistrict::DividedDistrict(string _name, int _numOfRep, int _districtNum)
+		: District(_name,  _numOfRep, _districtNum) {}
 
 
 	void DividedDistrict::setElected(PartiesArr* _partiesArr, CitizensDB* _electorsByParty, CitizensDB* _citizensDB)

@@ -79,10 +79,10 @@ namespace elections {
 		return logSize;
 	}
 
-	const bool DistrictsArr::isDistrictExistsByName(char* name) const
+	const bool DistrictsArr::isDistrictExistsByName(string name) const
 	{
 		for (int i = 0; i < logSize; i++)
-			if (strcmp(districts[i]->getDistrictName(), name) == 0)
+			if (districts[i]->getDistrictName() ==  name)
 				return true;
 
 		return false;

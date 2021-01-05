@@ -14,15 +14,15 @@ namespace elections {
 
 	class District {
 	protected:
-		char* name;
-		int nameLen, numOfRep, districtNum;
+		string name;
+		int  numOfRep, districtNum;
 		int citizensNum;
 		VotesCounter votesCounter;
 
 	public:
 		// Ctors
 		District();
-		District(char* _name, int _nameLen, int _numOfRep, int _districtNum);
+		District(string& _name, int _numOfRep, int _districtNum);
 		District(const District&);
 
 		// Dtor
@@ -33,7 +33,7 @@ namespace elections {
 
 		// Getters-------------------------------
 		const int getDistrictNum(void) const;
-		const char* getDistrictName() const;
+		const string& getDistrictName() const;
 		const int getNumOfRep() const;
 		const int getCitizensNum() const;
 		const VotesCounter& getVotesCounter();

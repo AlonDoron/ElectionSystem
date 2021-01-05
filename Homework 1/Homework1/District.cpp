@@ -5,17 +5,14 @@
 using namespace std;
 
 namespace elections {
-	District::District() : name(nullptr), nameLen(0), numOfRep(0), districtNum(0), citizensNum(0) {}
+	District::District() : name(), numOfRep(0), districtNum(0), citizensNum(0) {}
 
-	District::District(char* _name, int _nameLen, int _numOfRep, int _districtNum) {
-		nameLen = _nameLen;
+	District::District(string& _name, int _numOfRep, int _districtNum) {
+		name = _name;
 		numOfRep = _numOfRep;
 		districtNum = _districtNum;
-		name = new char[_nameLen + 1];
 		citizensNum = 0;
-		memcpy(name, _name, nameLen + 1);
 
-		name[nameLen] = '\0';
 	}
 
 	District::District(const District& other)
@@ -25,24 +22,16 @@ namespace elections {
 
 	District::~District()
 	{
-		delete[] name;
 	}
 
 
 	District& District::operator=(const District& other)
 	{
-		delete[] name;
 		numOfRep = other.numOfRep;
-		nameLen = other.nameLen;
 		districtNum = other.districtNum;
 		votesCounter = other.votesCounter;
-		name = new char[nameLen + 1];
+		name = other.name;
 		citizensNum = other.citizensNum;
-
-		for (int i = 0; i < other.nameLen; i++)
-			name[i] = other.name[i];
-
-		name[nameLen] = '\0';
 
 		return *this;
 	}
@@ -51,7 +40,7 @@ namespace elections {
 		return districtNum;
 	}
 
-	const char* District::getDistrictName() const
+	const string& District::getDistrictName() const
 	{
 		return name;
 	}
@@ -141,7 +130,7 @@ namespace elections {
 	void District::save(ostream& out) const
 	{
 		out.write(rcastcc(this), sizeof(*this));
-		out.write(name, nameLen);
+		out.write(name.c_str(), name.size());
 
 		votesCounter.save(out);
 	}
@@ -149,9 +138,7 @@ namespace elections {
 	void District::load(istream& in)
 	{
 		in.read(rcastc(this), sizeof(*this));
-		name = new char[nameLen + 1];
-		in.read(name, nameLen);
-		name[nameLen] = '\0';
+		in.read(rcastc(&name), sizeof(name));
 
 		votesCounter.load(in);
 	}

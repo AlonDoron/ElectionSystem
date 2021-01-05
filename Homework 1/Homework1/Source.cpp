@@ -152,29 +152,29 @@ int main() {
 
 // ( 1 )
 void addNewDistrict(DistrictsArr& districtsArr, PartiesArr& partiesArr, CitizensDB& citizensDB) {
-	char name[20];
-	int nameLen, numOfRep, districtType;
+	string name;
+	int numOfRep, districtType;
 	District* newDist;
 
 	cout << "Enter district name (max 20 chars): ";
 	cin.ignore();
-	cin.getline(name, 20);
+	getline(cin, name);
 
 	if (!districtsArr.isDistrictExistsByName((name))) {
 
-		nameLen = getStrLen(name);
 
 		cout << "Enter number of representatives: ";
 		cin >> numOfRep;
+		
 		if (numOfRep > 0)
 		{
 			cout << "Enter district type: (0 = united, 1 = divided)" << endl;
 			cin >> districtType;
 
 			if (districtType == 0)
-				newDist = new District(name, nameLen, numOfRep, districtsArr.getLogSize());
+				newDist = new District(name, numOfRep, districtsArr.getLogSize());
 			if (districtType == 1)
-				newDist = new DividedDistrict(name, nameLen, numOfRep, districtsArr.getLogSize());
+				newDist = new DividedDistrict(name, numOfRep, districtsArr.getLogSize());
 
 			districtsArr.add(newDist);
 			citizensDB.addEmptyCitizensArr(); // adding new citizensArr in DB for new district
@@ -196,7 +196,10 @@ void addNewCitizen(CitizensDB& citizensDB, DistrictsArr& districtsArr)
 	long int id;
 
 	cout << "Enter citizen's name (max 20 chars): ";
-	cin >> name;
+	cin.ignore();
+	getline(cin,name);
+
+	cout << name;
 
 	cout << "Enter ID: ";
 	cin >> id;
@@ -415,20 +418,18 @@ void handleElectionType(ElectionType& electionType, DistrictsArr& districtsArr, 
 
 void addNewSingleState(DistrictsArr& districtsArr, CitizensDB& citizensDB)
 {
-	int numOfReps, nameLen;
-	char name[20];
+	int numOfReps;
+	string name;
 	District* newDist;
 
 	cout << "Enter state name (max 20 chars): ";
 	cin.ignore();
-	cin.getline(name, 20);
+	getline(cin, name);
 
 	cout << "Enter num of reps: " << endl;
 	cin >> numOfReps;
 
-	nameLen = getStrLen(name);
-
-	newDist = new DividedDistrict(name, nameLen, numOfReps, 0);
+	newDist = new DividedDistrict(name, numOfReps, 0);
 	districtsArr.add(newDist);
 	citizensDB.addEmptyCitizensArr();
 }

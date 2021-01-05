@@ -8,7 +8,7 @@ using namespace std;
 namespace elections {
 	Citizen::Citizen() : name(),  id(0), year(0), district(nullptr), voted(false) {}
 
-	Citizen::Citizen(string _name, long int _id, int _year, District* _district) :
+	Citizen::Citizen(string& _name, long int _id, int _year, District* _district) :
 		name(_name), id(_id), year(_year), district(_district) {}
 
 	Citizen::Citizen(const Citizen& other) {
@@ -44,7 +44,7 @@ namespace elections {
 		return 1;
 	}
 
-	const bool Citizen::setName(string _name)
+	const bool Citizen::setName(string& _name)
 	{
 		name = _name;
 
@@ -81,7 +81,7 @@ namespace elections {
 	}
 
 
-	const string Citizen::getName() const
+	const string& Citizen::getName() const
 	{
 		return name;
 	}

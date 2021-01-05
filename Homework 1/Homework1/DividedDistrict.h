@@ -10,7 +10,7 @@ class DividedDistrict : public District {
 
 public:
 	DividedDistrict();
-	DividedDistrict(char* _name, int _nameLen, int _numOfRep, int _districtNum);
+	DividedDistrict(string _name, int _numOfRep, int _districtNum);
 
 
 	virtual void setElected(PartiesArr* _partiesArr, CitizensDB* _electorsByParty, CitizensDB* _citizensDB);

@@ -19,7 +19,7 @@ namespace elections {
 	public:
 		// Ctors
 		Citizen();
-		Citizen(string _name, long int _id, int _year, District* _district);
+		Citizen(string& _name, long int _id, int _year, District* _district);
 		Citizen(const Citizen&);
 
 		// Dtor
@@ -31,7 +31,7 @@ namespace elections {
 		// Setters-----------------------------
 		const bool setVoted(bool val);
 		const bool setId(long int _id);
-		const bool setName(string _name);
+		const bool setName(string& _name);
 		const bool setDistrict(District* _district);
 		const bool setYear(int _year);
 
@@ -40,7 +40,7 @@ namespace elections {
 		const int getDistrictNum() const;
 		const long int getId(void) const;
 		const int getYear(void) const;
-		const string getName() const;
+		const string& getName() const;
 
 		// Printer operator
 		friend ostream& operator<<(ostream& os, const Citizen& citizen);
