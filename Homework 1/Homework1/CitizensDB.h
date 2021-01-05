@@ -51,3 +51,4 @@ namespace elections {
 		friend ostream& operator<<(ostream& os, const CitizensDB& citizensDB);
 	};
 }
+

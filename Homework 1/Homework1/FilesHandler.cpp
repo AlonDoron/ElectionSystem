@@ -6,13 +6,7 @@
 using namespace std;
 
 namespace elections {
-	FilesHandler::FilesHandler(char* _fileName, int _fileNameLen)
-	{
-		fileNameLen = _fileNameLen;
-		fileName = new char[fileNameLen + 1];
-		memcpy(fileName, _fileName, fileNameLen + 1);
-		fileName[fileNameLen] = '\0';
-	}
+	FilesHandler::FilesHandler(string _fileName) : fileName(_fileName) {}
 
 	void FilesHandler::saveToFile(DistrictsArr& districtsArr, CitizensDB& citizensDB,
 		PartiesArr& partiesArr, int electionType)

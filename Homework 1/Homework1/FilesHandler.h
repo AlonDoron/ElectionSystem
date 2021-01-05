@@ -7,12 +7,11 @@
 namespace elections {
 	class FilesHandler {
 	private:
-		char* fileName;
-		int fileNameLen;
+		string fileName;
 
 	public:
 		// Ctor that gets a file name and file name length and constructs a FilesHandler object.
-		FilesHandler(char* _fileName, int _fileNameLen);
+		FilesHandler(string _fileName);
 
 		// This function gets districtsArr, citizensDB and partiesArr and electionType,
 		// and saves it's data to bin file.

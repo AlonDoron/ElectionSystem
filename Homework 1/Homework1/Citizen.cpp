@@ -16,7 +16,7 @@ namespace elections {
 		*this = other;
 	}
 
-	//Citizen::~Citizen() {}
+	Citizen::~Citizen() {}
 
 	Citizen& Citizen::operator=(const Citizen& other)
 	{

@@ -48,8 +48,6 @@ void addNewVote(CitizensDB& citizensDB, DistrictsArr& districtsArr, PartiesArr& 
 void showElectionPolls(Date& electionDate, DistrictsArr& districtsArr, PartiesArr& partiesArr, CitizensDB& citizensDB);
 
 
-// This function gets name and returns it's length.
-int getStrLen(char* name);
 
 void addNewSingleState(DistrictsArr& districtsArr, CitizensDB& citizensDB);
 
@@ -71,7 +69,7 @@ void loadElectionRound(DistrictsArr& districtsArr, CitizensDB& citizensDB,
 
 
 int main() {
-	char fileName[20];
+
 	UserActions userActions; int action = 0;
 	Date electionDate;
 	DistrictsArr districtsArr; CitizensDB citizensDB;
@@ -325,10 +323,11 @@ void showElectionPolls(Date& electionDate, DistrictsArr& districtsArr, PartiesAr
 // ( 11 )
 void saveElectionRound(DistrictsArr& districtsArr, CitizensDB& citizensDB, PartiesArr& partiesArr, ElectionType& type)
 {
-	char fileName[20];
+	string fileName;
 
 	cout << "Enter file name: " << endl;
-	cin >> fileName;
+	cin.ignore();
+	getline(cin, fileName);
 
 	ofstream outfile(fileName, ios::binary);
 
@@ -339,9 +338,7 @@ void saveElectionRound(DistrictsArr& districtsArr, CitizensDB& citizensDB, Parti
 
 	outfile.close();
 
-	int fileNameLen = getStrLen(fileName);
-
-	FilesHandler filesHandler(fileName, fileNameLen);
+	FilesHandler filesHandler(fileName);
 
 	filesHandler.saveToFile(districtsArr, citizensDB, partiesArr, (int)type);
 
@@ -350,7 +347,7 @@ void saveElectionRound(DistrictsArr& districtsArr, CitizensDB& citizensDB, Parti
 // ( 12 )
 void loadElectionRound(DistrictsArr& districtsArr, CitizensDB& citizensDB, PartiesArr& partiesArr, ElectionType& type)
 {
-	char fileName[20];
+	string fileName;
 
 	// If districts are not empty, we need to clear all arrays first before loading into them.
 	if (districtsArr.getLogSize() != 0)
@@ -366,7 +363,8 @@ void loadElectionRound(DistrictsArr& districtsArr, CitizensDB& citizensDB, Parti
 	}
 
 	cout << "Enter file name: " << endl;
-	cin >> fileName;
+	cin.ignore();
+	getline(cin, fileName);
 
 	ifstream infile(fileName, ios::binary);
 
@@ -377,9 +375,7 @@ void loadElectionRound(DistrictsArr& districtsArr, CitizensDB& citizensDB, Parti
 
 	infile.close();
 
-	int fileNameLen = getStrLen(fileName);
-
-	FilesHandler filesHandler(fileName, fileNameLen);
+	FilesHandler filesHandler(fileName);
 
 	int typeNum;
 	filesHandler.loadFromFile(districtsArr, citizensDB, partiesArr, typeNum);
@@ -442,14 +438,7 @@ bool loadingElectionChoice()
 	return answer;
 }
 
-int getStrLen(char* name) {
-	int i = 0;
 
-	while (name[i] != '\0')
-		i++;
-
-	return i;
-}
 
 void printMainMenu()
 {
