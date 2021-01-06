@@ -87,6 +87,7 @@ namespace elections {
 		}
 		cout << res;
 		cout << endl;
+
 		(*_electorsByParty)[partyWin].appendCitizensArr(res);
 
 

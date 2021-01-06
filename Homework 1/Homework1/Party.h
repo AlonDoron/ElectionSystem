@@ -24,10 +24,10 @@ namespace elections {
 		// Getters ----------------------------------------------------
 		const string& getPartyName() const;
 		const long int getLeaderId() const;
-		const CitizensDB& getRepresentatives() const;
+		CitizensDB& getRepresentatives();
 
 		// print all party detailes
-		friend ostream& operator<<(ostream& os, const Party& party);
+		friend ostream& operator<<(ostream& os, Party& party);
 
 		// returns true if representative with id repId already exists
 		const bool isRepAlreadyExists(long int repId);

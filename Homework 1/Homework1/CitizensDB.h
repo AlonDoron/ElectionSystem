@@ -7,48 +7,30 @@
 namespace elections {
 	class CitizensDB {
 	private:
-		int logSize, phsSize;
-		CitizensArr* citizensByDist;
-
-		// Resizing CitizensDB arr and updating logSize, phsSize
-		void resize(int newSize);
+		vector<CitizensArr> citizensByDist;
 
 	public:
 		// Ctors
 		CitizensDB();
 		CitizensDB(int size);
-		CitizensDB(const CitizensDB&);
 
-		// Dtor
-		~CitizensDB();
-
-		// Overload "=" operator
-		CitizensDB& operator=(const CitizensDB&);
-
-		// Setters---------------------------------------
-		bool setLogSize(int size);
-		bool setPhsSize(int size);
+		//vector<CitizensArr>& getCitizenDB() { return citizensByDist; }
 
 		// allocate 1 citizensArr to array 
 		void addEmptyCitizensArr();
-
+		const int getLogSize() const;
 		const bool isCitizenExistsById(long int id) const;
 		// add citizens to citizensArr in index "districtNum"
 		void addCitizenToIndex(Citizen& citizen, int index);
 
-		// Getters
-		const int getLogSize() const;
-		const int getPhsSize() const;
-		CitizensArr& getCitizensArrByIndex(int ind);
-
-		CitizensArr& operator[](int index) const;
-		Citizen& operator[](long int id)const;
+		CitizensArr& operator[](int index);
+		Citizen& operator[](long int id);
 		
 		//Save and load from BIN file methods.
 		void save(ostream& out) const;
 		void load(istream& in);
 
-		friend ostream& operator<<(ostream& os, const CitizensDB& citizensDB);
+		friend ostream& operator<<(ostream& os, CitizensDB& citizensDB);
 	};
 }
 

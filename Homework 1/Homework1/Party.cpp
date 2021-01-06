@@ -26,7 +26,7 @@ namespace elections {
 		return id;
 	}
 
-	const CitizensDB& Party::getRepresentatives() const
+	CitizensDB& Party::getRepresentatives()
 	{
 		return representatives;
 	}
@@ -48,7 +48,7 @@ namespace elections {
 	}
 
 
-	ostream& operator<<(ostream& os, const Party& party)
+	ostream& operator<<(ostream& os, Party& party)
 	{
 
 		cout << "Party's Name: " << party.getPartyName() << " | ID of party leader: " << party.getLeaderId() << endl;
