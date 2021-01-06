@@ -14,13 +14,6 @@ namespace elections {
 		// Ctors
 		Party();
 		Party(string& _name, long int _id, int numOfDistricts = 0);
-		Party(const Party&);
-
-		// Dtor
-		~Party();
-
-		// Overload "=" operator
-		Party& operator=(const Party&);
 
 		// Setters---------------------------------------------------
 		void addRepToParty(Citizen&, int districtNum);

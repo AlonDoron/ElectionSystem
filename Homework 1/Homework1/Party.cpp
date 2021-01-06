@@ -13,16 +13,6 @@ namespace elections {
 		name(_name), id(_id), representatives(numOfDistricts)
 	{}
 
-	Party::Party(const Party& other)
-	{
-		*this = other;
-	}
-
-	Party::~Party()
-	{
-	}
-
-
 	const bool Party::isRepAlreadyExists(long int repId)
 	{
 		if (representatives.isCitizenExistsById(repId))
@@ -41,20 +31,11 @@ namespace elections {
 		return representatives;
 	}
 
-	Party& Party::operator=(const Party& other)
-	{
-		id = other.id;
-		name = other.name;
-		representatives = other.representatives;
-
-		return *this;
-	}
 
 	const string& Party::getPartyName() const
 	{
 		return name;
 	}
-
 
 	void Party::addRepToParty(Citizen& rep, int districtNum)
 	{

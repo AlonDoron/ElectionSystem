@@ -10,23 +10,11 @@ namespace elections {
 	Citizen::Citizen() : name(), id(0), year(0), district(nullptr), voted(false) {}
 
 	Citizen::Citizen(string& _name, long int _id, int _year, District* _district) :
-		name(_name), id(_id), year(_year), district(_district) {}
-
-	Citizen::Citizen(const Citizen& other) {
-		*this = other;
-	}
+		name(_name), id(_id), year(_year), district(_district), voted(false) {}
 
 	Citizen::~Citizen() {}
 
-	Citizen& Citizen::operator=(const Citizen& other)
-	{
-		year = other.year;
-		id = other.id;
-		name = other.name;
-		district = other.district;
 
-		return *this;
-	}
 
 	const bool Citizen::getVoted() const
 	{

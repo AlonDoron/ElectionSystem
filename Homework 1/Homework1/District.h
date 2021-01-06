@@ -23,13 +23,6 @@ namespace elections {
 		// Ctors
 		District();
 		District(string& _name, int _numOfRep, int _districtNum);
-		District(const District&);
-
-		// Dtor
-		~District();
-
-		// Overload "=" operator
-		District& operator=(const District&);
 
 		// Getters-------------------------------
 		const int getDistrictNum(void) const;

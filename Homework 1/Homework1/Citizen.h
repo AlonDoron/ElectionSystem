@@ -20,13 +20,10 @@ namespace elections {
 		// Ctors
 		Citizen();
 		Citizen(string& _name, long int _id, int _year, District* _district);
-		Citizen(const Citizen&);
 
 		// Dtor
 		~Citizen();
 
-		// Overload "=" operator
-		Citizen& operator=(const Citizen&);
 
 		// Setters-----------------------------
 		const bool setVoted(bool val);

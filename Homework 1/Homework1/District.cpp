@@ -16,26 +16,6 @@ namespace elections {
 
 	}
 
-	District::District(const District& other)
-	{
-		*this = other;
-	}
-
-	District::~District()
-	{
-	}
-
-
-	District& District::operator=(const District& other)
-	{
-		numOfRep = other.numOfRep;
-		districtNum = other.districtNum;
-		votesCounter = other.votesCounter;
-		name = other.name;
-		citizensNum = other.citizensNum;
-
-		return *this;
-	}
 	const int District::getDistrictNum(void) const
 	{
 		return districtNum;
