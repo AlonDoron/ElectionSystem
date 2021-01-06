@@ -2,6 +2,7 @@
 #include <fstream>
 #include "FilesHandler.h"
 #include <string>
+#include <vector>
 #include "CitizensDB.h"
 #include "District.h"
 #include "DistrictsArr.h"

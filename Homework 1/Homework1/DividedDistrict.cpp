@@ -16,7 +16,7 @@ namespace elections {
 		int currRepsNum;
 		int partyNum = _partiesArr->getLogSize();
 		CitizensArr curr, RepsInPartyi;
-		int* votesPerc = votesCounter.getPercentageVotes();
+		vector<int> votesPerc = votesCounter.getPercentageVotes();
 		PartiesArr partiesArr = *_partiesArr;
 		Party currParty;
 		CitizensDB currDB;

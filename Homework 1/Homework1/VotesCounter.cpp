@@ -6,20 +6,16 @@
 #define rcastc reinterpret_cast<char*>
 
 namespace elections {
-	VotesCounter::VotesCounter() : logSize(0), phsSize(0), votesByParty(nullptr),
-		winningPartyID(0), votesPerc(nullptr), votingNumber(0) {}
+	VotesCounter::VotesCounter() : votesByParty(),
+		winningPartyID(0), votesPerc(), votingNumber(0) {}
 
 	VotesCounter::VotesCounter(int size)
-		: phsSize(size), logSize(size), winningPartyID(0), votesByParty(nullptr),
-		votesPerc(nullptr), votingNumber(0) {
-		votesByParty = new int[size];
-		votesPerc = new int[size];
+		: winningPartyID(0), votesByParty(size),
+		votesPerc(size), votingNumber(0) {
 
-		for (int i = 0; i < size; i++)
-		{
-			votesByParty[i] = 0;
-			votesPerc[i] = 0;
-		}
+		fill(votesByParty.begin(), votesByParty.end(), 0);
+		fill(votesPerc.begin(), votesPerc.end(), 0);
+
 	}
 
 	VotesCounter::VotesCounter(const VotesCounter& other)
@@ -27,13 +23,9 @@ namespace elections {
 		*this = other;
 	}
 
-	VotesCounter::~VotesCounter()
-	{
-		delete[] votesByParty;
-		delete[] votesPerc;
-	}
+	VotesCounter::~VotesCounter() {}
 
-	void VotesCounter::resize(int newSize)
+	/*void VotesCounter::resize(int newSize)
 	{
 		int* tempVotesByParty = new int[newSize];
 		int* tempVotesPerc = new int[newSize];
@@ -61,47 +53,33 @@ namespace elections {
 		votesByParty = tempVotesByParty;
 		votesPerc = tempVotesPerc;
 		phsSize = newSize;
-	}
+	}*/
 
 	VotesCounter& VotesCounter::operator=(const VotesCounter& other)
 	{
-		logSize = other.logSize;
-		phsSize = other.phsSize;
+
 		winningPartyID = winningPartyID;
 		votingNumber = other.votingNumber;
 
-		votesByParty = new int[phsSize];
-		votesPerc = new int[phsSize];
-
-		for (int i = 0; i < logSize; i++)
-		{
-			votesByParty[i] = other.votesByParty[i];
-			votesPerc[i] = other.votesPerc[i];
-		}
+		votesByParty = other.votesByParty;
+		votesPerc = other.votesPerc;
 
 		return *this;
 	}
 
 	void VotesCounter::addEmptyCounter()
 	{
-		if (logSize == phsSize)
-			resize(phsSize * 2 + 1);
+		int currSize = votesByParty.size();
 
-		++logSize;
+		votesByParty.resize(currSize + 1);
+
+		votesPerc.resize(currSize + 1);
 	}
 
 	void VotesCounter::addVote(int partyNum)
 	{
 		votesByParty[partyNum]++;
 		votingNumber++;
-	}
-	const int VotesCounter::getLogSize() const
-	{
-		return logSize;
-	}
-	const int VotesCounter::getPhiSize() const
-	{
-		return phsSize;
 	}
 
 	const int VotesCounter::getWinningPartID()
@@ -112,7 +90,7 @@ namespace elections {
 
 	void VotesCounter::updatePercentage()
 	{
-		for (int i = 0; i < logSize; i++)
+		for (int i = 0; i < votesPerc.size(); i++)
 			votesPerc[i] = ((float)((float)votesByParty[i] / (float)votingNumber)) * 100;
 
 	}
@@ -121,7 +99,7 @@ namespace elections {
 	{
 		int winningParty = 0;
 
-		for (int i = 1; i < logSize; i++)
+		for (int i = 1; i < votesByParty.size(); i++)
 		{
 			if (votesByParty[i] > votesByParty[winningParty])
 				winningParty = i;
@@ -135,12 +113,12 @@ namespace elections {
 		return votingNumber;
 	}
 
-	int* VotesCounter::getVotesByParty()
+	vector <int> VotesCounter::getVotesByParty()
 	{
 		return votesByParty;
 	}
 
-	int* VotesCounter::getPercentageVotes()
+	vector <int> VotesCounter::getPercentageVotes()
 	{
 		return votesPerc;
 	}
@@ -148,7 +126,7 @@ namespace elections {
 	void VotesCounter::printVotingStatictic(PartiesArr* partiesArr, int citizensNum)
 	{
 		cout << "Voting statictics: " << endl;
-		for (int i = 0; i < logSize; i++)
+		for (int i = 0; i < votesByParty.size(); i++)
 		{
 			cout << (*partiesArr)[i].getPartyName() << " got " << votesByParty[i] << " votes "
 				<< "which are " << votesPerc[i] << "%" << " of all votes" << endl;
@@ -161,32 +139,35 @@ namespace elections {
 
 	}
 
-	int& VotesCounter::operator[](int index) const
+	const int VotesCounter::operator[](int index) const
 	{
 		return votesByParty[index];
 	}
 
 	void VotesCounter::save(ostream& out) const
 	{
-		if (logSize > 0) {
-			out.write(rcastcc(&logSize), sizeof(logSize));
-			out.write(rcastcc(votesByParty), sizeof(votesByParty));
-			out.write(rcastcc(votesPerc), sizeof(votesPerc));
+		int size = votesByParty.size();
+
+		if (votesByParty.size() > 0) {
+			out.write(rcastcc(&size), sizeof(int));
+			out.write(rcastcc(&votesByParty[0]), votesByParty.size() * sizeof(int));
+			out.write(rcastcc(&votesPerc[0]), votesPerc.size() * sizeof(int));
 		}
 	}
 
 	void VotesCounter::load(istream& in)
 	{
-		int newLogSize = 0;
 		// We need to reset logSize and phsSize, because we save a whole object, 
 		// and when we load data to votesByParty and votesPerc we need resize to work with the new size.
-		logSize = 0, phsSize = 0;
-		in.read(rcastc(&newLogSize), sizeof(newLogSize));
-		if (newLogSize > 0) {
-			resize(newLogSize);
-			logSize = newLogSize;
-			in.read(rcastc(votesByParty), sizeof(votesByParty));
-			in.read(rcastc(votesPerc), sizeof(votesPerc));
+		int size;
+		in.read(rcastc(&size), sizeof(size));
+
+		if (size > 0) {
+			votesByParty.resize(size);
+			votesPerc.resize(size);
+
+			in.read(rcastc(&votesByParty[0]), size * sizeof(int));
+			in.read(rcastc(&votesPerc[0]), size * sizeof(int));
 		}
 	}
 }

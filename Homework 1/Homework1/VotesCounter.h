@@ -1,5 +1,6 @@
 #pragma once
 #include <fstream>
+#include <vector>
 
 
 using namespace std;
@@ -11,12 +12,11 @@ namespace elections {
 	private:
 		int votingNumber = 0;
 		int winningPartyID = 0;
-		int logSize = 0, phsSize = 0;
-		int* votesByParty;
-		int* votesPerc;
+		vector<int> votesByParty;
+		vector<int> votesPerc;
 
 		// Resizing votersByDistrict arr and updating logSize, phsSize
-		void resize(int newSize);
+		//void resize(int newSize);
 
 	public:
 		// Ctors
@@ -40,17 +40,15 @@ namespace elections {
 
 		// Getters------------------------------------------
 		// return the number of votes in district "idx"
-		const int getLogSize() const;
-		const int getPhiSize() const;
 		const int getWinningPartID();
 		void updatePercentage();
 		void updateWinner();
 		const int getVotingNumberInDistrict() const;
-		int* getVotesByParty();
-		int* getPercentageVotes();
+		vector<int> getVotesByParty();
+		vector<int> getPercentageVotes();
 		void printVotingStatictic(PartiesArr* partiesArr, int citizensNum);
 
-		int& operator[](int index) const;
+		const int operator[](int index) const;
 
 		//Save and load from BIN file methods.
 		void save(ostream& out) const;
