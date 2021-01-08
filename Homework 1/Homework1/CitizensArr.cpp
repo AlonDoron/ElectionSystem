@@ -4,83 +4,47 @@
 using namespace std;
 
 namespace elections {
-	CitizensArr::CitizensArr() : citizens(nullptr), logSize(0), phsSize(0) {}
+	CitizensArr::CitizensArr(int size) : citizens(size) {}
 
-	CitizensArr::CitizensArr(int size) : logSize(0), phsSize(size) {
-		citizens = new Citizen[size];
-	}
-
-	CitizensArr::CitizensArr(const CitizensArr& other)
+	int CitizensArr::getLogSize()
 	{
-		*this = other;
-	}
-
-	CitizensArr::~CitizensArr() {
-		delete[] citizens;
-		logSize = phsSize = 0;
-	}
-
-	void CitizensArr::resize(int newSize)
-	{
-		Citizen* temp = new Citizen[newSize];
-
-		for (int i = 0; i < logSize; ++i)
-			temp[i] = citizens[i];
-
-		if (logSize >= 1)
-			delete[] citizens;
-
-		citizens = temp;
-		phsSize = newSize;
-	}
-
-	CitizensArr& CitizensArr::operator=(const CitizensArr& other)
-	{
-		logSize = other.logSize;
-		phsSize = other.phsSize;
-		citizens = new Citizen[phsSize];
-
-		for (int i = 0; i < logSize; i++)
-			citizens[i] = other.citizens[i];
-
-		return *this;
+		return citizens.size();
 	}
 
 	void CitizensArr::add(Citizen& citizen)
 	{
-		if (logSize == phsSize)
-			resize(phsSize * 2 + 1);
-
-		citizens[logSize] = citizen;
-		++logSize;
+		citizens.push_back(citizen);
 	}
 
 	void CitizensArr::appendCitizensArr(CitizensArr& other)
 	{
-		int size = other.getLogSize();
+		int size = citizens.size();
 
 		for (int i = 0; i < size; i++)
-			add(other.getCitizenByIndex(i));
+			citizens.push_back(other[i]);
 	}
 
-
-	Citizen& CitizensArr::operator[](int index) const
+	const Citizen& CitizensArr::operator[](int index) const
 	{
 		return citizens[index];
 	}
 
-	Citizen& CitizensArr::operator[](long int id) const
+	const Citizen& CitizensArr::operator[](long int id) const
 	{
-		for (int i = 0; i < logSize; i++)
+		int size = citizens.size();
+
+		for (int i = 0; i < size; i++)
 			if (id == citizens[i].getId())
 				return citizens[i];
 	}
 
 	void CitizensArr::save(ostream& out) const
 	{
-		out.write(rcastcc(&logSize), sizeof(logSize));
+		int size = citizens.size();
 
-		for (int i = 0; i < logSize; i++)
+		out.write(rcastcc(&size), sizeof(size));
+
+		for (int i = 0; i < size; i++)
 			citizens[i].save(out);
 	}
 
@@ -98,40 +62,18 @@ namespace elections {
 	}
 
 	const bool CitizensArr::isCitizenExistsById(long int id) const {
-		for (int i = 0; i < logSize; i++)
+		int size = citizens.size();
+
+		for (int i = 0; i < size; i++)
 			if (citizens[i].getId() == id)
 				return true;
 
 		return false;
 	}
 
-	bool CitizensArr::setLogSize(int size)
+	DynamicArray<Citizen>& CitizensArr::getCitizens()
 	{
-		logSize = size;
-
-		return true;
-	}
-
-	bool CitizensArr::setPhsSize(int size)
-	{
-		phsSize = size;
-
-		return true;
-	}
-
-	const int CitizensArr::getLogSize() const
-	{
-		return logSize;
-	}
-
-	const int CitizensArr::getPhsSize() const
-	{
-		return phsSize;
-	}
-
-	Citizen& CitizensArr::getCitizenByIndex(int ind)
-	{
-		return citizens[ind];
+		return citizens;
 	}
 
 	CitizensArr CitizensArr::getCitizensUntillIndex(int numOfElected)
@@ -144,9 +86,11 @@ namespace elections {
 		return electedReps;
 	}
 
-	ostream& operator<<(ostream& os, const CitizensArr& citizensArr)
+	ostream& operator<<(ostream& os, CitizensArr& citizensArr)
 	{
-		for (int i = 0; i < citizensArr.getLogSize(); i++)
+		int size = citizensArr.getCitizens().size();
+
+		for (int i = 0; i < size; i++)
 			cout << citizensArr[i];
 
 		return os;
