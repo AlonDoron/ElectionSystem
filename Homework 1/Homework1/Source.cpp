@@ -164,7 +164,7 @@ void addNewDistrict(DistrictsArr& districtsArr, PartiesArr& partiesArr, Citizens
 
 		cout << "Enter number of representatives: ";
 		cin >> numOfRep;
-		
+
 		if (numOfRep > 0)
 		{
 			cout << "Enter district type: (0 = united, 1 = divided)" << endl;
@@ -196,7 +196,7 @@ void addNewCitizen(CitizensDB& citizensDB, DistrictsArr& districtsArr)
 
 	cout << "Enter citizen's name (max 20 chars): ";
 	cin.ignore();
-	getline(cin,name);
+	getline(cin, name);
 
 	cout << name;
 
@@ -293,7 +293,7 @@ void addNewVote(CitizensDB& citizensDB, DistrictsArr& districtsArr, PartiesArr& 
 
 	if (citizensDB.isCitizenExistsById(ID))
 	{
-		Citizen& voter = citizensDB[ID];
+		Citizen& voter = const_cast<Citizen&>(citizensDB[ID]);
 
 		if (!(voter.getVoted())) {
 
