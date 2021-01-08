@@ -82,7 +82,7 @@ namespace elections {
 	const bool DistrictsArr::isDistrictExistsByName(string name) const
 	{
 		for (int i = 0; i < logSize; i++)
-			if (districts[i]->getDistrictName() ==  name)
+			if (districts[i]->getDistrictName() == name)
 				return true;
 
 		return false;
@@ -90,6 +90,9 @@ namespace elections {
 
 	void DistrictsArr::addNewPartyToVotesCounters()
 	{
+		// TODO: implement applyall 
+		// districts.applyall(addVotesCountersForNewParty());
+
 		for (int i = 0; i < logSize; i++)
 			districts[i]->addVotesCountersForNewParty();
 	}
