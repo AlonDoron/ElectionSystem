@@ -7,7 +7,7 @@ namespace elections {
 	CitizensDB::CitizensDB() {}
 
 	CitizensDB::CitizensDB(int size) : citizensByDist(size) {}
-	
+
 	void CitizensDB::addEmptyCitizensArr()
 	{
 		int newSize = citizensByDist.size() + 1;
@@ -58,14 +58,15 @@ namespace elections {
 	{
 		return citizensByDist[index];
 	}
-	Citizen& CitizensDB::operator[](long int id)
+
+	const Citizen& CitizensDB::operator[](long int id)
 	{
 		for (int i = 0; i < citizensByDist.max_size(); i++)
 			if (citizensByDist[i].isCitizenExistsById(id))
 				return (citizensByDist[i])[id];
 	}
 
-	const int CitizensDB::getLogSize() const  { return citizensByDist.size(); }
+	const int CitizensDB::getLogSize() const { return citizensByDist.size(); }
 
 	ostream& operator<<(ostream& os, CitizensDB& citizensDB)
 	{

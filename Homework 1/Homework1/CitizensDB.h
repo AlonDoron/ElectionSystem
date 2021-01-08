@@ -19,8 +19,8 @@ namespace elections {
 		void addCitizenToIndex(Citizen& citizen, int index);
 
 		CitizensArr& operator[](int index);
-		Citizen& operator[](long int id);
-		
+		const Citizen& operator[](long int id);
+
 		//Save and load from BIN file methods.
 		void save(ostream& out) const;
 		void load(istream& in);
