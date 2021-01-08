@@ -144,6 +144,7 @@
     <ClCompile Include="District.cpp" />
     <ClCompile Include="DistrictsArr.cpp" />
     <ClCompile Include="DividedDistrict.cpp" />
+    <ClCompile Include="DynamicArray.cpp" />
     <ClCompile Include="Election.cpp" />
     <ClCompile Include="FilesHandler.cpp" />
     <ClCompile Include="PartiesArr.cpp" />
@@ -158,6 +159,7 @@
     <ClInclude Include="District.h" />
     <ClInclude Include="DistrictsArr.h" />
     <ClInclude Include="DividedDistrict.h" />
+    <ClInclude Include="DynamicArray.h" />
     <ClInclude Include="Election.h" />
     <ClInclude Include="ElectionType.h" />
     <ClInclude Include="FilesHandler.h" />

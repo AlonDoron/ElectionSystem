@@ -8,14 +8,6 @@ namespace elections {
 
 	CitizensDB::CitizensDB(int size) : citizensByDist(size) {}
 	
-	//CitizensDB::~CitizensDB() {
-	//	for (int i = 0; i < citizensByDist->getLogSize(); i++)
-	//	{
-	//		citizensByDist[i].~CitizensArr();
-	//	}
-
-	//}
-
 	void CitizensDB::addEmptyCitizensArr()
 	{
 		int newSize = citizensByDist.size() + 1;
@@ -54,6 +46,7 @@ namespace elections {
 	}
 
 	const bool CitizensDB::isCitizenExistsById(long int id) const {
+
 		for (int i = 0; i < citizensByDist.size(); i++)
 			if (citizensByDist[i].isCitizenExistsById(id))
 				return true;
