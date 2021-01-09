@@ -27,10 +27,10 @@ namespace elections {
 		CitizensDB& getRepresentatives();
 
 		// print all party detailes
-		friend ostream& operator<<(ostream& os, Party& party);
+		friend ostream& operator<<(ostream& os, const Party& party);
 
 		// returns true if representative with id repId already exists
-		const bool isRepAlreadyExists(long int repId);
+		const bool isRepAlreadyExists(long int repId) const;
 
 		//Save and load from BIN file methods.
 		void save(ostream& out) const;

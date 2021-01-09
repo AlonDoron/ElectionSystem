@@ -4,57 +4,16 @@
 using namespace std;
 
 namespace elections {
-	PartiesArr::PartiesArr() : parties(nullptr), logSize(0), phsSize(0) {}
+	PartiesArr::PartiesArr() {}
 
-	PartiesArr::PartiesArr(int size) : logSize(0), phsSize(size)
+	void PartiesArr::init()
 	{
-		parties = new Party[size];
-	}
-
-	PartiesArr::PartiesArr(const PartiesArr& other)
-	{
-		*this = other;
-	}
-
-	PartiesArr::~PartiesArr()
-	{
-		delete[] parties;
-		logSize = phsSize = 0;
-	};
-
-	void PartiesArr::resize(int newSize)
-	{
-		Party* temp = new Party[newSize];
-
-		for (int i = 0; i < logSize; ++i)
-			temp[i] = parties[i];
-
-		if (logSize >= 1)
-			delete[] parties;
-
-		parties = temp;
-		phsSize = newSize;
-	}
-
-	PartiesArr& PartiesArr::operator=(const PartiesArr& other)
-	{
-		logSize = other.logSize;
-		phsSize = other.phsSize;
-		parties = new Party[phsSize];
-
-		for (int i = 0; i < logSize; i++)
-			parties[i] = other.parties[i];
-
-		return *this;
+		parties.resize(0);
 	}
 
 	void PartiesArr::add(Party& party)
 	{
-		if (logSize == phsSize)
-			resize(phsSize * 2 + 1);
-
-		parties[logSize] = party;
-		++logSize;
+		parties.push_back(party);
 	}
 
 	void PartiesArr::addRep(Citizen& rep, int partyNum, int districtNum)
@@ -64,17 +23,19 @@ namespace elections {
 
 	void PartiesArr::addNewDistToRepArr(void)
 	{
-		for (int i = 0; i < logSize; i++)
+		int size = parties.size();
+
+		for (int i = 0; i < size; i++)
 			parties[i].addEmptyCellToRepArr();
 	}
 
 
 	const int PartiesArr::getLogSize() const
 	{
-		return logSize;
+		return parties.size();
 	}
 
-	Party& PartiesArr::operator[](int index) const
+	const Party& PartiesArr::operator[](int index) const
 	{
 		return parties[index];
 	}
@@ -82,7 +43,9 @@ namespace elections {
 
 	const bool PartiesArr::isCitizenAlreadyLeader(long int id) const
 	{
-		for (int i = 0; i < logSize; i++)
+		int size = parties.size();
+
+		for (int i = 0; i < size; i++)
 			if (parties[i].getLeaderId() == id)
 				return true;
 
@@ -91,7 +54,9 @@ namespace elections {
 
 	const bool PartiesArr::isCitizenAlreadyRep(long int id) const
 	{
-		for (int i = 0; i < logSize; i++)
+		int size = parties.size();
+
+		for (int i = 0; i < size; i++)
 		{
 			if (parties[i].isRepAlreadyExists(id))
 				return true;
@@ -102,9 +67,11 @@ namespace elections {
 
 	void PartiesArr::save(ostream& out) const
 	{
-		out.write(rcastcc(&logSize), sizeof(logSize));
+		int size = parties.size();
 
-		for (int i = 0; i < logSize; i++)
+		out.write(rcastcc(&size), sizeof(size));
+
+		for (int i = 0; i < size; i++)
 			parties[i].save(out);
 	}
 
@@ -122,13 +89,12 @@ namespace elections {
 		}
 	}
 
-	ostream& operator<<(ostream& os, const PartiesArr& partiesArr)
+	ostream& operator<<(ostream& os, PartiesArr& partiesArr)
 	{
 		for (int i = 0; i < partiesArr.getLogSize(); i++)
 		{
 			cout << "Party number: " << i << " ";
 			cout << partiesArr[i];
-
 		}
 
 		return os;

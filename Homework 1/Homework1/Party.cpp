@@ -13,7 +13,7 @@ namespace elections {
 		name(_name), id(_id), representatives(numOfDistricts)
 	{}
 
-	const bool Party::isRepAlreadyExists(long int repId)
+	const bool Party::isRepAlreadyExists(long int repId) const
 	{
 		if (representatives.isCitizenExistsById(repId))
 			return true;
@@ -31,7 +31,6 @@ namespace elections {
 		return representatives;
 	}
 
-
 	const string& Party::getPartyName() const
 	{
 		return name;
@@ -48,12 +47,14 @@ namespace elections {
 	}
 
 
-	ostream& operator<<(ostream& os, Party& party)
+	ostream& operator<<(ostream& os, const Party& party)
 	{
+		Party& tempParty = const_cast<Party&>(party);
+		CitizensDB& reps = tempParty.getRepresentatives();
 
 		cout << "Party's Name: " << party.getPartyName() << " | ID of party leader: " << party.getLeaderId() << endl;
 		cout << "Representatives by district: " << endl;
-		cout << party.getRepresentatives();
+		cout << reps;
 
 		return os;
 	}
