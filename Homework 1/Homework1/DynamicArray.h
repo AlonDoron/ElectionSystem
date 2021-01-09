@@ -7,7 +7,7 @@ class DynamicArray
 public:
 	DynamicArray(int size = 2) : logSize(0), phsSize(size), _arr(new T[size]) {}
 	DynamicArray(const DynamicArray& other) : _arr(nullptr) { *this = other; }
-	~DynamicArray() { delete[] _arr; }
+	~DynamicArray() { delete[] _arr; logSize = 0; phsSize = 0; }
 
 	const DynamicArray& operator=(const DynamicArray& other)
 	{
@@ -273,6 +273,18 @@ public:
 		iterator p = pos;
 		*p = val;
 		++logSize;
+	}
+
+	void resize(int size) {
+		phsSize = size;
+		logSize = size;
+		T* temp = new T[phsSize];
+
+		for (int i = 0; i < logSize; i++)
+			temp[i] = _arr[i];
+
+		delete[] _arr;
+		_arr = temp;
 	}
 
 private:

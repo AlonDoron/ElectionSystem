@@ -1,5 +1,6 @@
 #pragma once
 #include "District.h"
+#include "DynamicArray.h"
 
 #define rcastcc reinterpret_cast<const char*>
 #define rcastc reinterpret_cast<char*>
@@ -10,25 +11,15 @@ namespace elections {
 
 	class DistrictsArr {
 	private:
-		int phsSize = 0, logSize = 0;
-		District** districts;
-
-		// Resizing districts arr and updating logSize, phsSize
-		void resize(int size);
+		DynamicArray<District*> districts;
 
 	public:
 		// Ctor
 		DistrictsArr();
 
-		// Dtor
-		~DistrictsArr();
-
-		//copy ctor
-		DistrictsArr(const DistrictsArr&);
-
-		// Overload "=" operator
-		DistrictsArr& operator=(const DistrictsArr&);
-
+		~DistrictsArr() {
+			districts.~DynamicArray();
+		}
 		// Setters-----------------------------------------
 		void add(District* district);
 
@@ -43,9 +34,11 @@ namespace elections {
 		// votesArr handler
 		void addNewPartyToVotesCounters();
 
+		void init();
+
 		// Printer operator
 		friend ostream& operator<<(ostream& os, const DistrictsArr& districtArr);
-		
+
 		//Save and load from BIN file methods.
 		void save(ostream& out) const;
 		void load(istream& in);
