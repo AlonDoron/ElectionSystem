@@ -41,28 +41,23 @@ namespace elections {
 	}
 
 
-	const bool PartiesArr::isCitizenAlreadyLeader(long int id) const
+	void PartiesArr::isCitizenAlreadyLeader(long int id) const
 	{
 		int size = parties.size();
 
 		for (int i = 0; i < size; i++)
 			if (parties[i].getLeaderId() == id)
-				return true;
-
-		return false;
+				throw "This citizen is already party leader! ";
 	}
 
-	const bool PartiesArr::isCitizenAlreadyRep(long int id) const
+	void PartiesArr::isCitizenAlreadyRep(long int id)
 	{
 		int size = parties.size();
 
 		for (int i = 0; i < size; i++)
 		{
-			if (parties[i].isRepAlreadyExists(id))
-				return true;
+			parties[i].isRepAlreadyExists(id);
 		}
-
-		return false;
 	}
 
 	void PartiesArr::save(ostream& out) const
