@@ -33,15 +33,14 @@ namespace elections {
 		return districts.size();
 	}
 
-	const bool DistrictsArr::isDistrictExistsByName(string name) const
+	void DistrictsArr::isDistrictExistsByName(string name) const
 	{
 		int size = districts.size();
 
 		for (int i = 0; i < size; i++)
 			if (districts[i]->getDistrictName() == name)
-				return true;
+				throw ("The district with name " + name + " already exists!!!");
 
-		return false;
 	}
 
 	void DistrictsArr::addNewPartyToVotesCounters()

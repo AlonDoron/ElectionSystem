@@ -29,7 +29,7 @@ namespace elections {
 		const int getLogSize(void) const;
 
 		// Returns true if district's name equal to name 
-		const bool isDistrictExistsByName(string name) const;
+		void isDistrictExistsByName(string name) const;
 
 		// votesArr handler
 		void addNewPartyToVotesCounters();

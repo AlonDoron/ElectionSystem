@@ -45,13 +45,11 @@ namespace elections {
 		}
 	}
 
-	const bool CitizensDB::isCitizenExistsById(long int id) const {
+	void CitizensDB::isCitizenExistsById(long int id) const {
 
 		for (int i = 0; i < citizensByDist.size(); i++)
 			if (citizensByDist[i].isCitizenExistsById(id))
-				return true;
-
-		return false;
+				throw ("The citizen with this ID already exists!!");
 	}
 
 	CitizensArr& CitizensDB::operator[](int index)
