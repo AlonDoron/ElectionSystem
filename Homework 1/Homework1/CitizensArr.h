@@ -14,6 +14,7 @@ namespace elections {
 		// Ctors
 		CitizensArr() {}
 		CitizensArr(int size);
+		~CitizensArr() {}
 
 		// Getters
 		int getLogSize();
@@ -23,6 +24,8 @@ namespace elections {
 
 		// add an entire citizen's array to exisiting array (at the end)
 		void appendCitizensArr(CitizensArr& other);
+
+		void init();
 
 		// return the first "numOfElected" citizens in array
 		CitizensArr getCitizensUntillIndex(int numOfElected);

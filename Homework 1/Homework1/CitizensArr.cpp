@@ -24,6 +24,11 @@ namespace elections {
 			citizens.push_back(other[i]);
 	}
 
+	void CitizensArr::init()
+	{
+		citizens.resize(0);
+	}
+
 	const Citizen& CitizensArr::operator[](int index) const
 	{
 		return citizens[index];
