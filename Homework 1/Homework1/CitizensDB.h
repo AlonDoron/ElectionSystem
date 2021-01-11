@@ -15,7 +15,7 @@ namespace elections {
 
 		void addEmptyCitizensArr();
 		const int getLogSize() const;
-		void isCitizenExistsById(long int id) const;
+		const bool isCitizenExistsById(long int id) const;
 		void addCitizenToIndex(Citizen& citizen, int index);
 
 		CitizensArr& operator[](int index);

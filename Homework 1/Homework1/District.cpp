@@ -9,17 +9,10 @@ namespace elections {
 	District::District() : name(), numOfRep(0), districtNum(0), citizensNum(0) {}
 
 	District::District(string& _name, int _numOfRep, int _districtNum) {
-
-		if (_numOfRep < 0)
-			throw "number of representatives can not be a negative number !!!!!";
-		else if (_name.length() == 0)
-			throw "no district name has entered !!!!!";
-		else {
-			name = _name;
-			numOfRep = _numOfRep;
-			districtNum = _districtNum;
-			citizensNum = 0;
-		}
+		name = _name;
+		numOfRep = _numOfRep;
+		districtNum = _districtNum;
+		citizensNum = 0;
 
 	}
 
