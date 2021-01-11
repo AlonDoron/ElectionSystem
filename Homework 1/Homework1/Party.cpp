@@ -10,8 +10,17 @@ namespace elections {
 	Party::Party() : name(), id(0), representatives() {}
 
 	Party::Party(string& _name, long int _id, int numOfDistricts) :
-		name(_name), id(_id), representatives(numOfDistricts)
-	{}
+		 representatives(numOfDistricts)
+	{
+		if (_name.length() == 0)
+			throw "name can't be empty !!!";
+		//if (_id < 100000000 || _id > 999999999)
+		//	throw "id must be 9 digits !!!";
+
+		name = _name;
+		id = _id;
+
+	}
 
 	const bool Party::isRepAlreadyExists(long int repId) const
 	{

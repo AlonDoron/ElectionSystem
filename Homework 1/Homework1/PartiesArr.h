@@ -21,7 +21,7 @@ namespace elections {
 		void add(Party& party);
 
 		// add rep to party in index partyNum to it's array in index districtNum
-		void addRep(Citizen& rep, int partyNum, int districtNum);
+		void addRep(Citizen& rep, int partyNum, int districtNum, int numOfDistrict);
 
 		// allocating one more space to each party when district is added
 		void addNewDistToRepArr(void);

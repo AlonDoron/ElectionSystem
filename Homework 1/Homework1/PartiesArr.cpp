@@ -16,8 +16,13 @@ namespace elections {
 		parties.push_back(party);
 	}
 
-	void PartiesArr::addRep(Citizen& rep, int partyNum, int districtNum)
+	void PartiesArr::addRep(Citizen& rep, int partyNum, int districtNum, int numOfDistrict)
 	{
+		if (!((partyNum < parties.size() && (partyNum >= 0))))
+			throw "number of party is out of range !!!";
+		if (!((districtNum < numOfDistrict && (districtNum >= 0))))
+			throw "number of district is out of range !!!";
+
 		parties[partyNum].addRepToParty(rep, districtNum);
 	}
 
