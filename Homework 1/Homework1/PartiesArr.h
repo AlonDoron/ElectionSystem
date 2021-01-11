@@ -32,10 +32,10 @@ namespace elections {
 		const Party& operator[](int index) const;
 
 		// returns true if citizen with the id is already leader
-		void isCitizenAlreadyLeader(long int id) const;
+		const bool isCitizenAlreadyLeader(long int id) const;
 
 		// returns true if citizen with the id is already rep
-		void isCitizenAlreadyRep(long int id);
+		const bool isCitizenAlreadyRep(long int id) const;
 
 		friend ostream& operator<<(ostream& os, PartiesArr& partiesArr);
 

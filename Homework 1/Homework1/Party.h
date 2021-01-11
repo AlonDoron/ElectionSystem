@@ -30,7 +30,7 @@ namespace elections {
 		friend ostream& operator<<(ostream& os, const Party& party);
 
 		// returns true if representative with id repId already exists
-		void isRepAlreadyExists(long int repId) const;
+		const bool isRepAlreadyExists(long int repId) const;
 
 		//Save and load from BIN file methods.
 		void save(ostream& out) const;

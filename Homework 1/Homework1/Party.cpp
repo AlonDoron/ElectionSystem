@@ -13,9 +13,12 @@ namespace elections {
 		name(_name), id(_id), representatives(numOfDistricts)
 	{}
 
-	void Party::isRepAlreadyExists(long int repId) const
+	const bool Party::isRepAlreadyExists(long int repId) const
 	{
-		representatives.isCitizenExistsById(repId);
+		if (representatives.isCitizenExistsById(repId))
+			return true;
+		else
+			return false;
 	}
 
 	const long int Party::getLeaderId() const
