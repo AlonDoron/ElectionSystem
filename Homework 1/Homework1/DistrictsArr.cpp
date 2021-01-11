@@ -25,6 +25,12 @@ namespace elections {
 
 	void DistrictsArr::add(District* district)
 	{
+		if (isDistrictExistsByName(district->getDistrictName()))
+		{
+			delete district;
+			throw ("The district with this name is already exists!!!");
+		}
+
 		districts.push_back(district);
 	}
 

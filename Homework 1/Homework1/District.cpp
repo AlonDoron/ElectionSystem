@@ -9,6 +9,12 @@ namespace elections {
 	District::District() : name(), numOfRep(0), districtNum(0), citizensNum(0) {}
 
 	District::District(string& _name, int _numOfRep, int _districtNum) {
+		if (_numOfRep < 0)
+			throw "number of reps is out of range !! ";
+		else if (_name.length() == 0)
+			throw "name can't be empty !! ";
+
+
 		name = _name;
 		numOfRep = _numOfRep;
 		districtNum = _districtNum;

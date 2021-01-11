@@ -9,8 +9,21 @@ using namespace std;
 namespace elections {
 	Citizen::Citizen() : name(), id(0), year(0), district(nullptr), voted(false) {}
 
-	Citizen::Citizen(string& _name, long int _id, int _year, District* _district) :
-		name(_name), id(_id), year(_year), district(_district), voted(false) {}
+	Citizen::Citizen(string& _name, long int _id, int _year, District* _district, int currYear) :
+		district(_district), voted(false) {
+
+		if (_name.length() == 0)
+			throw "name can't be empty !!!";
+		//if (_id < 100000000 || _id > 999999999)
+		//	throw "id must be 9 digits !!!";
+		if (currYear - _year < 18)
+			throw "citizen must be over 18 !!!";			
+
+		name = _name;
+		id = _id;
+		year = _year;
+	
+	}
 
 	Citizen::~Citizen() {}
 

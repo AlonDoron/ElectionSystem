@@ -19,7 +19,7 @@ namespace elections {
 	public:
 		// Ctors
 		Citizen();
-		Citizen(string& _name, long int _id, int _year, District* _district);
+		Citizen(string& _name, long int _id, int _year, District* _district, int currYear);
 
 		// Dtor
 		~Citizen();
