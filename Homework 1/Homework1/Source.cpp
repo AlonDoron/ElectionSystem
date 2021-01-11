@@ -456,8 +456,4 @@ void printMainMenu()
 	cout << "12 - Load election round from file" << endl;
 }
 
-void CitizenExistCheck_addingCitizen(long int ID, CitizensDB& citizensDB)
-{
-	if (citizensDB.isCitizenExistsById(ID))
-		throw "citizen is already exist !!";
-}
+
