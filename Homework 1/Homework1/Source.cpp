@@ -194,8 +194,6 @@ void addNewCitizen(CitizensDB& citizensDB, DistrictsArr& districtsArr, Date& ele
 	cin.ignore();
 	getline(cin, name);
 
-	cout << name;
-
 	cout << "Enter ID: ";
 	cin >> id;
 	try {
