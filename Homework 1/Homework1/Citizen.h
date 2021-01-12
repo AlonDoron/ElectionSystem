@@ -26,14 +26,14 @@ namespace elections {
 
 
 		// Setters-----------------------------
-		const bool setVoted(bool val);
+		void setVoted(bool val);
 		const bool setId(long int _id);
 		const bool setName(string& _name);
 		const bool setDistrict(District* _district);
 		const bool setYear(int _year);
 
 		// Getters----------------------------
-		const bool getVoted() const;
+		const bool isVoted() const;
 		const int getDistrictNum() const;
 		const long int getId(void) const;
 		const int getYear(void) const;

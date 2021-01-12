@@ -17,26 +17,28 @@ namespace elections {
 		//if (_id < 100000000 || _id > 999999999)
 		//	throw "id must be 9 digits !!!";
 		if (currYear - _year < 18)
-			throw "citizen must be over 18 !!!";			
+			throw "citizen must be over 18 !!!";
 
 		name = _name;
 		id = _id;
 		year = _year;
-	
+
 	}
 
 	Citizen::~Citizen() {}
 
 
 
-	const bool Citizen::getVoted() const
+	const bool Citizen::isVoted() const
 	{
 		return voted;
 	}
 
-	const bool Citizen::setVoted(bool val) {
+	void Citizen::setVoted(bool val) {
+		if (isVoted())
+			throw "citizen already voted !!!";
+
 		voted = val;
-		return 1;
 	}
 
 	const bool Citizen::setId(long int _id)
