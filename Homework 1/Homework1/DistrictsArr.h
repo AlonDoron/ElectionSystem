@@ -18,7 +18,6 @@ namespace elections {
 		DistrictsArr();
 
 		~DistrictsArr() {
-			districts.~DynamicArray();
 		}
 		// Setters-----------------------------------------
 		void add(District* district);
