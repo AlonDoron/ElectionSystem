@@ -13,13 +13,6 @@
 #include "ElectionType.h"
 #include "DividedDistrict.h"
 
-// preview:
-// we have made some changes from the previous version - 
-// 1 - option to load and save election data to/from file
-// 2 - all representatives are now saved in district (instead of parties)
-// 3 - option to add divided or united district - using polimorphisem 
-// 4 - an option to choose simple election and than the user adds "district" functioning as country
-//     adding more district is not allowed
 
 using namespace std;
 using namespace elections;
@@ -74,77 +67,84 @@ int main() {
 	DistrictsArr districtsArr; CitizensDB citizensDB;
 	PartiesArr partiesArr; ElectionType electionType;
 
-	if (loadingElectionChoice())
-		loadElectionRound(districtsArr, citizensDB, partiesArr, electionType);
-
-	else
-		handleElectionType(electionType, districtsArr, citizensDB, electionDate);
-
-	printMainMenu();
-
-	while (action != 10) {
-		cin >> action;
-		userActions = (UserActions)action;
-
-		switch (userActions) {
-		case UserActions::ADD_DISTRICT:
-			if (electionType == ElectionType::REGULAR_ELECTION)
-				addNewDistrict(districtsArr, partiesArr, citizensDB);
-
-			else
-				cout << "You can't add district" << endl;
-
-			break;
-
-		case UserActions::ADD_CITIZEN:
-			addNewCitizen(citizensDB, districtsArr, electionDate);
-			break;
-
-		case UserActions::ADD_PARTY:
-			addNewParty(partiesArr, districtsArr, citizensDB);
-			break;
-
-		case UserActions::ADD_REP:
-			addNewRep(partiesArr, citizensDB, districtsArr);
-			break;
-
-		case UserActions::SHOW_ALL_DISTRICTS:
-			cout << districtsArr;
-			break;
-
-		case UserActions::SHOW_ALL_CITIZENS:
-			cout << citizensDB;
-			break;
-
-		case UserActions::SHOW_ALL_PARTIES:
-			cout << partiesArr;
-			break;
-
-		case UserActions::VOTE:
-			addNewVote(citizensDB, districtsArr, partiesArr);
-			break;
-
-		case UserActions::SHOW_ELECTION_POLLS:
-			showElectionPolls(electionDate, districtsArr, partiesArr, citizensDB);
-			break;
-
-		case UserActions::EXIT:
-			cout << "Goodbye." << endl;
-			break;
-
-		case UserActions::SAVE_ELECTION_ROUND:
-			saveElectionRound(districtsArr, citizensDB, partiesArr, electionType);
-			break;
-
-		case UserActions::LOAD_ELECTION_ROUND:
+	try {
+		if (loadingElectionChoice())
 			loadElectionRound(districtsArr, citizensDB, partiesArr, electionType);
-			break;
 
-		default:
-			cout << "NO INPUT" << endl;
-			break;
+		else
+			handleElectionType(electionType, districtsArr, citizensDB, electionDate);
+
+		printMainMenu();
+
+		while (action != 10) {
+			cin >> action;
+			userActions = (UserActions)action;
+
+			switch (userActions) {
+			case UserActions::ADD_DISTRICT:
+				if (electionType == ElectionType::REGULAR_ELECTION)
+					addNewDistrict(districtsArr, partiesArr, citizensDB);
+
+				else
+					cout << "You can't add district" << endl;
+
+				break;
+
+			case UserActions::ADD_CITIZEN:
+				addNewCitizen(citizensDB, districtsArr, electionDate);
+				break;
+
+			case UserActions::ADD_PARTY:
+				addNewParty(partiesArr, districtsArr, citizensDB);
+				break;
+
+			case UserActions::ADD_REP:
+				addNewRep(partiesArr, citizensDB, districtsArr);
+				break;
+
+			case UserActions::SHOW_ALL_DISTRICTS:
+				cout << districtsArr;
+				break;
+
+			case UserActions::SHOW_ALL_CITIZENS:
+				cout << citizensDB;
+				break;
+
+			case UserActions::SHOW_ALL_PARTIES:
+				cout << partiesArr;
+				break;
+
+			case UserActions::VOTE:
+				addNewVote(citizensDB, districtsArr, partiesArr);
+				break;
+
+			case UserActions::SHOW_ELECTION_POLLS:
+				showElectionPolls(electionDate, districtsArr, partiesArr, citizensDB);
+				break;
+
+			case UserActions::EXIT:
+				cout << "Goodbye." << endl;
+				break;
+
+			case UserActions::SAVE_ELECTION_ROUND:
+				saveElectionRound(districtsArr, citizensDB, partiesArr, electionType);
+				break;
+
+			case UserActions::LOAD_ELECTION_ROUND:
+				loadElectionRound(districtsArr, citizensDB, partiesArr, electionType);
+				break;
+
+			default:
+				cout << "NO INPUT" << endl;
+				break;
+			}
 		}
 	}
+	catch (const char* msg)
+	{
+		cout << msg << endl;
+	}
+
 }
 
 // ( 1 )
@@ -177,6 +177,10 @@ void addNewDistrict(DistrictsArr& districtsArr, PartiesArr& partiesArr, Citizens
 	}
 	catch (const char* msg) {
 		cout << msg << endl;
+	}
+	catch (std::bad_alloc)
+	{
+		throw "somthing went wrong ==> allocation issue !!!";
 	}
 }
 // ( 2 )
@@ -219,6 +223,7 @@ void addNewCitizen(CitizensDB& citizensDB, DistrictsArr& districtsArr, Date& ele
 	{
 		cout << msg << endl;
 	}
+
 }
 // ( 3 )
 void addNewParty(PartiesArr& partiesArr, DistrictsArr& districtsArr, CitizensDB& citizensDB)
@@ -290,30 +295,27 @@ void addNewVote(CitizensDB& citizensDB, DistrictsArr& districtsArr, PartiesArr& 
 
 	cout << "Enter your ID: ";
 	cin >> ID;
-
-	if (citizensDB.isCitizenExistsById(ID))
-	{
-		Citizen& voter = const_cast<Citizen&>(citizensDB[ID]);
-
-		if (!(voter.getVoted())) {
-
+	try {
+		if (citizensDB.isCitizenExistsById(ID))
+		{
+			Citizen& voter = const_cast<Citizen&>(citizensDB[ID]);
 			cout << "Enter party: ";
 			cin >> partyID;
 
-			if (partyID >= 0 && partyID < partiesArr.getLogSize())
-			{
-				voter.setVoted(true);
-				districtNum = voter.getDistrictNum();
-				districtsArr[districtNum].addVoteToVotesCountersInIdx(partyID);
-			}
-			else
-				cout << "Party with ID " << partyID << " does not exist" << endl;
+			partiesArr.isPartyNumberExist(partyID);
+
+			voter.setVoted(true);
+			districtNum = voter.getDistrictNum();
+			districtsArr[districtNum].addVoteToVotesCountersInIdx(partyID);
+
 		}
 		else
-			cout << "Voter with id " << ID << " has already voted!!" << endl;
+			cout << "Voter with id " << ID << " not found!!" << endl;
 	}
-	else
-		cout << "Voter with id " << ID << " not found!!" << endl;
+	catch (const char* msg)
+	{
+		cout << msg << endl;
+	}
 }
 // ( 9 )
 void showElectionPolls(Date& electionDate, DistrictsArr& districtsArr, PartiesArr& partiesArr, CitizensDB& citizensDB)
@@ -387,10 +389,15 @@ void loadElectionRound(DistrictsArr& districtsArr, CitizensDB& citizensDB, Parti
 
 void handleElectionType(ElectionType& electionType, DistrictsArr& districtsArr, CitizensDB& citizensDB, Date& date)
 {
+	int day, month, year;
 	int type = 0;
 	cout << "Welcome to elections. " << endl;
 	cout << "Enter the date of the election: (Day, Month, Year)" << endl;
-	cin >> date.day >> date.month >> date.year;
+	cin >> day >> month >> year;
+
+
+	Date _date(day, month, year);
+	date = _date;
 
 	cout << "Enter type of election: (1 = regular, 0 = simple)" << endl;
 	cin >> type;
@@ -408,52 +415,59 @@ void handleElectionType(ElectionType& electionType, DistrictsArr& districtsArr, 
 	default:
 		cout << "There is no type of choice that matches the number you have selected " << endl;
 		break;
+
+
 	}
 }
+	void addNewSingleState(DistrictsArr & districtsArr, CitizensDB & citizensDB)
+	{
+		int numOfReps;
+		string name;
+		District* newDist;
 
-void addNewSingleState(DistrictsArr& districtsArr, CitizensDB& citizensDB)
-{
-	int numOfReps;
-	string name;
-	District* newDist;
+		cout << "Enter state name (max 20 chars): ";
+		cin.ignore();
+		getline(cin, name);
 
-	cout << "Enter state name (max 20 chars): ";
-	cin.ignore();
-	getline(cin, name);
+		cout << "Enter num of reps: " << endl;
+		cin >> numOfReps;
+		try {
+			newDist = new DividedDistrict(name, numOfReps, 0);
+			districtsArr.add(newDist);
+			citizensDB.addEmptyCitizensArr();
+		}
+		catch (std::bad_alloc)
+		{
+			throw "somthing went wrong ==> allocation issue !!!";
+		}
 
-	cout << "Enter num of reps: " << endl;
-	cin >> numOfReps;
+	}
 
-	newDist = new DividedDistrict(name, numOfReps, 0);
-	districtsArr.add(newDist);
-	citizensDB.addEmptyCitizensArr();
-}
+	bool loadingElectionChoice()
+	{
+		int answer;
 
-bool loadingElectionChoice()
-{
-	int answer;
+		cout << "Would you like load Election or create your own? ( 1 = load Election , 0 = create my own) " << endl;
+		cin >> answer;
 
-	cout << "Would you like load Election or create your own? ( 1 = load Election , 0 = create my own) " << endl;
-	cin >> answer;
+		return answer;
+	}
 
-	return answer;
-}
-
-void printMainMenu()
-{
-	cout << "Enter Action: " << endl;
-	cout << "1 - add district" << endl;
-	cout << "2 - add citizen" << endl;
-	cout << "3 - add party" << endl;
-	cout << "4 - add representative" << endl;
-	cout << "5 - Show all districts" << endl;
-	cout << "6 - show all citizens" << endl;
-	cout << "7 - show all parties" << endl;
-	cout << "8 - vote" << endl;
-	cout << "9 - show election polls" << endl;
-	cout << "10 - Exit" << endl;
-	cout << "11 - Save lection round to file" << endl;
-	cout << "12 - Load election round from file" << endl;
-}
+	void printMainMenu()
+	{
+		cout << "Enter Action: " << endl;
+		cout << "1 - add district" << endl;
+		cout << "2 - add citizen" << endl;
+		cout << "3 - add party" << endl;
+		cout << "4 - add representative" << endl;
+		cout << "5 - Show all districts" << endl;
+		cout << "6 - show all citizens" << endl;
+		cout << "7 - show all parties" << endl;
+		cout << "8 - vote" << endl;
+		cout << "9 - show election polls" << endl;
+		cout << "10 - Exit" << endl;
+		cout << "11 - Save lection round to file" << endl;
+		cout << "12 - Load election round from file" << endl;
+	}
 
 
