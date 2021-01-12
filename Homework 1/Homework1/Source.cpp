@@ -355,13 +355,14 @@ void loadElectionRound(DistrictsArr& districtsArr, CitizensDB& citizensDB, Parti
 	// If districts are not empty, we need to clear all arrays first before loading into them.
 	if (districtsArr.getLogSize() != 0)
 	{
-		districtsArr.~DistrictsArr();
+		districtsArr = DistrictsArr();
 
-		if (citizensDB.getLogSize() != 0)
-		{
-			citizensDB.~CitizensDB();
+		if (citizensDB.getLogSize() != 0) {
+
+			citizensDB = CitizensDB();
+
 			if (partiesArr.getLogSize() != 0)
-				partiesArr.~PartiesArr();
+				partiesArr = PartiesArr();
 		}
 	}
 
@@ -419,55 +420,55 @@ void handleElectionType(ElectionType& electionType, DistrictsArr& districtsArr, 
 
 	}
 }
-	void addNewSingleState(DistrictsArr & districtsArr, CitizensDB & citizensDB)
+void addNewSingleState(DistrictsArr& districtsArr, CitizensDB& citizensDB)
+{
+	int numOfReps;
+	string name;
+	District* newDist;
+
+	cout << "Enter state name (max 20 chars): ";
+	cin.ignore();
+	getline(cin, name);
+
+	cout << "Enter num of reps: " << endl;
+	cin >> numOfReps;
+	try {
+		newDist = new DividedDistrict(name, numOfReps, 0);
+		districtsArr.add(newDist);
+		citizensDB.addEmptyCitizensArr();
+	}
+	catch (std::bad_alloc)
 	{
-		int numOfReps;
-		string name;
-		District* newDist;
-
-		cout << "Enter state name (max 20 chars): ";
-		cin.ignore();
-		getline(cin, name);
-
-		cout << "Enter num of reps: " << endl;
-		cin >> numOfReps;
-		try {
-			newDist = new DividedDistrict(name, numOfReps, 0);
-			districtsArr.add(newDist);
-			citizensDB.addEmptyCitizensArr();
-		}
-		catch (std::bad_alloc)
-		{
-			throw "somthing went wrong ==> allocation issue !!!";
-		}
-
+		throw "somthing went wrong ==> allocation issue !!!";
 	}
 
-	bool loadingElectionChoice()
-	{
-		int answer;
+}
 
-		cout << "Would you like load Election or create your own? ( 1 = load Election , 0 = create my own) " << endl;
-		cin >> answer;
+bool loadingElectionChoice()
+{
+	int answer;
 
-		return answer;
-	}
+	cout << "Would you like load Election or create your own? ( 1 = load Election , 0 = create my own) " << endl;
+	cin >> answer;
 
-	void printMainMenu()
-	{
-		cout << "Enter Action: " << endl;
-		cout << "1 - add district" << endl;
-		cout << "2 - add citizen" << endl;
-		cout << "3 - add party" << endl;
-		cout << "4 - add representative" << endl;
-		cout << "5 - Show all districts" << endl;
-		cout << "6 - show all citizens" << endl;
-		cout << "7 - show all parties" << endl;
-		cout << "8 - vote" << endl;
-		cout << "9 - show election polls" << endl;
-		cout << "10 - Exit" << endl;
-		cout << "11 - Save lection round to file" << endl;
-		cout << "12 - Load election round from file" << endl;
-	}
+	return answer;
+}
+
+void printMainMenu()
+{
+	cout << "Enter Action: " << endl;
+	cout << "1 - add district" << endl;
+	cout << "2 - add citizen" << endl;
+	cout << "3 - add party" << endl;
+	cout << "4 - add representative" << endl;
+	cout << "5 - Show all districts" << endl;
+	cout << "6 - show all citizens" << endl;
+	cout << "7 - show all parties" << endl;
+	cout << "8 - vote" << endl;
+	cout << "9 - show election polls" << endl;
+	cout << "10 - Exit" << endl;
+	cout << "11 - Save lection round to file" << endl;
+	cout << "12 - Load election round from file" << endl;
+}
 
 
