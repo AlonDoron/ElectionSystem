@@ -10,7 +10,11 @@ using namespace std;
 namespace elections {
 
 
-	struct Date { int day, month, year; };
+	struct Date { 
+		int day, month, year;
+		Date() {};
+		Date(int day, int month, int year);
+	};
 	struct Result { int partyNum, votes; };
 
 	class Election {
