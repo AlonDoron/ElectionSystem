@@ -37,6 +37,8 @@ namespace elections {
 		// returns true if citizen with the id is already rep
 		const bool isCitizenAlreadyRep(long int id) const;
 
+		void isPartyNumberExist(int partyNum);
+
 		friend ostream& operator<<(ostream& os, PartiesArr& partiesArr);
 
 		//Save and load from BIN file methods.

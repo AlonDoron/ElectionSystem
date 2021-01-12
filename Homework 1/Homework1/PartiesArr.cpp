@@ -70,6 +70,12 @@ namespace elections {
 		return false;
 	}
 
+	void PartiesArr::isPartyNumberExist(int partyNum)
+	{
+		if (!(partyNum >= 0 && partyNum < parties.size()))
+			throw "party does not exist !!!";
+	}
+
 	void PartiesArr::save(ostream& out) const
 	{
 		int size = parties.size();
