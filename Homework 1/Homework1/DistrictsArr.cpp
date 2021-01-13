@@ -50,14 +50,21 @@ namespace elections {
 		return false;
 	}
 
+	void addVoteTest(District* dist) {
+		District temp;
+		temp.addVotesTest(dist);
+	}
+
 	void DistrictsArr::addNewPartyToVotesCounters()
 	{
 		// TODO: implement applyall 
 		// districts.applyall(addVotesCountersForNewParty());
-		int size = districts.size();
+		districts.applyAll(addVoteTest);
 
-		for (int i = 0; i < size; i++)
-			districts[i]->addVotesCountersForNewParty();
+		//int size = districts.size();
+
+		//for (int i = 0; i < size; i++)
+		//	districts[i]->addVotesCountersForNewParty();
 	}
 
 	void DistrictsArr::init()

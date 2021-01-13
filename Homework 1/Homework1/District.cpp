@@ -43,10 +43,24 @@ namespace elections {
 	{
 		return votesCounter;
 	}
+
 	void District::addVotesCountersForNewParty()
 	{
 		votesCounter.addEmptyCounter();
 	}
+
+	void District::setVotesCounter(const VotesCounter& other)
+	{
+		votesCounter = other;
+	}
+
+	void District::addVotesTest(District* dist)
+	{
+		VotesCounter currVotesCounter = dist->getVotesCounter();
+		currVotesCounter.addEmptyCounter();
+		dist->setVotesCounter(currVotesCounter);
+	}
+
 	void District::addVoteToVotesCountersInIdx(int partyNum)
 	{
 		votesCounter.addVote(partyNum);
