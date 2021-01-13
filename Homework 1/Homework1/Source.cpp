@@ -138,6 +138,11 @@ int main() {
 				cout << "NO INPUT" << endl;
 				break;
 			}
+
+			cout << endl;
+			printMainMenu();
+			cout << endl;
+
 		}
 	}
 	catch (const char* msg)
@@ -414,7 +419,6 @@ void handleElectionType(ElectionType& electionType, DistrictsArr& districtsArr, 
 	default:
 		cout << "There is no type of choice that matches the number you have selected " << endl;
 		break;
-
 
 	}
 }
