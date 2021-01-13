@@ -33,8 +33,6 @@ namespace elections {
 		// votesArr handler
 		void addNewPartyToVotesCounters();
 
-		void init();
-
 		// Printer operator
 		friend ostream& operator<<(ostream& os, const DistrictsArr& districtArr);
 
