@@ -50,6 +50,12 @@ public:
 	bool     empty()	const { return logSize == 0; }
 	void     clear() { logSize = 0; }
 
+	template <class Func>
+	void applyAll(const Func& func) {
+		for (auto itr = begin(); itr != end(); ++itr)
+			func(*itr);
+	}
+
 	class iterator
 	{
 	public:
