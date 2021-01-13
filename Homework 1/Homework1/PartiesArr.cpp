@@ -6,11 +6,6 @@ using namespace std;
 namespace elections {
 	PartiesArr::PartiesArr() {}
 
-	void PartiesArr::init()
-	{
-		parties.resize(0);
-	}
-
 	void PartiesArr::add(Party& party)
 	{
 		parties.push_back(party);

@@ -16,8 +16,6 @@ namespace elections {
 		// Ctor
 		PartiesArr();
 
-		void init();
-
 		void add(Party& party);
 
 		// add rep to party in index partyNum to it's array in index districtNum
