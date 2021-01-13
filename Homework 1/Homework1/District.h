@@ -36,7 +36,6 @@ namespace elections {
 		void setVotesCounter(const VotesCounter& other);
 
 		// voting --------------------------------------
-		void addVotesTest(District* dist);
 		void addVotesCountersForNewParty();
 		void addVoteToVotesCountersInIdx(int partyNum);
 		const int getVotesInIndex(int idx) const;

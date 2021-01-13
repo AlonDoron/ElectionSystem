@@ -54,13 +54,6 @@ namespace elections {
 		votesCounter = other;
 	}
 
-	void District::addVotesTest(District* dist)
-	{
-		VotesCounter currVotesCounter = dist->getVotesCounter();
-		currVotesCounter.addEmptyCounter();
-		dist->setVotesCounter(currVotesCounter);
-	}
-
 	void District::addVoteToVotesCountersInIdx(int partyNum)
 	{
 		votesCounter.addVote(partyNum);
