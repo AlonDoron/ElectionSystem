@@ -23,6 +23,7 @@ namespace elections {
 		// Ctors
 		District();
 		District(string& _name, int _numOfRep, int _districtNum);
+		virtual ~District() {}
 
 		// Getters-------------------------------
 		const int getDistrictNum(void) const;
