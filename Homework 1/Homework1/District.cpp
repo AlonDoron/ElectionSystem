@@ -85,18 +85,21 @@ namespace elections {
 
 		for (int i = 0; i < partyNum; i++)
 		{	// calculate how many reps from each party
-			currParty = partiesArr[i];
+			if (votesPerc.size() > i)
+			{
+				currParty = partiesArr[i];
 
-			currDB = currParty.getRepresentatives();
+				currDB = currParty.getRepresentatives();
 
-			RepsInPartyi = currDB[districtNum];
+				RepsInPartyi = currDB[districtNum];
 
-			currRepsNum = (votesPerc[i] * numOfRep) / 100;
+				currRepsNum = (votesPerc[i] * numOfRep) / 100;
 
-			curr = RepsInPartyi.getCitizensUntillIndex(currRepsNum);
+				curr = RepsInPartyi.getCitizensUntillIndex(currRepsNum);
 
-			res.appendCitizensArr(curr);
+				res.appendCitizensArr(curr);
 
+			}
 		}
 		cout << res;
 		cout << endl;
@@ -116,7 +119,7 @@ namespace elections {
 		cout << endl;
 		cout << "     ***** District " << name << " (united system) *****     " << endl
 			<< "the district is giving all the following representative "
-			<< numOfRep << "to " << leader.getName() << ":" << endl;
+			<< numOfRep << " to " << leader.getName() << ":" << endl;
 		cout << endl;
 
 	}

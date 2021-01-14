@@ -98,7 +98,7 @@ namespace elections {
 		CitizensArr curr;
 		int citizensNum;
 
-		for (int i = 0; i < partiesArr->getLogSize(); i++)
+		for (int i = 0; i < districts.size(); i++)
 		{
 			currDist = districts[i];
 			citizensNum = currDist->getCitizensNum();

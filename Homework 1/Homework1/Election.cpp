@@ -30,16 +30,20 @@ namespace elections {
 		});
 
 		// displaying results following project intructions
+		cout << "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #" << endl << endl;
 		for (int i = 0; i < partyNum; i++)
 		{
 			int currPartyNum = result[i].partyNum;
 			long int currLeaderID = partiesArr[currPartyNum].getLeaderId();
 			Citizen currLeader = citizensDB[currLeaderID];
 
-			cout << "The leader " << currLeader.getName() << " got "
+			cout
+				<< "The leader " << currLeader.getName() << " got "
 				<< electorsByParty[currPartyNum].getLogSize()
-				<< " representatives, and Total votes of: " << result[i].votes << endl;
+				<< " representatives, and Total votes of: " << result[i].votes 
+				<< endl;
 		}
+		cout << endl << "# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #" << endl;
 	}
 	Date::Date(int _day, int _month, int _year)
 	{

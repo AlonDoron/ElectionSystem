@@ -8,7 +8,7 @@ namespace elections {
 	DividedDistrict::DividedDistrict() : District() {};
 
 	DividedDistrict::DividedDistrict(string _name, int _numOfRep, int _districtNum)
-		: District(_name,  _numOfRep, _districtNum) {}
+		: District(_name, _numOfRep, _districtNum) {}
 
 
 	void DividedDistrict::setElected(PartiesArr* _partiesArr, CitizensDB* _electorsByParty, CitizensDB* _citizensDB)
@@ -26,29 +26,33 @@ namespace elections {
 
 		for (int i = 0; i < partyNum; i++)
 		{	// calculate how many reps from each party
-			long int leaderID = (*_partiesArr)[i].getLeaderId();
-			Citizen leader;
-			leader = (*_citizensDB)[leaderID];
+			if (votesPerc.size() > i)
+			{
 
-			CitizensArr currRes;
+				long int leaderID = (*_partiesArr)[i].getLeaderId();
+				Citizen leader;
+				leader = (*_citizensDB)[leaderID];
 
-			currParty = partiesArr[i];
+				CitizensArr currRes;
 
-			currDB = currParty.getRepresentatives();
+				currParty = partiesArr[i];
 
-			RepsInPartyi = currDB[districtNum];
+				currDB = currParty.getRepresentatives();
 
-			currRepsNum = (votesPerc[i] * numOfRep) / 100;
+				RepsInPartyi = currDB[districtNum];
 
-			curr = RepsInPartyi.getCitizensUntillIndex(currRepsNum);
+				currRepsNum = (votesPerc[i] * numOfRep) / 100;
 
-			currRes.appendCitizensArr(curr);
+				curr = RepsInPartyi.getCitizensUntillIndex(currRepsNum);
 
-			cout << "The district is giving the following " << currRepsNum << " representatives "
-				<< "to " << leader.getName() << ":" <<endl<< currRes << endl;
+				currRes.appendCitizensArr(curr);
 
-			(*_electorsByParty)[i].appendCitizensArr(currRes);
+				cout << "The district is giving the following " << currRepsNum << " representatives "
+					<< "to " << leader.getName() << ":" << endl << currRes << endl;
 
+				(*_electorsByParty)[i].appendCitizensArr(currRes);
+
+			}
 		}
 
 	}

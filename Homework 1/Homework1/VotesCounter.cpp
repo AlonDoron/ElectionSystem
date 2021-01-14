@@ -126,14 +126,24 @@ namespace elections {
 	void VotesCounter::printVotingStatictic(PartiesArr* partiesArr, int citizensNum)
 	{
 		cout << "Voting statictics: " << endl;
-		for (int i = 0; i < votesByParty.size(); i++)
+		for (int i = 0; i < partiesArr->getLogSize(); i++)
 		{
-			cout << (*partiesArr)[i].getPartyName() << " got " << votesByParty[i] << " votes "
+			if (votesByParty.size() > i)
+				cout << (*partiesArr)[i].getPartyName() << " got " << votesByParty[i] << " votes "
 				<< "which are " << votesPerc[i] << "%" << " of all votes" << endl;
+			else
+				cout << (*partiesArr)[i].getPartyName() << " got " << 0 << " votes "
+				<< "which are " << 0 << "%" << " of all votes" << endl;
 		}
-		cout << "General turnout in the district is: " <<
+		if (votesByParty.size() > 0)
+			cout << "General turnout in the district is: " <<
 			((float)((float)votingNumber / (float)citizensNum)) * 100
 			<< "%" << endl
+			<< "______________________________________________________________"
+			<< endl << endl;
+		else
+			cout << "General turnout in the district is: " <<
+			"0%" << endl
 			<< "______________________________________________________________"
 			<< endl << endl;
 
@@ -141,7 +151,10 @@ namespace elections {
 
 	const int VotesCounter::operator[](int index) const
 	{
-		return votesByParty[index];
+		if (votesByParty.size() == 0)
+			return 0;
+		else
+			return votesByParty[index];
 	}
 
 	void VotesCounter::save(ostream& out) const
